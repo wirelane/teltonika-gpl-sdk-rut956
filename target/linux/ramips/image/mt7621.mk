@@ -11,14 +11,14 @@ define Device/teltonika_tap200
 	SOC := mt7621
 	DEVICE_MODEL := TAP200
 	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.5
-	DEVICE_FEATURES := access-point single-port wifi ledman-full small_flash
-	DEVICE_DTS := mt7621-teltonika-tap200
+	DEVICE_FEATURES := access-point single-port wifi small_flash
+	DEVICE_DTS := mt7621-teltonika-tap200$(if $(CONFIG_BUILD_FACTORY_TEST_IMAGE),-factory)
 	KERNEL := kernel-bin | append-dtb | lzma | uImage lzma
 	BLOCKSIZE := 64k
 	PAGESIZE := 2048
 	FILESYSTEMS := squashfs
 
-	UBOOT_NAME := tlt-mt7621
+	DEVICE_BOOT_NAME := tlt-mt7621
 	# UBOOT_SIZE = "u-boot" + "u-boot-env"
 	UBOOT_SIZE := 327680
 	CONFIG_SIZE := 65536
@@ -42,9 +42,10 @@ define Device/teltonika_tap200
 			check-size $$$$(MASTER_IMAGE_SIZE) | \
 			finalize-tlt-master-stendui
 
-	DEVICE_PACKAGES := kmod-gpio-nxp-74hc164 kmod-mt7621-qtn-rgmii \
-			   kmod-mt7615e kmod-mt7615-common kmod-mt7615-firmware kmod-spi-gpio \
-			   kmod-mtk-eip93
+	DEVICE_PACKAGES := kmod-gpio-nxp-74hc164 kmod-mt7621-qtn-rgmii kmod-spi-gpio
+
+	DEVICE_PACKAGES.basic := kmod-mt7615e kmod-mt7615-common \
+			   kmod-mt7615-firmware kmod-mtk-eip93
 
 endef
 TARGET_DEVICES += teltonika_tap200
@@ -60,9 +61,10 @@ define Device/teltonika_rutm
 	FILESYSTEMS := squashfs
 	KERNEL_IN_UBI := 1
 	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.4
-	DEVICE_FEATURES := usb-port ncm gps serial modbus io wifi dualsim port-mirror ntrip hw-offload tlt-failsafe-boot
+	DEVICE_FEATURES := usb-port ncm gps serial modbus io wifi dualsim \
+			port-mirror ntrip hw-offload tlt-failsafe-boot mobile
 
-	UBOOT_NAME := tlt-mt7621
+	DEVICE_BOOT_NAME := tlt-mt7621
 	UBOOT_SIZE := 524288
 	CONFIG_SIZE := 65536
 	ART_SIZE := 65536

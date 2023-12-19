@@ -13,7 +13,7 @@
 			#address-cells = <1>;
 			#size-cells = <1>;
 
-			partition@0 {
+			boot: partition@0 {
 				label = "u-boot";
 				reg = <0x0 0x80000>;
 				read-only;

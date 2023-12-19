@@ -62,6 +62,12 @@
 			gpios = <&shift_io 7 GPIO_ACTIVE_HIGH>;
 		};
 
+		gpio_modem_status { // From v5
+			gpio-export,name = "modem_status";
+			gpio-export,input = <0>;
+			gpios = <&gpio 0 GPIO_ACTIVE_LOW>;
+		};
+
 		gpio_rs485_rx_en {
 			gpio-export,name = "rs485_rx_en";
 			gpio-export,output = <0>;
@@ -148,6 +154,137 @@
 			gpios = <&shift_io 4 GPIO_ACTIVE_HIGH>;
 			linux,default-trigger = "timer";
 		};
+
+		led_power {
+			label = "power";
+			gpios = <&shift_io 15 GPIO_ACTIVE_LOW>;
+			default-state = "on";
+		};
+	};
+
+	tlt_gpios { // Modify according to wiki page "DTS syntax with Libgpiod changes"
+		gpiochip_info {
+			hw_0 {
+				hwver = <0>;
+				gpiochip_count = <4>;
+
+				gpiochip_0 = <32>; // Built-in
+				gpiochip_1 = <32>; // Built-in
+				gpiochip_2 = <32>; // Built-in
+				gpiochip_3 = <16>; // Shift Register
+			};
+		};
+
+		ioman {
+			GPIO_40 {
+				line_name = "GPIO_IN_1";
+			};
+			GPIO_108 {
+				line_name = "GPIO_OUT_1";
+			};
+			GPIO_11 {
+				compatible_model = "RUT956";
+				line_name = "GPIO_ISOLATED_INPUT";
+			};
+			GPIO_37 {
+				compatible_model = "RUT956";
+				line_name = "GPIO_IN_2";
+			};
+			GPIO_104 {
+				compatible_model = "RUT956";
+				line_name = "GPIO_OUT_2";
+			};
+			GPIO_105 {
+				compatible_model = "RUT956";
+				line_name = "GPIO_RELAY_CLOSE_1";
+			};
+		};
+
+		ledman {
+			GPIO_43 {
+				line_name = "LED_ETH_GREEN_1";
+				active_low;
+			};
+			GPIO_42 {
+				line_name = "LED_ETH_GREEN_2";
+				active_low;
+			};
+			GPIO_41 {
+				line_name = "LED_ETH_GREEN_3";
+				active_low;
+			};
+			GPIO_39 {
+				line_name = "LED_ETH_GREEN_4";
+				active_low;
+			};
+			GPIO_101 {
+				line_name = "LED_TECH_GEN_23";
+			};
+			GPIO_102 {
+				line_name = "LED_TECH_GEN_43";
+			};
+			GPIO_96 {
+				line_name = "LED_SSID_1";
+			};
+			GPIO_97 {
+				line_name = "LED_SSID_2";
+			};
+			GPIO_98 {
+				line_name = "LED_SSID_3";
+			};
+			GPIO_99 {
+				line_name = "LED_SSID_4";
+			};
+			GPIO_100 {
+				line_name = "LED_SSID_5";
+			};
+			GPIO_111 { // Exists in ioman as GPIO_RELAY_OPEN_1, but not used
+				compatible_model = "RUT956";
+				compatible_versions = <5 99>;
+				line_name = "LED_POWER";
+				active_low;
+			};
+		};
+
+		misc {
+			GPIO_0 {
+				compatible_versions = <5 99>;
+				line_name = "GPIO_MODEM_STATUS";
+				active_low;
+			};
+			GPIO_106 {
+				line_name = "GPIO_MODEM_POWER_1";
+			};
+			GPIO_107 {
+				line_name = "GPIO_MODEM_RESET_1";
+			};
+			GPIO_103 {
+				line_name = "GPIO_SIM_SELECT";
+			};
+			GPIO_44 {
+				line_name = "GPIO_SD_ENABLE"; // Duplicates as rts, fix in the future
+			};
+			GPIO_109 {
+				line_name = "GPIO_RS458_RX_EN";
+			};
+			GPIO_110 {
+				line_name = "GPIO_DCD";
+			};
+		};
+	};
+};
+
+&mnfinfo {
+	simpin1 {
+		default = "";
+	};
+
+	simpin2 {
+		default = "";
+	};
+
+	sim_count {
+		default =  "2";
 	};
 };
 
@@ -185,7 +322,7 @@
 			#address-cells = <1>;
 			#size-cells = <1>;
 
-			partition@0 {
+			boot: boot: partition@0 {
 				label = "u-boot";
 				reg = <0x0 0x20000>;
 				read-only;

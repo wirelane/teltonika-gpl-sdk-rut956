@@ -9,7 +9,7 @@ include $(INCLUDE_DIR)/download.mk
 
 PKG_NAME:=mt7628
 
-PKG_SOURCE_VERSION:=1.2.1
+PKG_SOURCE_VERSION:=1.3
 
 PKG_VERSION=4.1.1.0-DPA-20190925-$(PKG_SOURCE_VERSION)
 PKG_RELEASE=1
@@ -52,7 +52,7 @@ define KernelPackage/mt7628
   CATEGORY:=Kernel modules
   TITLE:=MTK MT7628 wifi AP driver
   FILES:=$(PKG_BUILD_DIR)/build/mt7628.ko
-  DEPENDS:=@TARGET_ramips_mt76x8 +kmod-cfg80211 +8021xd +mtkiappd +ap_client +MT7628_HOTSPOT20:mt_hotspot +kmod-nfnetlink
+  DEPENDS:=@TARGET_ramips_mt76x8 +kmod-cfg80211_54 +8021xd +mtkiappd +ap_client +MT7628_HOTSPOT20:mt_hotspot +kmod-nfnetlink
   ifeq ($(BUILD_VARIANT),netlink_module)
 	DEPENDS+=kmod-mt7628-netlink
   endif

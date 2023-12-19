@@ -1,7 +1,5 @@
-Index: linux-5.4.251/include/linux/netdevice.h
-===================================================================
---- linux-5.4.251.orig/include/linux/netdevice.h
-+++ linux-5.4.251/include/linux/netdevice.h
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
 @@ -4371,6 +4371,7 @@ void __dev_set_rx_mode(struct net_device
  int dev_set_promiscuity(struct net_device *dev, int inc);
  int dev_set_allmulti(struct net_device *dev, int inc);
@@ -10,10 +8,8 @@ Index: linux-5.4.251/include/linux/netdevice.h
  void netdev_notify_peers(struct net_device *dev);
  void netdev_features_change(struct net_device *dev);
  /* Load a device via the kmod */
-Index: linux-5.4.251/net/core/dev.c
-===================================================================
---- linux-5.4.251.orig/net/core/dev.c
-+++ linux-5.4.251/net/core/dev.c
+--- a/net/core/dev.c
++++ b/net/core/dev.c
 @@ -1272,6 +1272,26 @@ void netdev_state_change(struct net_devi
  EXPORT_SYMBOL(netdev_state_change);
  

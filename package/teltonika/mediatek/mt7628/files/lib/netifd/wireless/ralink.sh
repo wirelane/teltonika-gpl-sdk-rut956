@@ -508,6 +508,8 @@ ralink_setup_ap(){
 
 	json_select ..
 
+	#Write ifname to wifi_id and interface relation file.
+	echo "$ifname" > /var/run/${wifi_id}.wifi_id
 	wireless_add_vif "$name" "$ifname"
 }
 
