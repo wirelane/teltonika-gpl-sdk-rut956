@@ -50,6 +50,12 @@
 			gpios = <&gpio 14 GPIO_ACTIVE_HIGH>;
 		};
 
+		gpio_modem_status_1 {
+			gpio-export,name = "modem1_status";
+			gpio-export,input = <0>;
+			gpios = <&gpio 42 GPIO_ACTIVE_LOW>;
+		};
+
 		gpio_modem_reset_2 {
 			gpio-export,name = "modem2_reset";
 			gpio-export,output = <0>;
@@ -62,6 +68,12 @@
 			gpios = <&gpio 15 GPIO_ACTIVE_HIGH>;
 		};
 
+		gpio_modem_status_2 {
+			gpio-export,name = "modem2_status";
+			gpio-export,input = <0>;
+			gpios = <&gpio 44 GPIO_ACTIVE_LOW>;
+		};
+
 		gpio_in_1 {
 			gpio-export,name = "gpio24";
 			gpio-export,input = <0>;
@@ -72,13 +84,6 @@
 			gpio-export,name = "gpio23";
 			gpio-export,output = <0>;
 			gpios = <&gpio 8 GPIO_ACTIVE_HIGH>;
-		};
-
-		radio_off {
-			gpio-export,name = "radio_off";
-			gpio-export,output = <0>;
-			gpio-export,direction_may_change;
-			gpios = <&shift_io 15 GPIO_ACTIVE_HIGH>;
 		};
 
 		green_eth_port_4 {
@@ -178,7 +183,7 @@
 
 		led_wan_wifi {
 			label = "wan_wifi_4";
-			gpios = <&gpio 42 GPIO_ACTIVE_HIGH>;
+			gpios = <&shift_io 15 GPIO_ACTIVE_HIGH>;
 		};
 
 		led_gen_3 {
@@ -303,7 +308,7 @@
 			GPIO_43 {
 				line_name = "LED_SIM_2";
 			};
-			GPIO_42 {
+			GPIO_111 {
 				line_name = "LED_WAN_WIFI";
 			};
 			GPIO_45 {
@@ -360,8 +365,11 @@
 			GPIO_15 {
 				line_name = "GPIO_MODEM_POWER_2";
 			};
-			GPIO_111 {
-				line_name = "GPIO_RADIO_OFF";
+			GPIO_44 {
+				line_name = "GPIO_MODEM_STATUS_1";
+			};
+			GPIO_42 {
+				line_name = "GPIO_MODEM_STATUS_2";
 			};
 		};
 	};

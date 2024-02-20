@@ -34,6 +34,8 @@ PKG_INSTALL:=1
 
 HOST_BUILD_DEPENDS:=libubox/host
 
+PKG_BUILD_FLAGS:=gc-sections
+
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/host-build.mk
 include $(INCLUDE_DIR)/cmake.mk
@@ -63,7 +65,6 @@ define Package/opkg/conffiles
 /etc/opkg/customfeeds.conf
 endef
 
-TARGET_CFLAGS += -ffunction-sections -fdata-sections
 EXTRA_CFLAGS += $(TARGET_CPPFLAGS)
 
 CMAKE_OPTIONS += \
@@ -91,7 +92,7 @@ define Package/opkg/install
   endif
 	$(INSTALL_DIR) $(1)/usr/sbin
 	$(INSTALL_BIN) ./files/opkg-key $(1)/usr/sbin/
-	echo src/gz tlt_packages http://opkg.teltonika-networks.com/7bf0a1ca2e77ffca24f7c4c5f6ae1ec23ada7a2a6579cdeedee5d72d863dcbc2 > $(1)/etc/opkg/teltonikafeeds.conf
+	echo src/gz tlt_packages http://opkg.teltonika-networks.com/bb267732b87d773320cc48439144c326dba30e84892f9b29a84a022b5136879b > $(1)/etc/opkg/teltonikafeeds.conf
 endef
 
 define Host/Install
