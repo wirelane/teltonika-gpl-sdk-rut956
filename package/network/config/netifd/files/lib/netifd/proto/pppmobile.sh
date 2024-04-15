@@ -140,11 +140,13 @@ wait_data_connection() {
 		if [ -z "$l3_device" ]; then
 			sleep 1
 		else
+			ubus -t 1 call gpsd modman '{"wwan":true}' 2>/dev/null
 		 	return 0
 		fi
 		if [ $i -eq $max_wait ]; then
 			echo "Can't find l3 device for $ifname_ interface"
 			ubus call network.interface remove "{\"interface\":\"$ifname_\"}" 2>/dev/null
+			ubus -t 1 call gpsd modman '{"wwan":false}' 2>/dev/null
 			return 1
 		fi
 	done

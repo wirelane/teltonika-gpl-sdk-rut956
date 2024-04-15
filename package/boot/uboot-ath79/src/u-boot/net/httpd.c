@@ -74,8 +74,7 @@ int do_http_upgrade(const ulong size, const int upgrade_type){
 				return(-1);
 			}
 		}
-
-		printf("\n\n****************************\n*     U-BOOT UPGRADING     *\n* DO NOT POWER OFF DEVICE! *\n****************************\n\n");
+		printf("\n\n****************************\n*     %s UPGRADING     *\n* DO NOT POWER OFF DEVICE! *\n****************************\n\n", "U-BOOT");
 		sprintf(buf,
 				"erase 0x%lX +0x%lX; cp.b 0x%lX 0x%lX 0x%lX",
 				CFG_FLASH_BASE,
@@ -86,7 +85,7 @@ int do_http_upgrade(const ulong size, const int upgrade_type){
 
 	} else if(upgrade_type == WEBFAILSAFE_UPGRADE_TYPE_FIRMWARE){
 
-		printf("\n\n****************************\n*    FIRMWARE UPGRADING    *\n* DO NOT POWER OFF DEVICE! *\n****************************\n\n");
+		printf("\n\n****************************\n*     %s UPGRADING     *\n* DO NOT POWER OFF DEVICE! *\n****************************\n\n", "FIRMWARE");
 		sprintf(buf,
 				"erase 0x%lX +0x%lX; cp.b 0x%lX 0x%lX 0x%lX",
 				WEBFAILSAFE_UPLOAD_KERNEL_ADDRESS,
@@ -99,7 +98,7 @@ int do_http_upgrade(const ulong size, const int upgrade_type){
 
 		// TODO: add option to change ART partition offset,
 		// for those who want to use OFW on router with replaced/bigger FLASH
-		printf("\n\n****************************\n*      ART  UPGRADING      *\n* DO NOT POWER OFF DEVICE! *\n****************************\n\n");
+		printf("\n\n****************************\n*     %s UPGRADING     *\n* DO NOT POWER OFF DEVICE! *\n****************************\n\n", "ART");
 #if defined(WEBFAILSAFE_UPLOAD_ART_ADDRESS)
 		sprintf(buf,
 				"erase 0x%lX +0x%lX; cp.b 0x%lX 0x%lX 0x%lX",

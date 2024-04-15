@@ -1,8 +1,14 @@
+#
+# Copyright (C) 2024 Teltonika-Networks
+#
+
 include $(TOPDIR)/rules.mk
-include $(INCLUDE_DIR)/download.mk
 
 PKG_NAME:=lib-bacnet
-PKG_SOURCE_VERSION:=7.6
+
+PKG_SOURCE_VERSION:=7.7
+
+PKG_LICENSE:=GPL-2.0-or-later
 
 include $(INCLUDE_DIR)/package.mk
 

@@ -238,6 +238,9 @@ proto_ncm_setup() {
 		ip link set mtu "$mtu" "$ifname"
 	}
 
+	# Disable GRO, CDC NCM does not provide RX csum offloading.
+	ethtool -K $ifname gro off
+
 	proto_init_update "$ifname" 1
 	proto_set_keep 1
 	proto_add_data
@@ -258,7 +261,7 @@ proto_ncm_setup() {
 			#Passthrough
 			[ "$method" = "passthrough" ] && {
 				iptables -w -tnat -I postrouting_rule -o "$ifname" -j SNAT --to "$bridge_ipaddr"
-				ip route add default dev "$ifname"
+				ip route add default dev "$ifname" metric "$metric"
 			}
 		}
 	}
@@ -308,28 +311,30 @@ proto_ncm_setup() {
 }
 
 proto_ncm_teardown() {
-	local interface="$1" pdp bridge_ipaddr method braddr_f
+	local interface="$1" pdp bridge_ipaddr method
 	json_get_vars pdp modem
+	local braddr_f="/var/run/${interface}_braddr"
 
 	mdm_ubus_obj="$(find_mdm_ubus_obj "$modem")"
 
 	echo "Stopping network ${interface}"
 
-	braddr_f="/var/run/${interface}_braddr"
-	method=$(grep -o 'method:[^ ]*' $braddr_f 2> /dev/null | cut -d':' -f2)
-	bridge_ipaddr=$(grep -o 'bridge_ipaddr:[^ ]*' $braddr_f 2> /dev/null | cut -d':' -f2)
+	[ -f "$braddr_f" ] && {
+		method=$(get_braddr_var method "$interface")
+		bridge_ipaddr=$(get_braddr_var bridge_ipaddr "$interface")
+	}
 
 	#Kill udhcpc instance
 	proto_kill_command "$interface"
 
-	ubus call network.interface down "{\"interface\":\"${interface}_4\"}" 2>/dev/null
-	ubus call network.interface down "{\"interface\":\"${interface}_6\"}" 2>/dev/null
+	ubus call network.interface."${interface}_4" remove 2>/dev/null
+	ubus call network.interface."${interface}_6" remove 2>/dev/null
 
 	#Stop data call
-	ubus call "$mdm_ubus_obj" set_pdp_call "{\"mode\":\"disconnect\",\"cid\":${pdp},\"urc_en\":true}"
+	ubus -t 3 call "$mdm_ubus_obj" set_pdp_call "{\"mode\":\"disconnect\",\"cid\":${pdp},\"urc_en\":true,\"timeout\":0}"
 
 	#Deactivate context
-	ubus call "$mdm_ubus_obj" set_pdp_ctx_state "{\"cid\":${pdp},\"state\":\"deactivated\"}"
+	ubus -t 3 call "$mdm_ubus_obj" set_pdp_ctx_state "{\"cid\":${pdp},\"state\":\"deactivated\",\"timeout\":0}"
 	kill -9 $(cat /var/run/ncm_conn.pid 2>/dev/null) &>/dev/null
 	rm -f /var/run/ncm_conn.pid &>/dev/null
 
@@ -341,17 +346,23 @@ proto_ncm_teardown() {
 		ip route del "$bridge_ipaddr"
 		ubus call network.interface down "{\"interface\":\"mobile_bridge\"}"
 		rm -f "/tmp/dnsmasq.d/bridge"
-		swconfig dev switch0 set soft_reset 5 &
+
+		if is_device_dsa ; then
+			restart_dsa_interfaces
+		else
+			swconfig dev 'switch0' set soft_reset 5 &
+		fi
 		rm -f "$braddr_f" 2> /dev/null
+
+		#Clear passthrough and bridge params
+		iptables -t nat -F postrouting_rule
+
+		local zone="$(fw3 -q network "$interface" 2>/dev/null)"
+		iptables -F forwarding_${zone}_rule
+
+		ip neigh flush proxy
+		ip neigh flush dev br-lan
 	}
-
-	#Clear passthrough and bridge params
-	iptables -t nat -F postrouting_rule
-
-	local zone="$(fw3 -q network "$interface" 2>/dev/null)"
-	iptables -F forwarding_${zone}_rule
-
-	ip neigh flush proxy
 
 	proto_init_update "*" 0
 	proto_send_update "$interface"

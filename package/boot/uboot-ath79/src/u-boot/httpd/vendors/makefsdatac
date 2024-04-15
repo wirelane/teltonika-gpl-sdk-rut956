@@ -78,48 +78,27 @@ function print_data_array() {
 	echo "," >> "$FILES_CONTENT_TMP"
 	ascii_to_bytes "Server: uIP/0.9\r\n"
 	echo "," >> "$FILES_CONTENT_TMP"
+	ascii_to_bytes "Content-Encoding: gzip\r\n"
+	echo "," >> "$FILES_CONTENT_TMP"
 
 	# Content
 	case $f_ext in
 	css)
-		if [ $HAVE_JAVA -eq 1 ] &&\
-		   [ -e $YUI_PATH ]; then
-			f_content=$(java -jar "$YUI_PATH" --charset utf-8 "$1" |\
-				    od -A n -t x1 | tr -d '\r\n' |\
-				    sed 's/ /0x/;s/ /, 0x/g;s/.\{102\}/&\n/g')
-		else
-			f_content=$(cat "$1" | tr -d '\r\n\t' |\
-				    od -A n -t x1 | tr -d '\r\n' |\
-				    sed 's/ /0x/;s/ /, 0x/g;s/.\{102\}/&\n/g')
-		fi
-
 		ascii_to_bytes "Content-type: text/css; charset=UTF-8\r\n\r\n"
 		;;
 	png)
-		f_content=$(od -A n -t x1 < "$1" | tr -d '\r\n' |\
-			    sed 's/ /0x/;s/ /, 0x/g;s/.\{102\}/&\n/g')
 		ascii_to_bytes "Content-Type: image/png\r\n\r\n"
 		;;
 	jpg|jpeg)
-		f_content=$(od -A n -t x1 < "$1" | tr -d '\r\n' |\
-			    sed 's/ /0x/;s/ /, 0x/g;s/.\{102\}/&\n/g')
 		ascii_to_bytes "Content-Type: image/jpeg\r\n\r\n"
 		;;
 	gif)
-		f_content=$(od -A n -t x1 < "$1" | tr -d '\r\n' |\
-			    sed 's/ /0x/;s/ /, 0x/g;s/.\{102\}/&\n/g')
 		ascii_to_bytes "Content-Type: image/gif\r\n\r\n"
 		;;
 	htm|html)
-		f_content=$(cat "$1" | tr -d '\t\r\n' |\
-			    od -A n -t x1 | tr -d '\r\n' |\
-			    sed 's/ /0x/;s/ /, 0x/g;s/.\{102\}/&\n/g')
 		ascii_to_bytes "Content-type: text/html; charset=UTF-8\r\n\r\n"
 		;;
 	svg)
-		f_content=$(cat "$1" | tr -d '\t\r\n' |\
-			    od -A n -t x1 | tr -d '\r\n' |\
-			    sed 's/ /0x/;s/ /, 0x/g;s/.\{102\}/&\n/g')
 		ascii_to_bytes "Content-type: image/svg+xml; charset=UTF-8\r\n\r\n"
 		;;
 	*)
@@ -131,7 +110,7 @@ function print_data_array() {
 
 	# File content
 	echo -ne "/* Page/File content */\n" >> "$FILES_CONTENT_TMP"
-	echo -ne "${f_content}" >> "$FILES_CONTENT_TMP"
+	gzip --stdout "$1" | od -A n -t x1 | tr -d '\r\n' | sed 's/ /0x/;s/ /, 0x/g;s/.\{102\}/&\n/g' >> "$FILES_CONTENT_TMP"
 
 	# And close declaration
 	echo -ne ", 0 };\n\n" >> "$FILES_CONTENT_TMP"

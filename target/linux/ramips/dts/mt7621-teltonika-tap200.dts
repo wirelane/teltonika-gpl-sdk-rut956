@@ -47,7 +47,7 @@
 
 		power_led {
 			label = "power";
-			default-state = "on";
+			linux,default-trigger = "timer";
 			gpios = <&gpio 15 GPIO_ACTIVE_LOW>;
 		};
 

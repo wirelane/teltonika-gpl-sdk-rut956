@@ -68,12 +68,6 @@
 			gpios = <&gpio 0 GPIO_ACTIVE_LOW>;
 		};
 
-		gpio_rs485_rx_en {
-			gpio-export,name = "rs485_rx_en";
-			gpio-export,output = <0>;
-			gpios = <&shift_io 13 GPIO_ACTIVE_HIGH>;
-		};
-
 		gpio_dcd {
 			gpio-export,name = "dcd";
 			gpio-export,output = <0>;
@@ -178,25 +172,42 @@
 		ioman {
 			GPIO_40 {
 				line_name = "GPIO_IN_1";
+				active_low;
 			};
 			GPIO_108 {
 				line_name = "GPIO_OUT_1";
 			};
 			GPIO_11 {
-				compatible_model = "RUT956";
-				line_name = "GPIO_ISOLATED_INPUT";
+				compatible_model_0 = "RUT956";
+				line_name_0 = "GPIO_ISOLATED_INPUT";
+
+				compatible_model_1 = "RUT906";
+				line_name_1 = "GPIO_ISOLATED_INPUT";
+
+				active_low;
 			};
 			GPIO_37 {
-				compatible_model = "RUT956";
-				line_name = "GPIO_IN_2";
+				compatible_model_0 = "RUT956";
+				line_name_0 = "GPIO_IN_2";
+
+				compatible_model_1 = "RUT906";
+				line_name_1 = "GPIO_IN_2";
+
+				active_low;
 			};
 			GPIO_104 {
-				compatible_model = "RUT956";
-				line_name = "GPIO_OUT_2";
+				compatible_model_0 = "RUT956";
+				line_name_0 = "GPIO_OUT_2";
+
+				compatible_model_1 = "RUT906";
+				line_name_1 = "GPIO_OUT_2";
 			};
 			GPIO_105 {
-				compatible_model = "RUT956";
-				line_name = "GPIO_RELAY_CLOSE_1";
+				compatible_model_0 = "RUT956";
+				line_name_0 = "GPIO_RELAY_CLOSE_1";
+
+				compatible_model_1 = "RUT906";
+				line_name_1 = "GPIO_RELAY_CLOSE_1";
 			};
 		};
 
@@ -265,10 +276,103 @@
 				line_name = "GPIO_SD_ENABLE"; // Duplicates as rts, fix in the future
 			};
 			GPIO_109 {
-				line_name = "GPIO_RS458_RX_EN";
+				line_name = "GPIO_RS485_RX_EN";
 			};
 			GPIO_110 {
 				line_name = "GPIO_DCD";
+			};
+		};
+	};
+
+	ioman {
+		layout@0 {
+			compatible = "RUT951,RUT901";
+
+			io@0 { // 4pin #3
+				label = "din1";
+				block_type = BLOCK_4PIN;
+				block_pin = "3";
+				gpio_in = "GPIO_IN_1";
+				io_param = "g0";
+			};
+			io@1 { // 4pin #4
+				label = "dout1";
+				block_type = BLOCK_4PIN;
+				block_pin = "4";
+				gpio_out = "GPIO_OUT_1";
+				io_param = "g1";
+			};
+		};
+		layout@1 {
+			compatible = "RUT956,RUT906";
+
+			io@0 { // 4pin #3
+				label = "din1";
+				block_type = BLOCK_4PIN;
+				block_pin = "3";
+				gpio_in = "GPIO_IN_1";
+				io_param = "g2";
+			};
+			io@1 { // 4pin #4
+				label = "dout1";
+				block_type = BLOCK_4PIN;
+				block_pin = "4";
+				gpio_out = "GPIO_OUT_1";
+				io_param = "g4";
+			};
+			io@2 { // 10pin#1
+				label = "din2";
+				block_type = BLOCK_10PIN;
+				block_pin = "1";
+				web_str = "Digital Input";
+				gpio_in = "GPIO_IN_2";
+				io_param = "g3";
+			};
+			io@3 { // 10pin#2
+				label = "iio";
+				block_type = BLOCK_10PIN;
+				block_pin = "2,7";
+				gpio_in = "GPIO_ISOLATED_INPUT";
+				io_param = "g6";
+			};
+			io@4 { // 10pin#3
+				label = "dout2";
+				block_type = BLOCK_10PIN;
+				block_pin = "3,4,8";
+				web_str = "Isolated Output";
+				gpio_out = "GPIO_OUT_2";
+				io_param = "g5";
+			};
+			relay@0 {
+				label = "relay0";
+				block_type = BLOCK_10PIN;
+				block_pin = "5,10";
+				gpio_close = "GPIO_RELAY_CLOSE_1";
+				io_param = "g7";
+			};
+			adc@0 {
+				label = "adc0";
+				block_type = BLOCK_10PIN;
+				block_pin = "6,9";
+				tolerance = "0.05";
+				path = "/sys/class/hwmon/hwmon0/device/in0_input";
+				io_param = "g1";
+
+				adc_cof@0 {
+					divider = "128.160418482999"; //147.0 / 1147.0 * 1000.0
+				};
+			};
+			acl@0 {
+				label = "acl0";
+				block_type = BLOCK_10PIN;
+				block_pin = "6,9";
+				tolerance = "0.00004";
+				path = "/sys/class/hwmon/hwmon0/device/in0_input";
+				io_param = "g0";
+
+				adc_cof@0 {
+					divider = "153792.502179599"; //147.0 / 1147.0 * 1000.0 * 1200.0
+				};
 			};
 		};
 	};
@@ -302,10 +406,11 @@
 &pcie0 {
 	mt76@0,0 {
 		reg = <0x0000 0 0 0 0>;
-		mediatek,mtd-eeprom = <&factory 0x28000>;
 		ieee80211-freq-limit = <5000000 6000000>;
-		mtd-mac-address = <&factory 0xf100>;
-		mtd-mac-address-increment = <(-1)>;
+		mediatek,mtd-eeprom = <&factory 0x28000>;
+		nvmem-cells = <&macaddr_config_0>;
+		nvmem-cell-names = "mac-address";
+		mac-address-increment = <(-1)>;
 	};
 };
 
@@ -329,9 +434,17 @@
 			};
 
 			config: partition@20000 {
+				compatible = "nvmem-cells";
+				#address-cells = <1>;
+				#size-cells = <1>;
+
 				label = "config";
 				reg = <0x020000 0x010000>;
 				read-only;
+
+				macaddr_config_0: macaddr@0 {
+					reg = <0x0 0x6>;
+				};
 			};
 
 			factory: partition@30000 {
@@ -356,13 +469,15 @@
 
 &wmac {
 	status = "okay";
-	mtd-mac-address = <&config 0x0>;
-	mtd-mac-address-increment = <2>;
+	nvmem-cells = <&macaddr_config_0>;
+	nvmem-cell-names = "mac-address";
+	mac-address-increment = <2>;
 	mediatek,mtd-eeprom = <&factory 0x20000>;
 };
 
 &ethernet {
-	mtd-mac-address = <&config 0x0>;
+	nvmem-cells = <&macaddr_config_0>;
+	nvmem-cell-names = "mac-address";
 };
 
 &esw {

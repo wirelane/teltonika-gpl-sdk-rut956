@@ -1,14 +1,14 @@
 #
-# Copyright (C) 2023 Teltonika-Networks
+# Copyright (C) 2024 Teltonika-Networks
 #
 
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=uboot-ath79
 
-PKG_SOURCE_VERSION:=4.3.2
+PKG_SOURCE_VERSION:=4.3.3
 
-PKG_LICENSE:=LGPL-2.1
+PKG_LICENSE:=GPL-2.0-or-later
 PKG_ORIGIN_URL:=https://github.com/pepe2k/u-boot_mod
 
 include $(INCLUDE_DIR)/package.mk

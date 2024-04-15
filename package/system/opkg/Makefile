@@ -92,7 +92,7 @@ define Package/opkg/install
   endif
 	$(INSTALL_DIR) $(1)/usr/sbin
 	$(INSTALL_BIN) ./files/opkg-key $(1)/usr/sbin/
-	echo src/gz tlt_packages http://opkg.teltonika-networks.com/ce23c3e43c9fa5bac836f5559d05bd9ccffa4b3554d3438fb10866b716a9e6a8 > $(1)/etc/opkg/teltonikafeeds.conf
+	echo src/gz tlt_packages http://opkg.teltonika-networks.com/2e5f5933841bcf980bc1469b18f37a8df4258c8d39cee2f21d9611eeea026f4c > $(1)/etc/opkg/teltonikafeeds.conf
 endef
 
 define Host/Install
@@ -101,6 +101,7 @@ endef
 
 
 OPKG_TARGET_UPPER:=$(shell echo $(CONFIG_TLT_VERSIONING_PREFIX) | tr '[:lower:]' '[:upper:]')
+#								grep for '_R_' (release prefix) in FW version
 
 $(eval $(call BuildPackage,opkg))
 $(eval $(call HostBuild))

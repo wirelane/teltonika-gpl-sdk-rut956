@@ -1,0 +1,54 @@
+--- a/net/netfilter/Kconfig
++++ b/net/netfilter/Kconfig
+@@ -1026,6 +1026,14 @@
+ 	  module to speed up processing of packets by bypassing the usual
+ 	  netfilter chains
+ 
++config NETFILTER_XT_LEGACY_OFFLOAD_FORWARD_PATH
++	bool "XT_LEGACY_OFFLOAD legacy flow offload forwarding path"
++	depends on NETFILTER_XT_TARGET_FLOWOFFLOAD
++	default n
++	help
++	  This option enables legacy flow offload path and doesn't skip
++	  bridge
++
+ config NETFILTER_XT_TARGET_RATEEST
+ 	tristate '"RATEEST" target support'
+ 	depends on NETFILTER_ADVANCED
+--- a/net/netfilter/xt_FLOWOFFLOAD.c
++++ b/net/netfilter/xt_FLOWOFFLOAD.c
+@@ -270,7 +270,7 @@
+ 	route->tuple[dir].dst		= dst_cache;
+ 	route->tuple[dir].xmit_type	= nf_xmit_type(dst_cache);
+ }
+-
++#ifndef CONFIG_NETFILTER_XT_LEGACY_OFFLOAD_FORWARD_PATH
+ static bool nf_is_valid_ether_device(const struct net_device *dev)
+ {
+ 	if (!dev || (dev->flags & IFF_LOOPBACK) || dev->type != ARPHRD_ETHER ||
+@@ -419,7 +419,7 @@
+ 		route->tuple[dir].xmit_type = info.xmit_type;
+ 	}
+ }
+-
++#endif
+ static int
+ xt_flowoffload_route(struct sk_buff *skb, const struct nf_conn *ct,
+ 		     const struct xt_action_param *par,
+@@ -449,13 +449,13 @@
+ 
+ 	nf_default_forward_path(route, this_dst, dir, devs);
+ 	nf_default_forward_path(route, other_dst, !dir, devs);
+-
++#ifndef CONFIG_NETFILTER_XT_LEGACY_OFFLOAD_FORWARD_PATH
+ 	if (route->tuple[dir].xmit_type	== FLOW_OFFLOAD_XMIT_NEIGH &&
+ 	    route->tuple[!dir].xmit_type == FLOW_OFFLOAD_XMIT_NEIGH) {
+ 		nf_dev_forward_path(route, ct, dir, devs);
+ 		nf_dev_forward_path(route, ct, !dir, devs);
+ 	}
+-
++#endif
+ 	return 0;
+ }
+ 
+

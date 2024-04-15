@@ -81,9 +81,11 @@
 			};
 			GPIO_3 {
 				line_name = "GPIO_IN_1";
+				active_low;
 			};
 			GPIO_0 {
 				line_name = "GPIO_IN_2";
+				active_low;
 			};
 		};
 
@@ -111,6 +113,28 @@
 			GPIO_37 {
 				line_name = "LED_POWER";
 				active_low;
+			};
+		};
+	};
+	ioman {
+		layout@0 {
+			io@0 { // 4pin #3
+				label = "dio0";
+				block_type = BLOCK_4PIN;
+				block_pin = "3";
+				default_direction = "out";
+				gpio_in = "GPIO_IN_1";
+				gpio_out = "GPIO_OUT_1";
+				io_param = "g0";
+			};
+			io@1 { // 4pin #4
+				label = "dio1";
+				block_type = BLOCK_4PIN;
+				block_pin = "4";
+				default_direction = "in";
+				gpio_in = "GPIO_IN_2";
+				gpio_out = "GPIO_OUT_2";
+				io_param = "g1";
 			};
 		};
 	};
@@ -143,9 +167,17 @@
 			};
 
 			config: partition@20000 {
+				compatible = "nvmem-cells";
+				#address-cells = <1>;
+				#size-cells = <1>;
+
 				label = "config";
 				reg = <0x020000 0x010000>;
 				read-only;
+
+				macaddr_config_0: macaddr@0 {
+					reg = <0x0 0x6>;
+				};
 			};
 
 			partition@30000 {
@@ -163,7 +195,8 @@
 };
 
 &ethernet {
-	mtd-mac-address = <&config 0x0>;
+	nvmem-cells = <&macaddr_config_0>;
+	nvmem-cell-names = "mac-address";
 };
 
 &esw {

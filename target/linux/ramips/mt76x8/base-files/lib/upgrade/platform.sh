@@ -40,24 +40,10 @@ platform_check_hw_support() {
 		return 1
 	}
 
-	json_init
-	json_load_file /etc/board.json
-	json_get_keys modems modems
-	json_select modems
-
-	local vendor product
-
-	for modem in $modems; do
-		json_select "$modem"
-		json_get_var builtin builtin
-
-		[ "$builtin" != "1" ] && {
-			continue
-		}
-
-		json_get_vars vendor product
-		break
-	done
+	eval "$( jsonfilter -q -i "/etc/board.json" \
+		-e "vendor=@['modems'][@.builtin=true].vendor" \
+		-e "product=@['modems'][@.builtin=true].product" \
+		)"
 
 	[ -z "$vendor" ] || [ -z "$product" ] && {
 		echo "Unable to determine current modem model"

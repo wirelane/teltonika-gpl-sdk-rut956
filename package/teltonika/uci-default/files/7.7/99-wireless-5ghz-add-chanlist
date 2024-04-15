@@ -1,0 +1,14 @@
+#!/bin/sh
+. /lib/functions.sh
+
+config_load "wireless"
+channels=""
+
+config_get channels "radio1" "channels"
+
+[ -z "$channels" ] && { 
+    uci_set "wireless" "radio1" "channels" "36-165"
+    uci_commit "wireless"
+}
+
+exit 0

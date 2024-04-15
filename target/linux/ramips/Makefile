@@ -7,11 +7,11 @@ include $(TOPDIR)/rules.mk
 ARCH:=mipsel
 BOARD:=ramips
 BOARDNAME:=MediaTek Ralink MIPS
-SUBTARGETS:=mt76x8 mt7621
+SUBTARGETS:=mt76x8
 FEATURES:=squashfs gpio
 
-KERNEL_PATCHVER:=5.4
-KERNEL_TESTING_PATCHVER:=5.4
+KERNEL_PATCHVER:=5.15
+KERNEL_TESTING_PATCHVER:=5.15
 
 ifeq ($(SUBTARGET),mt7621)
 KERNEL_PATCHVER:=5.10
@@ -24,18 +24,7 @@ define Target/Description
 endef
 
 include $(INCLUDE_DIR)/target.mk
-include $(INCLUDE_DIR)/target-gpl.mk
 
-define GPL/Target/Build
-	$(GPL/Target/Build/Default)
-
-	find "$(1)" -maxdepth 1 \
-		-type d -iname "patches-*" ! -iname "*$(KERNEL_PATCHVER)" \
-		-exec rm -rf {} \;
-	find "$(1)" -maxdepth 1 \
-		-type d -iname "files-*" ! -iname "*$(KERNEL_PATCHVER)" \
-		-exec rm -rf {} \;
-endef
 
 DEFAULT_PACKAGES += kmod-leds-gpio tc-tiny
 

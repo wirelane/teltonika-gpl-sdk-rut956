@@ -1,40 +1,23 @@
+#
+# Copyright (C) 2024 Teltonika-Networks
+#
+
 include $(TOPDIR)/rules.mk
-include $(INCLUDE_DIR)/download.mk
 
 PKG_NAME:=bacnet-router
-PKG_VERSION:=2023-12-08
-PKG_SOURCE_VERSION:=1.3
+PKG_VERSION:=2024-04-02
+
+PKG_SOURCE_VERSION:=7.7
+
+PKG_LICENSE:=MIT
 
 include $(INCLUDE_DIR)/package.mk
-
-define Build/InstallDev
-	$(INSTALL_DIR) $(1)/usr/sbin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/bacnet-router $(1)/usr/sbin/bacnet-router
-endef
 
 define Package/bacnet-router
 	SECTION:=net
 	CATEGORY:=Network
-	PKG_TLT_NAME=BACnet Router
-	PKG_ROUTER:=$(TLT_PLATFORM_NAME)
 	TITLE:=BACnet IP MS/TP serial gateway (router) application
-	DEPENDS:= +libstdcpp +libpthread +librt +libuci +libtlt_uci +lib-bacnet +vuci-app-bacnet-ui
-endef
-
-define Package/bacnet-router/teltonika_rut9xx
-  PKG_ROUTER:=RUT955
-endef
-
-define Package/bacnet-router/teltonika_rut9m
-  PKG_ROUTER:=RUT956 RUT906
-endef
-
-define Package/bacnet-router/mdm9x07
-  PKG_ROUTER:=TRB145
-endef
-
-define Package/bacnet-router/teltonika_trb2xx
-  PKG_ROUTER:=TRB245 TRB255
+	DEPENDS:=+libstdcpp +libpthread +librt +libuci +libtlt_uci +lib-bacnet
 endef
 
 define Package/$(PKG_NAME)/conffiles
@@ -42,7 +25,7 @@ define Package/$(PKG_NAME)/conffiles
 endef
 
 define Package/bacnet-router/description
-	Bacnet router application for communication between BACnet IP and MS/TP serial networks
+	Bacnet router application is designed for communication between BACnet IP and MS/TP serial networks.
 endef
 
 define Package/bacnet-router/prerm
@@ -55,6 +38,11 @@ define Package/bacnet-router/prerm
 	config_load 'firewall'
 	config_foreach remove_bbmd_rule "redirect"
 	uci_commit network
+endef
+
+define Build/InstallDev
+	$(INSTALL_DIR) $(1)/usr/sbin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/bacnet-router $(1)/usr/sbin/bacnet-router
 endef
 
 

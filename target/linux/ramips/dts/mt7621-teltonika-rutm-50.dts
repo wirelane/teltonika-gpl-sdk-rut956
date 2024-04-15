@@ -11,7 +11,7 @@
 
 		gpio-sck = <&gpio 9 GPIO_ACTIVE_HIGH>;	// 74HC595 SRCLK (Serial Clock)
 		gpio-mosi = <&gpio 5 GPIO_ACTIVE_HIGH>;	// 74HC595 SER (Serial)
-		cs-gpios = <&gpio 11 GPIO_ACTIVE_HIGH>;		// 74HC595 RCLK (Register Clock)
+		cs-gpios = <&gpio 11 GPIO_ACTIVE_HIGH>;	// 74HC595 RCLK (Register Clock)
 		num-chipselects = <1>;
 
 		shift_io: shift_io@0 {
@@ -21,6 +21,8 @@
 			#gpio-cells = <2>;
 			registers-number = <2>;
 			spi-max-frequency = <10000000>;
+			enable-gpios = <&gpio 44 GPIO_ACTIVE_LOW>;
+
 		};
 	};
 
@@ -48,18 +50,6 @@
 			gpio-export,name = "modem_power";
 			gpio-export,output = <1>; // tmp
 			gpios = <&gpio 17 GPIO_ACTIVE_HIGH>;
-		};
-
-		gpio_in_1 {
-			gpio-export,name = "gpio24";
-			gpio-export,input = <0>;
-			gpios = <&gpio 12 GPIO_ACTIVE_HIGH>;
-		};
-
-		gpio_out_1 {
-			gpio-export,name = "gpio23";
-			gpio-export,output = <0>;
-			gpios = <&gpio 8 GPIO_ACTIVE_HIGH>;
 		};
 
 		yellow_eth_port_4 {
@@ -216,6 +206,7 @@
 			};
 			GPIO_12 {
 				line_name = "GPIO_IN_1";
+				active_low;
 			};
 		};
 

@@ -1,5 +1,9 @@
 /dts-v1/;
 
+#define BLOCK_4PIN "1"
+#define BLOCK_10PIN "2"
+#define BLOCK_16PIN "3"
+
 / {
 	#address-cells = <1>;
 	#size-cells = <1>;
@@ -209,7 +213,7 @@
 			reset-names = "spi";
 
 			#address-cells = <1>;
-			#size-cells = <0>;
+			#size-cells = <1>;
 
 			pinctrl-names = "default";
 			pinctrl-0 = <&spi_pins>;

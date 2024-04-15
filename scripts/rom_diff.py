@@ -8,6 +8,17 @@ from shlex import quote
 from subprocess import getoutput
 from typing import Dict, Tuple, Union
 
+class bcolors:
+    HEADER = "\033[95m"
+    OKBLUE = "\033[94m"
+    OKCYAN = "\033[96m"
+    OKGREEN = "\033[92m"
+    WARNING = "\033[93m"
+    FAIL = "\033[91m"
+    ENDC = "\033[0m"
+    BOLD = "\033[1m"
+    UNDERLINE = "\033[4m"
+
 
 def config():
     return None
@@ -37,7 +48,7 @@ def convert_dummy(size: int, _: str, __: bool = False) -> Tuple[float, str]:
 def format_size(size: int, unit: str, add_sign: bool = False) -> str:
     format_str = "{:+.2f}" if add_sign else "{:.2f}"
 
-    return sub("\.0+", "", format_str.format(size)) + unit
+    return sub("\.0+$", "", format_str.format(size)) + unit
 
 
 def print_line(
@@ -47,6 +58,7 @@ def print_line(
     r_size: Union[str, int],
     r_file: str,
     config: callable,
+    color: bcolors = bcolors.ENDC,
 ) -> None:
     if isinstance(l_size, int):
         l_size = format_size(
@@ -62,7 +74,7 @@ def print_line(
         )
 
     print(
-        f"{l_file: >{config.file_width}} {l_size: >{config.size_width}} {size_diff:>{config.size_width}} {r_size: >{config.size_width}} {r_file}"
+        f"{l_file: >{config.file_width}} {l_size: >{config.size_width}} {color}{size_diff:>{config.size_width}}{bcolors.ENDC} {r_size: >{config.size_width}} {r_file}"
     )
 
 
@@ -98,12 +110,19 @@ def compare(args: object, config: callable) -> None:
             if not args.all:
                 continue
 
+        if size_diff > l_size * 0.5:
+            color = bcolors.WARNING if l_size == 0 else (bcolors.FAIL + bcolors.BOLD)
+        elif 0 - size_diff > l_size * 0.5:
+            color = bcolors.OKGREEN
+        else:
+            color = bcolors.ENDC
+
         if l_file == config.default_no_value_str:
             l_size = config.default_no_value_str
         if r_file == config.default_no_value_str:
             r_size = config.default_no_value_str
 
-        print_line(l_file, l_size, size_diff, r_size, r_file, config)
+        print_line(l_file, l_size, size_diff, r_size, r_file, config, color)
 
 
 def list_versions(args: object, config: callable) -> None:

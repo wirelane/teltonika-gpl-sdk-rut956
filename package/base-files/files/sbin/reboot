@@ -109,6 +109,8 @@ if [ "$reboot" != "0" ]; then
 		done
 	}
 
+	touch /log/reboot
+
 	if [ "$notsync" = "1" ] || [ $Delay ]; then
 		var="-"
 		if [ "$notsync" = "1" ]; then
@@ -125,7 +127,6 @@ if [ "$reboot" != "0" ]; then
 
 	device_name=$(mnf_info -n | cut -c1-6 2>/dev/null)
 	case "$device_name" in
-		RUT955 |\
 		TRB2[45]5)
 			[ -e "/usr/bin/usb_reboot" ] && /usr/bin/usb_reboot
 		;;

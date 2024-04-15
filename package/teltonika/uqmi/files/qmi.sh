@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/ash
 . /lib/netifd/uqmi_shared_functions.sh
 [ -n "$INCLUDE_ONLY" ] || {
 	. /lib/functions.sh
@@ -40,7 +40,7 @@ proto_qmi_setup() {
 	local interface="$1"
 
 	local ipv4 ipv6 delay mtu net_device deny_roaming ret
-	local multisim="0" active_sim="1"
+	local active_sim="1"
 
 	local dataformat connstat old_cb gobinet method
 	local device apn auth username password pdp modem pdptype sim dhcp dhcpv6 leasetime mac
@@ -65,38 +65,14 @@ proto_qmi_setup() {
 	sleep "$delay"
 
 	[ -z "$sim" ] && sim=$(get_config_sim "$interface")
-	check_pdp_context "$pdp" "$modem" || {
-		proto_notify_error "$interface" "NO_DEVICE"
-		proto_block_restart "$interface"
-	}
 
 #~ Parameters part------------------------------------------------------
 
-	service_name="wds"
-	options="--timeout 6000"
-
-	#Check sim positions count in simcard config
-	get_sim_count(){
-		local section=$1
-		local sim_modem sim_position
-		config_get sim_modem "$section" modem
-		config_get sim_position "$section" position
-		[ "$modem" = "$sim_modem" ] && [ "$sim_position" -gt 1 ] && multisim="1"
-	}
-	config_load simcard
-	config_foreach get_sim_count sim
-
-	#Check sim position in simd if modem is registered as multisim
-	[ "$multisim" = "1" ] && {
-		echo "Quering active sim position"
-		json_set_namespace gobinet old_cb
-		json_load "$(ubus call $gsm_modem get_sim_slot)"
-		json_get_var active_sim index
-		json_set_namespace $old_cb
-	}
-
-	#Restart if check failed
-	[ "$active_sim" -ge 1 ] && [ "$active_sim" -le 2 ] || return
+	echo "Quering active sim position"
+	json_set_namespace gobinet old_cb
+	json_load "$(ubus call $gsm_modem get_sim_slot)"
+	json_get_var active_sim index
+	json_set_namespace $old_cb
 
 	# check if current sim and interface sim match
 	[ "$active_sim" = "$sim" ] || {
@@ -118,6 +94,7 @@ proto_qmi_setup() {
 			config_get deny_roaming "$section" deny_roaming "0"
 		}
 	}
+	config_load simcard
 	config_foreach get_simcard_parameters "sim"
 
 #~ ---------------------------------------------------------------------
@@ -125,6 +102,8 @@ proto_qmi_setup() {
 	[ -n "$ctl_device" ] && device="$ctl_device"
 	[ -z "$timeout" ] && timeout="30"
 	[ -z "$metric" ] && metric="1"
+	service_name="wds"
+	options="--timeout 6000"
 
 	#~ Find interface name
 	devname="$(basename "$device")"
@@ -148,7 +127,7 @@ proto_qmi_setup() {
 	sed -n "s_\s*.Link Layer Protocol.: .\([a-z-]*\)._\1_p")"
 	qmi_error_handle "$dataformat" "$error_cnt" "$modem" || return 1
 
-	if [ "$dataformat" = 'raw-ip' ]; then
+	if [[ "$dataformat" =~ '"raw-ip"' ]]; then
 
 		[ -f "/sys/class/net/$ifname/qmi/raw_ip" ] || {
 			echo "Device only supports raw-ip mode but is missing this required driver \
@@ -322,7 +301,7 @@ ${pdptype:+ --pdp-type $pdptype}"
 		#Passthrough
 		[ "$method" = "passthrough" ] && {
 			iptables -w -tnat -I postrouting_rule -o "$net_device" -j SNAT --to "$bridge_ipaddr"
-			ip route add default dev "$net_device"
+			ip route add default dev "$net_device" metric "$metric"
 		}
 	}
 
@@ -397,7 +376,12 @@ proto_qmi_teardown() {
 		ip route del "$bridge_ipaddr"
 		ubus call network.interface down "{\"interface\":\"mobile_bridge\"}"
 		rm -f "/tmp/dnsmasq.d/bridge" 2>/dev/null
-		swconfig dev switch0 set soft_reset 5 &
+
+		if is_device_dsa ; then
+			restart_dsa_interfaces
+		else
+			swconfig dev 'switch0' set soft_reset 5 &
+		fi
 		rm -f "$braddr_f" 2> /dev/null
 	}
 

@@ -24,7 +24,7 @@ define Build/append-tlt-art
 		dd if=$(TOPDIR)/target/linux/ramips/image/bin/tlt-factory-art-RUT361.bin >> $@; \
 	elif [ "$(DEVICE_MODEL)" == "TAP100" ]; then \
 		dd if=$(TOPDIR)/target/linux/ramips/image/bin/tlt-factory-art-TAP100.bin >> $@; \
-	elif [ "$(DEVICE_MODEL)" == "RUTM" ]; then \
+	elif [ "$(DEVICE_MODEL)" == "RUTM" ] || [ "$(DEVICE_MODEL)" == "ATRM50" ]; then \
 		dd if=$(TOPDIR)/target/linux/ramips/image/bin/tlt-factory-art-RUTM.bin >> $@; \
 	elif [ "$(DEVICE_MODEL)" == "TAP200" ]; then \
 		dd if=$(TOPDIR)/target/linux/ramips/image/bin/tlt-factory-art-TAP200.bin >> $@; \
