@@ -60,6 +60,21 @@
 
 	#define CONFIG_GPIO_MASK_DIGITAL_IN 	GPIO4
 
+#elif defined(CONFIG_FOR_TELTONIKA_RUT206)
+
+	#define CONFIG_MTK_GPIO_MASK_LED_ACT_L 	(u64)(GPIO43 | GPIO42)
+	#define CONFIG_MTK_GPIO_MASK_LED_ACT_H 	(u64)(GPIO39 | GPIO40 | GPIO41)
+
+	// LED order is important!
+	#define CONFIG_MTK_LED_ANIMATION_MASK 	GPIO39, GPIO40, GPIO41
+
+	#define CONFIG_SR_LED_ALL_ON_MASK    0b0001110
+	#define CONFIG_SR_LED_ALL_OFF_MASK   0b0000000
+	#define CONFIG_SR_LED_ANIMATION_MASK 0b1000, 0b10, 0b100
+	#define GPIO_SR_74X164_SRCLK	     GPIO3
+	#define GPIO_SR_74X164_RCLK	     GPIO2
+	#define GPIO_SR_74X164_SER	     GPIO1
+
 #elif defined(CONFIG_FOR_TELTONIKA_RUT301)
 
 	#define CONFIG_MTK_GPIO_MASK_LED_ACT_H 	(u64)(GPIO39 | GPIO40 | GPIO41 |\
@@ -124,6 +139,7 @@
  * =========================
  */
 #if defined(CONFIG_FOR_TELTONIKA_RUT2M) ||\
+	defined(CONFIG_FOR_TELTONIKA_RUT206) ||\
 	defined(CONFIG_FOR_TELTONIKA_RUT301) ||\
 	defined(CONFIG_FOR_TELTONIKA_TRB2M) ||\
 	defined(CONFIG_FOR_TELTONIKA_RUT9M) ||\
@@ -152,6 +168,12 @@
 	#define DEVICE_MODEL 		"RUT2M" // used for u-boot validation
 	#define DEVICE_MODEL_MANIFEST 	"rut2m" // used for firmware validation
 	#define DEVICE_MODEL_NAME	"RUT2"	 // used for mnf info validation
+
+#elif defined(CONFIG_FOR_TELTONIKA_RUT206)
+
+	#define DEVICE_MODEL 		"RUT206" // used for u-boot validation
+	#define DEVICE_MODEL_MANIFEST 	"rut206" // used for firmware validation
+	#define DEVICE_MODEL_NAME	"RUT206" // used for mnf info validation
 
 #elif defined(CONFIG_FOR_TELTONIKA_RUT301)
 
@@ -197,6 +219,7 @@
  * ================
  */
 #if defined(CONFIG_FOR_TELTONIKA_RUT2M) ||\
+	defined(CONFIG_FOR_TELTONIKA_RUT206) ||\
 	defined(CONFIG_FOR_TELTONIKA_RUT301) ||\
 	defined(CONFIG_FOR_TELTONIKA_RUT361) ||\
 	defined(CONFIG_FOR_TELTONIKA_TRB2M) ||\
@@ -215,6 +238,7 @@
  * =============================
  */
 #if defined(CONFIG_FOR_TELTONIKA_RUT2M) ||\
+	defined(CONFIG_FOR_TELTONIKA_RUT206) ||\
 	defined(CONFIG_FOR_TELTONIKA_RUT361) ||\
 	defined(CONFIG_FOR_TELTONIKA_RUT9M) ||\
 	defined(CONFIG_FOR_TELTONIKA_TAP100) ||\
@@ -241,6 +265,7 @@
 #endif
 
 #if defined(CONFIG_FOR_TELTONIKA_RUT2M) ||\
+	defined(CONFIG_FOR_TELTONIKA_RUT206) ||\
 	defined(CONFIG_FOR_TELTONIKA_RUT301) ||\
 	defined(CONFIG_FOR_TELTONIKA_RUT361) ||\
 	defined(CONFIG_FOR_TELTONIKA_TRB2M)	||\
@@ -259,6 +284,7 @@
  * =========================
  */
 #if defined(CONFIG_FOR_TELTONIKA_RUT2M) ||\
+	defined(CONFIG_FOR_TELTONIKA_RUT206) ||\
 	defined(CONFIG_FOR_TELTONIKA_RUT301) ||\
 	defined(CONFIG_FOR_TELTONIKA_RUT361) ||\
 	defined(CONFIG_FOR_TELTONIKA_TRB2M) ||\
@@ -293,6 +319,7 @@
  * ==================================================
  */
 #if defined(CONFIG_FOR_TELTONIKA_RUT2M) ||\
+	defined(CONFIG_FOR_TELTONIKA_RUT206) ||\
 	defined(CONFIG_FOR_TELTONIKA_RUT301) ||\
 	defined(CONFIG_FOR_TELTONIKA_RUT361) ||\
 	defined(CONFIG_FOR_TELTONIKA_TRB2M) ||\
@@ -315,6 +342,7 @@
 #define WEBFAILSAFE_UPLOAD_KERNEL_ADDRESS	CFG_LOAD_ADDR
 
 #if defined(CONFIG_FOR_TELTONIKA_RUT2M) ||\
+	defined(CONFIG_FOR_TELTONIKA_RUT206) ||\
 	defined(CONFIG_FOR_TELTONIKA_RUT301) ||\
 	defined(CONFIG_FOR_TELTONIKA_RUT361) ||\
 	defined(CONFIG_FOR_TELTONIKA_TRB2M) ||\
@@ -329,6 +357,7 @@
 
 /* Firmware size limit */
 #if defined(CONFIG_FOR_TELTONIKA_RUT2M) ||\
+	defined(CONFIG_FOR_TELTONIKA_RUT206) ||\
 	defined(CONFIG_FOR_TELTONIKA_RUT301) ||\
 	defined(CONFIG_FOR_TELTONIKA_RUT361) ||\
 	defined(CONFIG_FOR_TELTONIKA_TRB2M) ||\
@@ -343,6 +372,7 @@
 
 /* MNFINFO command config */
 #if defined(CONFIG_FOR_TELTONIKA_RUT2M) ||\
+	defined(CONFIG_FOR_TELTONIKA_RUT206) ||\
 	defined(CONFIG_FOR_TELTONIKA_RUT301) ||\
 	defined(CONFIG_FOR_TELTONIKA_RUT361) ||\
 	defined(CONFIG_FOR_TELTONIKA_TRB2M) ||\

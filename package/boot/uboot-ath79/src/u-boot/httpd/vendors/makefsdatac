@@ -33,7 +33,9 @@ VENDOR_DIR=${1:-general}
 
 # Temporary files
 FILES_CONTENT_TMP="vendors/.files_content"
-   FILES_LIST_TMP="vendors/.files_list"
+FILES_LIST_TMP="vendors/.files_list"
+LZMA_CONTENT_TMP="vendors/.lzma_content"
+LZMA_CONTENT_COMPRESSED_TMP="vendors/.lzma_content_compressed"
 
 # YUI Compressor path
 # (should be in the same dir)
@@ -63,54 +65,55 @@ function print_data_array() {
 	local f_content=""
 
 	# Open variable declaration
-	echo -ne "static const char data_${f_name_no_ext}_${f_ext}[] = {\n" \
-		 >> "$FILES_CONTENT_TMP"
-	echo -ne "/* HTTP Header */\n" >> "$FILES_CONTENT_TMP"
+	echo -ne "static const char data_${f_name_no_ext}_${f_ext}[] = {\n" >> "$FILES_CONTENT_TMP"
+	echo -ne "" > "$LZMA_CONTENT_TMP"
 
 	# HTTP header (200 OK or 404 Not Found)
 	if [ "$f_name_no_ext" = "404"  ]; then
-		ascii_to_bytes "HTTP/1.0 404 File not found\r\n"
+		echo -ne "HTTP/1.0 404 File not found\r\n" >> "$LZMA_CONTENT_TMP"
 	else
-		ascii_to_bytes "HTTP/1.0 200 OK\r\n"
+		echo -ne "HTTP/1.0 200 OK\r\n" >> "$LZMA_CONTENT_TMP"
 	fi
 
 	# Server type
-	echo "," >> "$FILES_CONTENT_TMP"
-	ascii_to_bytes "Server: uIP/0.9\r\n"
-	echo "," >> "$FILES_CONTENT_TMP"
-	ascii_to_bytes "Content-Encoding: gzip\r\n"
-	echo "," >> "$FILES_CONTENT_TMP"
+	echo -ne "Server: uIP/0.9\r\n" >> "$LZMA_CONTENT_TMP"
 
 	# Content
 	case $f_ext in
 	css)
-		ascii_to_bytes "Content-type: text/css; charset=UTF-8\r\n\r\n"
+		f_content=$(cat "$1" | tr -d '\r\n\t')
+		echo -ne "Content-type: text/css; charset=UTF-8\r\n\r\n" >> "$LZMA_CONTENT_TMP"
 		;;
 	png)
-		ascii_to_bytes "Content-Type: image/png\r\n\r\n"
+		f_content=$(cat "$1")
+		echo -ne "Content-Type: image/png\r\n\r\n" >> "$LZMA_CONTENT_TMP"
 		;;
 	jpg|jpeg)
-		ascii_to_bytes "Content-Type: image/jpeg\r\n\r\n"
+		f_content=$(cat "$1")
+		echo -ne "Content-Type: image/jpeg\r\n\r\n" >> "$LZMA_CONTENT_TMP"
 		;;
 	gif)
-		ascii_to_bytes "Content-Type: image/gif\r\n\r\n"
+		f_content=$(cat "$1")
+		echo -ne "Content-Type: image/gif\r\n\r\n" >> "$LZMA_CONTENT_TMP"
 		;;
 	htm|html)
-		ascii_to_bytes "Content-type: text/html; charset=UTF-8\r\n\r\n"
+		f_content=$(cat "$1" | tr -d '\t\r\n')
+		echo -ne "Content-type: text/html; charset=UTF-8\r\n\r\n" >> "$LZMA_CONTENT_TMP"
 		;;
 	svg)
-		ascii_to_bytes "Content-type: image/svg+xml; charset=UTF-8\r\n\r\n"
+		f_content=$(cat "$1" | tr -d '\t\r\n')
+		echo -ne "Content-type: image/svg+xml; charset=UTF-8\r\n\r\n" >> "$LZMA_CONTENT_TMP"
 		;;
 	*)
 		echo "ERROR! Unsupported file type: '${f_name}'!"
 		exit 1
 	esac
-
-	echo "," >> "$FILES_CONTENT_TMP"
+	echo -ne "$f_content" >> "$LZMA_CONTENT_TMP"
 
 	# File content
-	echo -ne "/* Page/File content */\n" >> "$FILES_CONTENT_TMP"
-	gzip --stdout "$1" | od -A n -t x1 | tr -d '\r\n' | sed 's/ /0x/;s/ /, 0x/g;s/.\{102\}/&\n/g' >> "$FILES_CONTENT_TMP"
+	../../host_util/lzma/lzma -z --stdout "$LZMA_CONTENT_TMP" > "$LZMA_CONTENT_COMPRESSED_TMP"
+	hex_content=$(cat "$LZMA_CONTENT_COMPRESSED_TMP" | od -A n -t x1 | tr -d '\r\n' | sed 's/ /0x/;s/ /, 0x/g;s/.\{102\}/&\n/g')
+	echo -ne "${hex_content}" >> "$FILES_CONTENT_TMP"
 
 	# And close declaration
 	echo -ne ", 0 };\n\n" >> "$FILES_CONTENT_TMP"

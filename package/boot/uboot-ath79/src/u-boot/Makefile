@@ -297,7 +297,7 @@ u-boot.img: u-boot.bin
 u-boot.dis: u-boot
 	$(OBJDUMP) -d $< > $@
 
-u-boot: fsdata depend version rsa_pkey_tool_host $(SUBDIRS) $(OBJS) $(LIBS) $(LIBS_SHARED) $(LDSCRIPT)
+u-boot: lzma_host fsdata depend version rsa_pkey_tool_host $(SUBDIRS) $(OBJS) $(LIBS) $(LIBS_SHARED) $(LDSCRIPT)
 	UNDEF_SYM=`$(OBJDUMP) -x $(LIBS) $(LIBS_SHARED) | \
 	           sed -n -e 's/.*\(__u_boot_cmd_.*\)/-u\1/p' | \
 	           sort | uniq`; \
@@ -354,12 +354,12 @@ bootstrap: depend version $(SUBDIRS) $(OBJS_BOOTSTRAP) $(LIBS_BOOTSTRAP) $(LIBS_
 $(LIBS_BOOTSTRAP):
 	$(MAKE) -C `dirname $@`
 
+endif # ifdef COMPRESSED_UBOOT
+
 lzma_host:
 	@echo
 	$(call echo_green,Building lzma host utility...)
 	$(MAKE) -C $(BUILD_TOPDIR)/host_util/lzma -f makefile.gcc all
-endif # ifdef COMPRESSED_UBOOT
-
 
 rsa_pkey_tool_host:
 ifdef CFG_TLT_VERIFIED_BOOT
@@ -707,6 +707,26 @@ tlt-rut2m: rt2880_common
 	@$(call define_add,MT7628_ASIC_BOARD,1)
 	@$(call define_add,CPU_FRAC_DIV,1)
 	@$(call define_add,CONFIG_EARLY_GPIO_INIT,1)
+	@$(call define_add,CONFIG_MNFINFO_SUPPORT,1)
+	@$(call define_add,CONFIG_CMD_MNFINFO,1)
+	@$(MKCONFIG) -a rt2880 mips ralink mt7628 rt2880 rt2880
+
+tlt-rut206: rt2880_common
+	@$(call config_init,Teltonika RUT206,tlt-rut206,16,44,1,MTK_MT7628_SOC)
+	@$(call define_add,CONFIG_FOR_TELTONIKA_RUT206,1)
+	@$(call define_add,CONFIG_SHIFT_REG,1)
+	@$(call define_add,CONFIG_CMD_PHY_POWER,1)
+	@$(call define_add,ON_BOARD_1024M_DRAM_COMPONENT,1)
+	@$(call define_add,ON_BOARD_DDR2,1)
+	@$(call define_add,ON_BOARD_DDR_WIDTH_16,1)
+	@$(call define_add,ON_BOARD_16BIT_DRAM_BUS,1)
+	@$(call define_add,RALINK_DDR_POWERSAVE,1)
+	@$(call define_add,CONFIG_DDR_CAL,1)
+	@$(call define_add,ASIC_BOARD,1)
+	@$(call define_add,MT7628_ASIC_BOARD,1)
+	@$(call define_add,CPU_FRAC_DIV,1)
+	@$(call define_add,CONFIG_EARLY_GPIO_INIT,1)
+	@$(call define_add,CONFIG_DO_PCIE_PERST_RESET,1)
 	@$(call define_add,CONFIG_MNFINFO_SUPPORT,1)
 	@$(call define_add,CONFIG_CMD_MNFINFO,1)
 	@$(MKCONFIG) -a rt2880 mips ralink mt7628 rt2880 rt2880

@@ -52,6 +52,7 @@
 #include "fsdata.h"
 
 #include "fsdata.c"
+#include "LzmaWrapper.h"
 
 #ifdef FS_STATISTICS
 #if FS_STATISTICS == 1
@@ -82,23 +83,31 @@ fs_strcmp(const char *str1, const char *str2)
   goto loop;
 }
 /*-----------------------------------------------------------------------------------*/
-int
-fs_open(const char *name, struct fs_file *file)
+static char lz_buf[12000];
+int fs_open(const char *name, struct fs_file *file)
 {
 #ifdef FS_STATISTICS
 #if FS_STATISTICS == 1
   u16_t i = 0;
 #endif /* FS_STATISTICS */
 #endif /* FS_STATISTICS */
-  struct fsdata_file_noconst *f;
+	struct fsdata_file_noconst *f;
+	int outlen = 0;
 
-  for(f = (struct fsdata_file_noconst *)FS_ROOT;
-      f != NULL;
-      f = (struct fsdata_file_noconst *)f->next) {
+	for (f = (struct fsdata_file_noconst *)FS_ROOT; f != NULL;
+	     f = (struct fsdata_file_noconst *)f->next) {
+		if (fs_strcmp(name, f->name) == 0) {
+			outlen = sizeof(lz_buf);
+			memset(lz_buf, 0, sizeof(lz_buf));
 
-    if(fs_strcmp(name, f->name) == 0) {
-      file->data = f->data;
-      file->len = f->len;
+			if (lzma_inflate((unsigned char *)f->data, f->len, lz_buf, &outlen)) {
+				printf("Failed to decode lzma file\n");
+				return 1;
+			}
+
+			file->data = lz_buf;
+			file->len  = outlen;
+
 #ifdef FS_STATISTICS
 #if FS_STATISTICS == 1
       ++count[i];

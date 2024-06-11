@@ -46,6 +46,20 @@ rut2m:
       - local: .gitlab/ci/rut2m.yml
     strategy: depend
 
+rut206:
+  stage: parent
+  only:
+    variables:
+      - $CI_COMMIT_REF_NAME =~ /^master$/
+      - $CI_COMMIT_REF_NAME =~ /^develop$/
+      - $CI_COMMIT_REF_NAME =~ /^release\/.*$/
+      - $CI_COMMIT_REF_NAME =~ /^hotfix\/.*$/
+      - $CI_COMMIT_REF_NAME =~ /^[0-9]+-.*$/
+  trigger:
+    include:
+      - local: .gitlab/ci/rut206.yml
+    strategy: depend
+
 rut2xx:
   stage: parent
   only:
