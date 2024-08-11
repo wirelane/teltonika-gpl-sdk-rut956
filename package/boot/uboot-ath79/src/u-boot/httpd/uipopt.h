@@ -270,7 +270,7 @@ typedef unsigned short uip_stats_t;
  *
  * \hideinitializer
  */
-#define UIP_UDP_CONNS    10
+#define UIP_UDP_CONNS    1
 
 /**
  * The name of the function that should be called when UDP datagrams arrive.
@@ -307,7 +307,7 @@ typedef unsigned short uip_stats_t;
  *
  * \hideinitializer
  */
-#define UIP_CONNS       10
+#define UIP_CONNS       1
 
 /**
  * The maximum number of simultaneously listening TCP ports.

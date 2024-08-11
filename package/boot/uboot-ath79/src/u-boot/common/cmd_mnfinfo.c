@@ -161,7 +161,7 @@ inline static int mnf_cmd_write_finalize(mnf_cmd_flags flags)
                 MNFINFO_PRINT("Proceed only if you know what you are doing.");
 		MNFINFO_PRINT("");
 		
-		readline("Type `yes` to coninue: ");
+		readline("Type `yes` to continue: ");
 
 		if (strcmp(console_buffer, "yes")) {
 			MNFINFO_RESULT_ERR("Write aborted\n");

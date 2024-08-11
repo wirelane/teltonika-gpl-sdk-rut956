@@ -27,6 +27,7 @@
 #include <asm/byteorder.h>
 #include <asm/addrspace.h>
 #include <ar7240_soc.h>
+#include "mnf_info.h"
 
 /* #define DEBUG */
 
@@ -58,10 +59,43 @@ void wasp_set_cca(void)
 }
 #endif
 
-static void linux_params_init(ulong start, char *cmdline)
+int mnf_get_field_formated(const char *name , char *out, char count)
 {
-	char memstr[16];
+
+	mnf_field_t *field;
+	static char buf[16];
+	static char tmp[16];
+
+	field = mnf_get_field_info_long(name);
+	if (!field)
+		return -1;
+
+	if (mnf_flash_read(field, buf))
+		return -1;
+
+	mnf_field_to_str(field, buf, tmp);
+	strncat(out, tmp, count);
+
+	return 0;
+}
+
+static void linux_params_init(ulong start, char *bootarg_cmdline)
+{
 	char *next, *quote, *argp;
+	char device[16] = " device=";
+	char hwver[16] = " hwver=";
+	int cmdline_length = 0;
+	char *cmdline = NULL;
+
+	mnf_get_field_formated("name", device, 6);
+	mnf_get_field_formated("hwver", hwver, 4);
+
+	cmdline_length = strlen(bootarg_cmdline) + strlen(device) + strlen(hwver) + 1;
+	cmdline = (char *)malloc(cmdline_length);
+
+	strcpy(cmdline, bootarg_cmdline);
+	strcat(cmdline, device);
+	strcat(cmdline, hwver);
 
 	linux_argc = 1;
 	linux_argv = (char **)start;
@@ -69,11 +103,6 @@ static void linux_params_init(ulong start, char *cmdline)
 	argp = (char *)(linux_argv + LINUX_MAX_ARGS);
 
 	next = cmdline;
-
-	if (strstr(cmdline, "mem="))
-		memstr[0] = 0;
-	else
-		memstr[0] = 1;
 
 	while (cmdline && *cmdline && linux_argc < LINUX_MAX_ARGS) {
 		quote = strchr(cmdline, '"');
@@ -105,17 +134,6 @@ static void linux_params_init(ulong start, char *cmdline)
 			next++;
 
 		cmdline = next;
-	}
-
-	/* Add mem size to command line if it's missing' */
-	if (memstr[0]) {
-		sprintf(memstr, "mem=%luM", gd->ram_size >> 20);
-		memcpy(argp, memstr, strlen(memstr) + 1);
-
-		linux_argv[linux_argc] = argp;
-		linux_argc++;
-
-		argp += strlen(memstr) + 1;
 	}
 
 	linux_env = (char **)(((ulong)argp + 15) & ~15);
@@ -161,7 +179,6 @@ void do_bootm_linux(cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 #endif
 
 	linux_params_init(UNCACHED_SDRAM(gd->bd->bi_boot_params), cmdline);
-
 #if defined(DEBUG)
 	printf("## Giving linux memsize in MB, %lu\n", gd->ram_size >> 20);
 #endif

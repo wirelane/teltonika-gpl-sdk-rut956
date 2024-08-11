@@ -52,8 +52,8 @@
 
 		gpio_sim_select {
 			gpio-export,name = "sim_sel";
-			gpio-export,output = <1>;
-			gpios = <&gpio 18 GPIO_ACTIVE_LOW>;
+			gpio-export,output = <0>;
+			gpios = <&gpio 18 GPIO_ACTIVE_HIGH>;
 		};
 
 		green_eth_port_4 {
@@ -296,7 +296,6 @@
 			};
 			GPIO_18 {
 				line_name = "GPIO_SIM_SELECT";
-				active_low;
 			};
 		};
 	};
@@ -325,5 +324,11 @@
 			status = "okay";
 			label = "lan3";
 		};
+	};
+};
+
+&mnfinfo {
+	sim_cfg {
+		default = "2111000_2112000";
 	};
 };

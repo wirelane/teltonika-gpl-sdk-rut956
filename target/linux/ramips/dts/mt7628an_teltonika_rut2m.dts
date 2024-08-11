@@ -29,6 +29,12 @@
 			gpio-export,output = <0>;
 			gpios = <&gpio 3 GPIO_ACTIVE_HIGH>;
 		};
+
+		gpio_sim_select {
+			gpio-export,name = "sim_sel";
+			gpio-export,output = <0>;
+			gpios = <&gpio 6 GPIO_ACTIVE_HIGH>;
+		};
 	};
 
 	keys {
@@ -124,8 +130,12 @@
 				line_name_1 = "GPIO_IN_1";
 
 				compatible_model_2 = "RUT200";
-				compatible_versions_2 = <0 99>;
+				compatible_versions_2 = <0 4>;
 				line_name_2 = "GPIO_IN_1";
+
+				compatible_model_3 = "RUT271";
+				compatible_versions_3 = <0 4>;
+				line_name_3 = "GPIO_IN_1";
 			};
 			GPIO_0 {
 				compatible_model_0 = "RUT260";
@@ -135,6 +145,14 @@
 				compatible_model_1 = "RUT241";
 				compatible_versions_1 = <5 99>;
 				line_name_1 = "GPIO_IN_1";
+
+				compatible_model_2 = "RUT200";
+				compatible_versions_2 = <5 99>;
+				line_name_2 = "GPIO_IN_1";
+
+				compatible_model_3 = "RUT271";
+				compatible_versions_3 = <5 99>;
+				line_name_3 = "GPIO_IN_1";
 			};
 			GPIO_5 {
 				compatible_model_0 = "RUT260";
@@ -146,8 +164,12 @@
 				line_name_1 = "GPIO_OUT_1";
 
 				compatible_model_2 = "RUT200";
-				compatible_versions_2 = <0 99>;
+				compatible_versions_2 = <0 4>;
 				line_name_2 = "GPIO_OUT_1";
+
+				compatible_model_3 = "RUT271";
+				compatible_versions_3 = <0 4>;
+				line_name_3 = "GPIO_OUT_1";
 			};
 			GPIO_6 {
 				compatible_model = "RUT260";
@@ -155,9 +177,17 @@
 				line_name = "GPIO_OUT_1";
 			};
 			GPIO_37 {
-				compatible_model = "RUT241";
-				compatible_versions = <5 99>;
-				line_name = "GPIO_OUT_1";
+				compatible_model_0 = "RUT241";
+				compatible_versions_0 = <5 99>;
+				line_name_0 = "GPIO_OUT_1";
+
+				compatible_model_1 = "RUT200";
+				compatible_versions_1 = <5 99>;
+				line_name_1 = "GPIO_OUT_1";
+
+				compatible_model_2 = "RUT271";
+				compatible_versions_2 = <5 99>;
+				line_name_2 = "GPIO_OUT_1";
 			};
 		};
 
@@ -233,9 +263,27 @@
 		default = "";
 	};
 
+	simpin2 {
+		default = "";
+	};
+
 	sim_count {
 		default =  "1";
 	};
+
+	sim_cfg {
+		default = "2111000";
+	};
+
+	sim_cfg@1 {
+		tlt-mnf,device = "RUT241";
+		tlt-mnf,hwver = <4 4>;
+		default = "2111010";
+	};
+
+//		RUT241 V5 with esim
+//		default = "2111010_2122010";
+
 };
 
 &state_default {
@@ -330,15 +378,15 @@
 	mediatek,portmap = <0x3e>;
 };
 
-// &i2c {
-// 	status = "okay";
-// 	clock-frequency = <100000>;
-// 	tlt-mnf,device = "RUT260", "RUT241";
-// 	tlt-mnf,hwver = "5"; not implemented yet
+&i2c {
+	status = "okay";
+	clock-frequency = <100000>;
+	tlt-mnf,device = "RUT241";
+	tlt-mnf,hwver = <5 99>;
 
-// 	tpm: tpm@2e {
-// 		compatible = "infineon,slb9673";
-// 		reg = <0x2e>;
-// 		status = "okay";
-// 	};
-// };
+	tpm: tpm@2e {
+		compatible = "infineon,slb9673";
+		reg = <0x2e>;
+		status = "okay";
+	};
+};

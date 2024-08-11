@@ -38,12 +38,6 @@
 		compatible = "gpio-export";
 		#size-cells = <0>;
 
-		sd_enable {
-			gpio-export,name = "sd_enable";
-			gpio-export,output = <1>;
-			gpios = <&gpio 44 GPIO_ACTIVE_HIGH>;
-		};
-
 		gpio_modem_reset {
 			gpio-export,name = "modem_reset";
 			gpio-export,output = <0>;
@@ -59,7 +53,7 @@
 		gpio_sim_select {
 			gpio-export,name = "sim_sel";
 			gpio-export,output = <1>;
-			gpios = <&shift_io 7 GPIO_ACTIVE_HIGH>;
+			gpios = <&shift_io 7 GPIO_ACTIVE_LOW>;
 		};
 
 		gpio_modem_status { // From v5
@@ -184,6 +178,9 @@
 				compatible_model_1 = "RUT906";
 				line_name_1 = "GPIO_ISOLATED_INPUT";
 
+				compatible_model_2 = "RUT976";
+				line_name_2 = "GPIO_ISOLATED_INPUT";
+
 				active_low;
 			};
 			GPIO_37 {
@@ -193,6 +190,9 @@
 				compatible_model_1 = "RUT906";
 				line_name_1 = "GPIO_IN_2";
 
+				compatible_model_2 = "RUT976";
+				line_name_2 = "GPIO_IN_2";
+
 				active_low;
 			};
 			GPIO_104 {
@@ -201,6 +201,9 @@
 
 				compatible_model_1 = "RUT906";
 				line_name_1 = "GPIO_OUT_2";
+
+				compatible_model_2 = "RUT976";
+				line_name_2 = "GPIO_OUT_2";
 			};
 			GPIO_105 {
 				compatible_model_0 = "RUT956";
@@ -208,6 +211,9 @@
 
 				compatible_model_1 = "RUT906";
 				line_name_1 = "GPIO_RELAY_CLOSE_1";
+
+				compatible_model_2 = "RUT976";
+				line_name_2 = "GPIO_RELAY_CLOSE_1";
 			};
 		};
 
@@ -271,6 +277,7 @@
 			};
 			GPIO_103 {
 				line_name = "GPIO_SIM_SELECT";
+				active_low;
 			};
 			GPIO_44 {
 				line_name = "GPIO_SD_ENABLE"; // Duplicates as rts, fix in the future
@@ -286,7 +293,7 @@
 
 	ioman {
 		layout@0 {
-			compatible = "RUT951,RUT901";
+			compatible = "RUT951,RUT901,RUT971";
 
 			io@0 { // 4pin #3
 				label = "din1";
@@ -304,7 +311,7 @@
 			};
 		};
 		layout@1 {
-			compatible = "RUT956,RUT906";
+			compatible = "RUT956,RUT906,RUT976";
 
 			io@0 { // 4pin #3
 				label = "din1";
@@ -387,9 +394,20 @@
 		default = "";
 	};
 
-	sim_count {
-		default =  "2";
+	sim_cfg {
+		default = "2111000_2112000";
 	};
+
+	sim_cfg@1 {
+		tlt-mnf,hwver = <5 99>;
+		default = "2111010_2112010";
+	};
+
+	sim_cfg@2 {
+		tlt-mnf,device = "RUT901*1****";
+		default = "2121000_2112000";
+	};
+
 };
 
 &state_default {

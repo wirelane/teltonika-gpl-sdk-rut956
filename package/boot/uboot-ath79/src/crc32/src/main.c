@@ -25,7 +25,7 @@
 int main(int argc, char *argv[]) {
 	char *line;
 	int i, c;
-	ulong size, crc;
+	uLong size, crc;
 	FILE *f;
 
 	if (argc == 2) {

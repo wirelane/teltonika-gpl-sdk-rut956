@@ -148,6 +148,12 @@
 	};
 };
 
+&mnfinfo {
+	sim_count {
+		default =  "0";
+	};
+};
+
 &wmac {
 	status = "okay";
 	nvmem-cells = <&macaddr_config_0>;

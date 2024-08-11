@@ -6,7 +6,7 @@
         "network/traffic_shaping/sqm": {
             "title": "SQM",
             "index": 20,
-            "view": "services/Sqm_aeaafe",
+            "view": "services/Sqm",
             "acls": [ "network/traffic_shaping/sqm" ],
             "files": [ "/etc/config/sqm" ]
         }

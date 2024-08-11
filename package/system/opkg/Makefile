@@ -12,13 +12,10 @@ PKG_NAME:=opkg
 PKG_RELEASE:=1
 PKG_FLAGS:=essential
 
-PKG_SOURCE_PROTO:=git
-PKG_SOURCE_URL:=https://git.openwrt.org/project/opkg-lede.git
-PKG_SOURCE_DATE:=2021-06-13
 PKG_SOURCE_VERSION:=1bf042dd06751b693a8544d2317e5b969d666b69
-PKG_MIRROR_HASH:=aeda4e0f11805bf95fc7be6d38391ce579acd965c8ba6a490b3e8669815b7264
+PKG_SOURCE_DATE:=2021-06-13
 
-PKG_LICENSE:=GPL-2.0
+PKG_LICENSE:=GPL-2.0-only
 PKG_LICENSE_FILES:=COPYING
 
 PKG_MAINTAINER:=Jo-Philipp Wich <jo@mein.io>
@@ -35,6 +32,10 @@ PKG_INSTALL:=1
 HOST_BUILD_DEPENDS:=libubox/host
 
 PKG_BUILD_FLAGS:=gc-sections
+
+PKG_SOURCE_PROTO:=git
+PKG_SOURCE_URL:=https://git.openwrt.org/project/opkg-lede.git
+PKG_SOURCE_VERSION:=1bf042dd06751b693a8544d2317e5b969d666b69
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/host-build.mk
@@ -92,7 +93,7 @@ define Package/opkg/install
   endif
 	$(INSTALL_DIR) $(1)/usr/sbin
 	$(INSTALL_BIN) ./files/opkg-key $(1)/usr/sbin/
-	echo src/gz tlt_packages http://opkg.teltonika-networks.com/1b8e25e7de8de242e6ec381c4d485a8732d2565491ea008c5b38e5435986acb9 > $(1)/etc/opkg/teltonikafeeds.conf
+	echo src/gz tlt_packages https://opkg.teltonika-networks.com/1e7c44aac6c6b9ce079df8bec59aea9d992de50a7609e9fe68d86d15accf42f4 > $(1)/etc/opkg/teltonikafeeds.conf
 endef
 
 define Host/Install

@@ -394,3 +394,17 @@
 		};
 	};
 };
+
+&mnfinfo {
+	simpin3 {
+		default = "";
+	};
+
+	simpin4 {
+		default = "";
+	};
+
+	sim_cfg {
+		default = "1111010_0000000_1211010_0000000";
+	};
+};

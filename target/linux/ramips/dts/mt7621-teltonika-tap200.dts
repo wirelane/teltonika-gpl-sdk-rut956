@@ -114,3 +114,12 @@
 	mtd-mac-address = <&config 0x0>;
 	mtd-mac-address-increment = <1>;
 };
+
+&mnfinfo {
+	/delete-node/ simpin1;
+	/delete-node/ simpin2;
+
+	sim_count {
+		default =  "0";
+	};
+};

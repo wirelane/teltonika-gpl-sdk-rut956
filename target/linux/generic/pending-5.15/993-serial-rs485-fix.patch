@@ -623,7 +623,7 @@
  
  	priv = devm_kzalloc(&pcidev->dev, struct_size(priv, line, nr_ports), GFP_KERNEL);
  	if (!priv)
-@@ -752,6 +735,22 @@ static int __maybe_unused exar_resume(st
+@@ -749,6 +732,22 @@ static int __maybe_unused exar_resume(st
  
  static SIMPLE_DEV_PM_OPS(exar_pci_pm, exar_suspend, exar_resume);
  
@@ -646,7 +646,7 @@
  static const struct exar8250_board pbn_fastcom335_2 = {
  	.num_ports	= 2,
  	.setup		= pci_fastcom335_setup,
-@@ -835,23 +834,14 @@ static const struct exar8250_board pbn_e
+@@ -832,23 +831,14 @@ static const struct exar8250_board pbn_e
  		(kernel_ulong_t)&bd			\
  	}
  
@@ -677,7 +677,7 @@
  
  	CONNECT_DEVICE(XR17C152, UART_2_232, pbn_connect),
  	CONNECT_DEVICE(XR17C154, UART_4_232, pbn_connect),
-@@ -868,10 +858,6 @@ static const struct pci_device_id exar_p
+@@ -865,10 +855,6 @@ static const struct pci_device_id exar_p
  
  	IBM_DEVICE(XR17C152, SATURN_SERIAL_ONE_PORT, pbn_exar_ibm_saturn),
  
@@ -688,7 +688,7 @@
  	/* Exar Corp. XR17C15[248] Dual/Quad/Octal UART */
  	EXAR_DEVICE(EXAR, XR17C152, pbn_exar_XR17C15x),
  	EXAR_DEVICE(EXAR, XR17C154, pbn_exar_XR17C15x),
-@@ -891,12 +877,6 @@ static const struct pci_device_id exar_p
+@@ -888,12 +874,6 @@ static const struct pci_device_id exar_p
  	EXAR_DEVICE(COMMTECH, 4224PCI335, pbn_fastcom335_4),
  	EXAR_DEVICE(COMMTECH, 2324PCI335, pbn_fastcom335_4),
  	EXAR_DEVICE(COMMTECH, 2328PCI335, pbn_fastcom335_8),
@@ -2610,7 +2610,7 @@
  
  	return 0;
  }
-@@ -1032,8 +1050,7 @@ static void autoconfig_16550a(struct uar
+@@ -1018,8 +1036,7 @@ static void autoconfig_16550a(struct uar
  	up->port.type = PORT_16550A;
  	up->capabilities |= UART_CAP_FIFO;
  
@@ -2620,7 +2620,7 @@
  		return;
  
  	/*
-@@ -1329,7 +1346,7 @@ static void autoconfig(struct uart_8250_
+@@ -1315,7 +1332,7 @@ static void autoconfig(struct uart_8250_
  	up->tx_loadsz = uart_config[port->type].tx_loadsz;
  
  	if (port->type == PORT_UNKNOWN)
@@ -2629,7 +2629,7 @@
  
  	/*
  	 * Reset the UART.
-@@ -1346,7 +1363,7 @@ static void autoconfig(struct uart_8250_
+@@ -1332,7 +1349,7 @@ static void autoconfig(struct uart_8250_
  	else
  		serial_out(up, UART_IER, 0);
  
@@ -2638,7 +2638,7 @@
  	spin_unlock_irqrestore(&port->lock, flags);
  
  	/*
-@@ -1518,8 +1535,6 @@ static inline void __stop_tx(struct uart
+@@ -1498,8 +1515,6 @@ static inline void __stop_tx(struct uart
  
  	if (em485) {
  		unsigned char lsr = serial_in(p, UART_LSR);
@@ -2647,7 +2647,7 @@
  		/*
  		 * To provide required timeing and allow FIFO transfer,
  		 * __stop_tx_rs485() must be called only when both FIFO and
-@@ -1886,13 +1901,10 @@ EXPORT_SYMBOL_GPL(serial8250_modem_statu
+@@ -1866,13 +1881,10 @@ EXPORT_SYMBOL_GPL(serial8250_modem_statu
  static bool handle_rx_dma(struct uart_8250_port *up, unsigned int iir)
  {
  	switch (iir & 0x3f) {
@@ -2663,7 +2663,7 @@
  		return true;
  	}
  	return up->dma->rx_dma(up);
-@@ -1905,7 +1917,6 @@ int serial8250_handle_irq(struct uart_po
+@@ -1885,7 +1897,6 @@ int serial8250_handle_irq(struct uart_po
  {
  	unsigned char status;
  	struct uart_8250_port *up = up_to_u8250p(port);
@@ -2671,7 +2671,7 @@
  	bool skip_rx = false;
  	unsigned long flags;
  
-@@ -1930,11 +1941,6 @@ int serial8250_handle_irq(struct uart_po
+@@ -1910,11 +1921,6 @@ int serial8250_handle_irq(struct uart_po
  		skip_rx = true;
  
  	if (status & (UART_LSR_DR | UART_LSR_BI) && !skip_rx) {
@@ -2683,7 +2683,7 @@
  		if (!up->dma || handle_rx_dma(up, iir))
  			status = serial8250_rx_chars(up, status);
  	}
-@@ -1991,25 +1997,19 @@ static int serial8250_tx_threshold_handl
+@@ -1971,25 +1977,19 @@ static int serial8250_tx_threshold_handl
  static unsigned int serial8250_tx_empty(struct uart_port *port)
  {
  	struct uart_8250_port *up = up_to_u8250p(port);
@@ -2712,7 +2712,7 @@
  }
  
  unsigned int serial8250_do_get_mctrl(struct uart_port *port)
-@@ -2044,7 +2044,7 @@ void serial8250_do_set_mctrl(struct uart
+@@ -2024,7 +2024,7 @@ void serial8250_do_set_mctrl(struct uart
  
  	mcr = serial8250_TIOCM_to_MCR(mctrl);
  
@@ -2721,7 +2721,7 @@
  
  	serial8250_out_MCR(up, mcr);
  }
-@@ -2052,9 +2052,6 @@ EXPORT_SYMBOL_GPL(serial8250_do_set_mctr
+@@ -2032,9 +2032,6 @@ EXPORT_SYMBOL_GPL(serial8250_do_set_mctr
  
  static void serial8250_set_mctrl(struct uart_port *port, unsigned int mctrl)
  {
@@ -2731,7 +2731,7 @@
  	if (port->set_mctrl)
  		port->set_mctrl(port, mctrl);
  	else
-@@ -2301,10 +2298,6 @@ int serial8250_do_startup(struct uart_po
+@@ -2281,10 +2278,6 @@ int serial8250_do_startup(struct uart_po
  	if (port->irq && (up->port.flags & UPF_SHARE_IRQ))
  		up->port.irqflags |= IRQF_SHARED;
  
@@ -2742,7 +2742,7 @@
  	if (port->irq && !(up->port.flags & UPF_NO_THRE_TEST)) {
  		unsigned char iir1;
  
-@@ -2347,7 +2340,9 @@ int serial8250_do_startup(struct uart_po
+@@ -2327,7 +2320,9 @@ int serial8250_do_startup(struct uart_po
  		}
  	}
  
@@ -2753,7 +2753,7 @@
  
  	/*
  	 * Now, initialize the UART
-@@ -2623,8 +2618,11 @@ static unsigned char serial8250_compute_
+@@ -2603,8 +2598,11 @@ static unsigned char serial8250_compute_
  
  	if (c_cflag & CSTOPB)
  		cval |= UART_LCR_STOP;
@@ -2766,7 +2766,7 @@
  	if (!(c_cflag & PARODD))
  		cval |= UART_LCR_EPAR;
  #ifdef CMSPAR
-@@ -2727,12 +2725,12 @@ void serial8250_update_uartclk(struct ua
+@@ -2707,12 +2705,12 @@ void serial8250_update_uartclk(struct ua
  	mutex_lock(&tport->mutex);
  
  	if (port->uartclk == uartclk)
@@ -2781,7 +2781,7 @@
  
  	termios = &tty->termios;
  
-@@ -2750,7 +2748,7 @@ void serial8250_update_uartclk(struct ua
+@@ -2730,7 +2728,7 @@ void serial8250_update_uartclk(struct ua
  	spin_unlock_irqrestore(&port->lock, flags);
  	serial8250_rpm_put(up);
  
@@ -2790,7 +2790,7 @@
  	mutex_unlock(&tport->mutex);
  	up_write(&tty->termios_rwsem);
  	tty_kref_put(tty);
-@@ -2787,7 +2785,8 @@ serial8250_do_set_termios(struct uart_po
+@@ -2767,7 +2765,8 @@ serial8250_do_set_termios(struct uart_po
  	up->lcr = cval;					/* Save computed LCR */
  
  	if (up->capabilities & UART_CAP_FIFO && port->fifosize > 1) {
@@ -2800,7 +2800,7 @@
  			up->fcr &= ~UART_FCR_TRIGGER_MASK;
  			up->fcr |= UART_FCR_TRIGGER_1;
  		}
-@@ -2981,10 +2980,8 @@ static int serial8250_request_std_resour
+@@ -2961,10 +2960,8 @@ static int serial8250_request_std_resour
  	case UPIO_MEM32BE:
  	case UPIO_MEM16:
  	case UPIO_MEM:
@@ -2812,7 +2812,7 @@
  
  		if (!request_mem_region(port->mapbase, size, "serial")) {
  			ret = -EBUSY;
-@@ -3113,7 +3110,7 @@ static ssize_t rx_trig_bytes_show(struct
+@@ -3093,7 +3090,7 @@ static ssize_t rx_trig_bytes_show(struct
  	if (rxtrig_bytes < 0)
  		return rxtrig_bytes;
  
@@ -2821,7 +2821,7 @@
  }
  
  static int do_set_rxtrig(struct tty_port *port, unsigned char bytes)
-@@ -3123,7 +3120,8 @@ static int do_set_rxtrig(struct tty_port
+@@ -3103,7 +3100,8 @@ static int do_set_rxtrig(struct tty_port
  	struct uart_8250_port *up = up_to_u8250p(uport);
  	int rxtrig;
  
@@ -2831,7 +2831,7 @@
  		return -EINVAL;
  
  	rxtrig = bytes_to_fcr_rxtrig(up, bytes);
-@@ -3207,6 +3205,9 @@ static void serial8250_config_port(struc
+@@ -3187,6 +3185,9 @@ static void serial8250_config_port(struc
  	if (flags & UART_CONFIG_TYPE)
  		autoconfig(up);
  
@@ -2841,7 +2841,7 @@
  	/* if access method is AU, it is a 16550 with a quirk */
  	if (port->type == PORT_16550A && port->iotype == UPIO_AU)
  		up->bugs |= UART_BUG_NOMSR;
-@@ -3277,7 +3278,6 @@ void serial8250_init_port(struct uart_82
+@@ -3257,7 +3258,6 @@ void serial8250_init_port(struct uart_82
  	struct uart_port *port = &up->port;
  
  	spin_lock_init(&port->lock);
@@ -2849,7 +2849,7 @@
  	port->ops = &serial8250_pops;
  	port->has_sysrq = IS_ENABLED(CONFIG_SERIAL_8250_CONSOLE);
  
-@@ -3332,13 +3332,8 @@ static void serial8250_console_restore(s
+@@ -3312,13 +3312,8 @@ static void serial8250_console_restore(s
  	unsigned int baud, quot, frac = 0;
  
  	termios.c_cflag = port->cons->cflag;

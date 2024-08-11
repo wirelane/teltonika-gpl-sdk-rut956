@@ -41,11 +41,12 @@ platform_check_hw_support() {
 	board="$(cat /sys/mnf_info/name)"
 	hwver="$(cat /sys/mnf_info/hwver)"
 
-	exp="^RUT2(60)"
+	exp="^RUT2(00|41|60)"
 	[[ $board =~ $exp ]] && {
 		{ ! prepare_metadata_hw_mods "$1"; } && return 1
 		{ ! check_hw_mod "260" 3 "260v3"; } && return 1
-		# { ! check_hw_mod "241" 5 "241v5"; } && return 1
+		{ ! check_hw_mod "241" 5 "241v5"; } && return 1
+		{ ! check_hw_mod "200" 5 "200v5"; } && return 1
 	}
 
 	exp="^RUT9(51|56|01|06)"

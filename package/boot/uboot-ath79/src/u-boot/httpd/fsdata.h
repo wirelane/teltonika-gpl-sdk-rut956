@@ -42,6 +42,7 @@ struct fsdata_file {
   const char *name;
   const char *data;
   const int len;
+  int dec_len;
 #ifdef FS_STATISTICS
 #if FS_STATISTICS == 1
   u16_t count;
@@ -54,6 +55,7 @@ struct fsdata_file_noconst {
   char *name;
   char *data;
   int len;
+  int dec_len;
 #ifdef FS_STATISTICS
 #if FS_STATISTICS == 1
   u16_t count;

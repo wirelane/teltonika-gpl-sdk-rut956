@@ -1,0 +1,58 @@
+Index: linux-5.15.159/init/main.c
+===================================================================
+--- linux-5.15.159.orig/init/main.c
++++ linux-5.15.159/init/main.c
+@@ -135,19 +135,24 @@ EXPORT_SYMBOL(system_state);
+  */
+ #define MAX_INIT_ARGS CONFIG_INIT_ENV_ARG_LIMIT
+ #define MAX_INIT_ENVS CONFIG_INIT_ENV_ARG_LIMIT
+-
++#define BOOTLOADER_CMDLINE_SUPPORT
+ extern void time_init(void);
+ /* Default late time init is NULL. archs can override this later. */
+ void (*__initdata late_time_init)(void);
+ 
++
++/* Command line from bootloader */
++extern char arcs_cmdline[COMMAND_LINE_SIZE];
+ /* Untouched command line saved by arch-specific code. */
+ char __initdata boot_command_line[COMMAND_LINE_SIZE];
+ /* Untouched saved command line (eg. for /proc) */
+ char *saved_command_line;
+ /* Command line for parameter parsing */
+ static char *static_command_line;
++#ifndef BOOTLOADER_CMDLINE_SUPPORT
+ /* Untouched extra command line */
+ static char *extra_command_line;
++#endif
+ /* Extra init arguments */
+ static char *extra_init_args;
+ 
+@@ -650,6 +655,19 @@ static void __init mangle_bootargs(char
+  */
+ static void __init setup_command_line(char *command_line)
+ {
++#ifdef BOOTLOADER_CMDLINE_SUPPORT
++	size_t len = strlen(arcs_cmdline);
++	saved_command_line = memblock_alloc(len, SMP_CACHE_BYTES);
++	if (!saved_command_line)
++		panic("%s: Failed to allocate %zu bytes\n", __func__, len);
++
++	static_command_line = memblock_alloc(len, SMP_CACHE_BYTES);
++	if (!static_command_line)
++		panic("%s: Failed to allocate %zu bytes\n", __func__, len);
++
++	strcpy(saved_command_line, arcs_cmdline);
++	strcpy(static_command_line, arcs_cmdline);
++#else
+ 	size_t len, xlen = 0, ilen = 0;
+ 
+ 	if (extra_command_line)
+@@ -702,6 +720,7 @@ static void __init setup_command_line(ch
+ 			strcpy(saved_command_line + len, extra_init_args);
+ 		}
+ 	}
++#endif
+ }
+ 
+ /*

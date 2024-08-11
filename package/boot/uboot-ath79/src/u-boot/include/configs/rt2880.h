@@ -64,10 +64,10 @@
 	* DEVICE_LIST only for common target devices (single target devices not require it)
 	* HW_VERSION describes first new generation hwver in hex
 	*/
-	#define CONFIG_GPIO_MASK_DIGITAL_IN_OLD GPIO4, GPIO4, GPIO4
-	#define CONFIG_GPIO_MASK_DIGITAL_IN_NEW GPIO0, GPIO0, GPIO0
-	#define CONFIG_DEVICE_LIST		"RUT200", "RUT241", "RUT260"
-	#define CONFIG_HW_VERSIONS		0x63, 0x5, 0x3
+	#define CONFIG_GPIO_MASK_DIGITAL_IN_OLD GPIO4, GPIO4, GPIO4, GPIO4
+	#define CONFIG_GPIO_MASK_DIGITAL_IN_NEW GPIO0, GPIO0, GPIO0, GPIO0
+	#define CONFIG_DEVICE_LIST		"RUT200", "RUT241", "RUT260", "RUT271"
+	#define CONFIG_HW_VERSIONS		0x5, 0x5, 0x3, 0x5
 
 #elif defined(CONFIG_FOR_TELTONIKA_RUT206)
 

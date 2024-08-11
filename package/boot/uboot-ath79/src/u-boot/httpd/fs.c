@@ -54,6 +54,7 @@
 #include "fsdata.c"
 #include "LzmaWrapper.h"
 
+struct fsdata_file_noconst *new_root;
 #ifdef FS_STATISTICS
 #if FS_STATISTICS == 1
 static u16_t count[FS_NUMFILES];
@@ -83,7 +84,6 @@ fs_strcmp(const char *str1, const char *str2)
   goto loop;
 }
 /*-----------------------------------------------------------------------------------*/
-static char lz_buf[12000];
 int fs_open(const char *name, struct fs_file *file)
 {
 #ifdef FS_STATISTICS
@@ -92,21 +92,10 @@ int fs_open(const char *name, struct fs_file *file)
 #endif /* FS_STATISTICS */
 #endif /* FS_STATISTICS */
 	struct fsdata_file_noconst *f;
-	int outlen = 0;
-
-	for (f = (struct fsdata_file_noconst *)FS_ROOT; f != NULL;
-	     f = (struct fsdata_file_noconst *)f->next) {
+	for (f = new_root; f != NULL; f = (struct fsdata_file_noconst *)f->next) {
 		if (fs_strcmp(name, f->name) == 0) {
-			outlen = sizeof(lz_buf);
-			memset(lz_buf, 0, sizeof(lz_buf));
-
-			if (lzma_inflate((unsigned char *)f->data, f->len, lz_buf, &outlen)) {
-				printf("Failed to decode lzma file\n");
-				return 1;
-			}
-
-			file->data = lz_buf;
-			file->len  = outlen;
+			file->data = f->data;
+			file->len  = f->len;
 
 #ifdef FS_STATISTICS
 #if FS_STATISTICS == 1
@@ -128,6 +117,9 @@ int fs_open(const char *name, struct fs_file *file)
 void
 fs_init(void)
 {
+	static char done = 0;
+	struct fsdata_file_noconst *f, *node, *last = NULL;
+
 #ifdef FS_STATISTICS
 #if FS_STATISTICS == 1
   u16_t i;
@@ -136,6 +128,43 @@ fs_init(void)
   }
 #endif /* FS_STATISTICS */
 #endif /* FS_STATISTICS */
+	if (done)
+		return;
+
+	for (f = (struct fsdata_file_noconst *)FS_ROOT; f != NULL;
+			f = (struct fsdata_file_noconst *)f->next) {
+
+		node = calloc(1, sizeof(struct fsdata_file_noconst));
+		if (!node) {
+			printf("Malloc failure for %ld bytes\n", sizeof(struct fsdata_file_noconst));
+			continue;
+		}
+
+		node->data = calloc(f->dec_len + 1, sizeof(char));
+		if (!node->data) {
+			printf("Malloc failure for %ld bytes\n", f->dec_len * sizeof(char));
+			continue;
+		}
+
+		if (!new_root){
+			new_root = node;
+		}
+
+		node->len = f->dec_len + 1;
+
+		if (lzma_inflate((unsigned char *)f->data, f->len, node->data, &node->len)) {
+			printf("Failed to decode lzma file\n");
+			continue;
+		}
+
+		node->name = f->name;
+
+		if (last)
+			last->next = (struct fsdata_file*)node;
+		last = node;
+    }
+
+	done = 1;
 }
 /*-----------------------------------------------------------------------------------*/
 #ifdef FS_STATISTICS

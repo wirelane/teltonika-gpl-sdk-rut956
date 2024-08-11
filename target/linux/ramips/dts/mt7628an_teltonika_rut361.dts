@@ -200,6 +200,13 @@
 	sim_count {
 		default =  "1";
 	};
+
+	sim_cfg {
+		default = "0111010";
+		// 1 esim on ch1 "0121010"
+		// 2 esim "1121010_1122010"
+	};
+
 };
 
 &state_default {

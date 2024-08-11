@@ -37,8 +37,8 @@
 
 		gpio_sim_select {
 			gpio-export,name = "sim_sel";
-			gpio-export,output = <1>;
-			gpios = <&gpio 0 GPIO_ACTIVE_LOW>;
+			gpio-export,output = <0>;
+			gpios = <&gpio 0 GPIO_ACTIVE_HIGH>;
 		};
 	};
 
@@ -180,7 +180,6 @@
 			};
 			GPIO_0 {
 				line_name = "GPIO_SIM_SELECT";
-				active_low;
 			};
 			GPIO_5 {
 				line_name = "GPIO_RS485_RX_EN";
@@ -250,9 +249,11 @@
 		default = "";
 	};
 
-	sim_count {
-		default =  "2";
+	sim_cfg {
+		default = "2111000_2112000";
+		// esim = "0120000"
 	};
+
 };
 
 &state_default {

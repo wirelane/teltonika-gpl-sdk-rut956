@@ -221,3 +221,9 @@
 &i2c {
 	status = "okay";
 };
+
+&mnfinfo {
+	sim_cfg {
+		default = "1111000_1112000";
+	};
+};

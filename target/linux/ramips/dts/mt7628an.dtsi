@@ -82,6 +82,14 @@
 			type = "ascii";
 		};
 
+		sim_cfg {
+			reg = <&config 0x110 0x20>;
+			min-res-len = <0x7>;
+			default = "";
+			type = "simcfg";
+			log;
+		};
+
 		blver {
 			reg = <&boot 0x1fff6 0xa>;
 			strip-whitespaces;

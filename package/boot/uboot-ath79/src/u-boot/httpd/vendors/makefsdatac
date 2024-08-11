@@ -126,10 +126,11 @@ function print_data_struct() {
 	local f_name_no_ext="${f_name%\.*}"
 
 	echo -ne "const struct fsdata_file file_${f_name_no_ext}_${f_ext}[] = {{\n" >> "$FILES_LIST_TMP"
-	echo -ne "\t${PREV_FSDATA_STRUCT},\n" >> "$FILES_LIST_TMP"
-	echo -ne "\t\"/${f_name_no_ext}.${f_ext}\",\n" >> "$FILES_LIST_TMP"
-	echo -ne "\tdata_${f_name_no_ext}_${f_ext},\n" >> "$FILES_LIST_TMP"
-	echo -ne "\t(int)sizeof(data_"$f_name_no_ext"_"$f_ext") - 1\n" >> "$FILES_LIST_TMP"
+	echo -ne "\t.next = ${PREV_FSDATA_STRUCT},\n" >> "$FILES_LIST_TMP"
+	echo -ne "\t.name = \"/${f_name_no_ext}.${f_ext}\",\n" >> "$FILES_LIST_TMP"
+	echo -ne "\t.data = data_${f_name_no_ext}_${f_ext},\n" >> "$FILES_LIST_TMP"
+	echo -ne "\t.len = (int)sizeof(data_"$f_name_no_ext"_"$f_ext") - 1,\n" >> "$FILES_LIST_TMP"
+	echo -ne "\t.dec_len = $(wc -c $LZMA_CONTENT_TMP | cut -f 1 -d' ') + 1,\n" >> "$FILES_LIST_TMP"
 	echo -ne "}};\n\n" >> "$FILES_LIST_TMP"
 
 	PREV_FSDATA_STRUCT="file_${f_name_no_ext}_${f_ext}"

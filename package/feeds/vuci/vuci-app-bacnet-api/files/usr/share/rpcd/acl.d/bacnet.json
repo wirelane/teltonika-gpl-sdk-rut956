@@ -1,18 +1,11 @@
 {
-    "services/bacnet": {
-        "description": "BACnet configuration",
-        "read": {
-            "api": [
-                "/bacnet/*",
-                "/network/devices/status/*",
-                "/system/device/status/*",
-                "/serial/status/*"
-            ]
-        },
-        "write": {
-            "api": [
-                "/bacnet/*"
-            ]
-        }
+  "services/bacnet": {
+    "description": "BACnet configuration",
+    "read": {
+      "api": ["/bacnet/*", "/basic/network/devices/status/*", "/system/device/status/*", "/serial/status/*"]
+    },
+    "write": {
+      "api": ["/bacnet/*"]
     }
+  }
 }

@@ -263,9 +263,18 @@ int digital_in_status(void)
 	int hwver_list[]     = { CONFIG_HW_VERSIONS };
 	const char mnf_name[12];
 	const char hwver[4];
+	int mnf_hwver;
+
 	mnf_get_field("name", mnf_name);
 	mnf_get_field("hwver", hwver);
-	int mnf_hwver = hwver ? (hwver[2] - '0') * 10 + (hwver[3] - '0') : 0;
+
+	if (hwver[0] != '0' || hwver[1] != '0') {
+		mnf_hwver = (hwver[0] - '0') * 10 + (hwver[1] - '0');
+	} else if (hwver[2] != '0' || hwver[3] != '0') {
+		mnf_hwver = (hwver[2] - '0') * 10 + (hwver[3] - '0');
+	} else {
+		mnf_hwver = 0;
+	}
 
 	int len = sizeof(old_gpio_mask) / sizeof(old_gpio_mask[0]);
 	for (u32 i = 0; i < len; i++) {

@@ -14,10 +14,11 @@
 			"network/routes/dynamic_routes/proto_ospf": {
 				"title": "OSPF",
 				"index": 30,
-				"view": "network/ProtoOspf_aeaafe",
+				"view": "network/ProtoOspf",
 				"acls": [ "network/routes/dynamic_routes/proto_ospf"],
 				"files": [ "/etc/config/ospf" ],
-				"orfiles": [ "/usr/lib/opkg/info/frr5-ospfd.control", "/usr/lib/opkg/info/frr-ospfd.control" ]
+				"orfiles": [ "/usr/lib/opkg/info/frr5-ospfd.control", "/usr/lib/opkg/info/frr-ospfd.control" ],
+				"main_page": true
 			},
 	"status/routes": {
 		"title": "Routes",
@@ -35,7 +36,7 @@
 			"status/routes/dynamic/ospf": {
 				"title": "OSPF",
 				"index": 30,
-				"view": "status/ProtoOspf_aeaafe",
+				"view": "status/ProtoOspf",
 				"acls": [ "status/routes/dynamic/ospf"],
 				"files": [ "/etc/config/ospf" ],
 				"orfiles": [ "/usr/lib/opkg/info/frr5-ospfd.control", "/usr/lib/opkg/info/frr-ospfd.control" ]

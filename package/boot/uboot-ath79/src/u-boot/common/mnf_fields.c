@@ -69,7 +69,7 @@ mnf_field_t mnf_fields[] = {
 	MNF_FIELD( 'w', "wps",       "WPS PIN",             0x20,   8, clear          , 0 ),
 	MNF_FIELD( 's', "sn",        "Serial number",       0x30,  10, restore_num    , 0 ),
 	MNF_FIELD( 'b', "batch",     "Batch number",        0x40,   4, restore_num    , 0 ),
-	MNF_FIELD( 'H', "hwver",     "Hardvare version",    0x50,   4, restore_num    , 0 ),
+	MNF_FIELD( 'H', "hwver",     "Hardware version",    0x50,   4, restore_num    , 0 ),
 
 #ifdef CONFIG_FOR_TELTONIKA_RUT2XX
 	MNF_FIELD( '1', "sim1",      "SIM 1 PIN",           0x68,  12, clear          , MNF_FIELD_REVERSED ),
