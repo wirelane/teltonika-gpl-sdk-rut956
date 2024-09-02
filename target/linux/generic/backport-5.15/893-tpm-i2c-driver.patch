@@ -1,7 +1,5 @@
-Index: linux-5.15.159/drivers/char/tpm/Kconfig
-===================================================================
---- linux-5.15.159.orig/drivers/char/tpm/Kconfig
-+++ linux-5.15.159/drivers/char/tpm/Kconfig
+--- a/drivers/char/tpm/Kconfig
++++ b/drivers/char/tpm/Kconfig
 @@ -95,6 +95,18 @@ config TCG_TIS_I2C_CR50
  	  to handle the limitations of the hardware.  To compile this driver
  	  as a module, choose M here; the module will be called tcg_tis_i2c_cr50.
@@ -21,10 +19,8 @@ Index: linux-5.15.159/drivers/char/tpm/Kconfig
  config TCG_TIS_I2C_ATMEL
  	tristate "TPM Interface Specification 1.2 Interface (I2C - Atmel)"
  	depends on I2C
-Index: linux-5.15.159/drivers/char/tpm/Makefile
-===================================================================
---- linux-5.15.159.orig/drivers/char/tpm/Makefile
-+++ linux-5.15.159/drivers/char/tpm/Makefile
+--- a/drivers/char/tpm/Makefile
++++ b/drivers/char/tpm/Makefile
 @@ -29,6 +29,7 @@ tpm_tis_spi-$(CONFIG_TCG_TIS_SPI_CR50) +
  
  obj-$(CONFIG_TCG_TIS_I2C_CR50) += tpm_tis_i2c_cr50.o
@@ -33,10 +29,8 @@ Index: linux-5.15.159/drivers/char/tpm/Makefile
  obj-$(CONFIG_TCG_TIS_I2C_ATMEL) += tpm_i2c_atmel.o
  obj-$(CONFIG_TCG_TIS_I2C_INFINEON) += tpm_i2c_infineon.o
  obj-$(CONFIG_TCG_TIS_I2C_NUVOTON) += tpm_i2c_nuvoton.o
-Index: linux-5.15.159/drivers/char/tpm/tpm_tis_i2c.c
-===================================================================
 --- /dev/null
-+++ linux-5.15.159/drivers/char/tpm/tpm_tis_i2c.c
++++ b/drivers/char/tpm/tpm_tis_i2c.c
 @@ -0,0 +1,409 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
@@ -447,10 +441,8 @@ Index: linux-5.15.159/drivers/char/tpm/tpm_tis_i2c.c
 +
 +MODULE_DESCRIPTION("TPM Driver for native I2C access");
 +MODULE_LICENSE("GPL");
-Index: linux-5.15.159/drivers/char/tpm/tpm_tis.c
-===================================================================
---- linux-5.15.159.orig/drivers/char/tpm/tpm_tis.c
-+++ linux-5.15.159/drivers/char/tpm/tpm_tis.c
+--- a/drivers/char/tpm/tpm_tis.c
++++ b/drivers/char/tpm/tpm_tis.c
 @@ -25,9 +25,7 @@
  #include <linux/acpi.h>
  #include <linux/freezer.h>
@@ -668,10 +660,8 @@ Index: linux-5.15.159/drivers/char/tpm/tpm_tis.c
  
  	return tpm_tis_core_init(dev, &phy->priv, irq, &tpm_tcg,
  				 ACPI_HANDLE(dev));
-Index: linux-5.15.159/drivers/char/tpm/tpm_tis_core.c
-===================================================================
---- linux-5.15.159.orig/drivers/char/tpm/tpm_tis_core.c
-+++ linux-5.15.159/drivers/char/tpm/tpm_tis_core.c
+--- a/drivers/char/tpm/tpm_tis_core.c
++++ b/drivers/char/tpm/tpm_tis_core.c
 @@ -24,9 +24,12 @@
  #include <linux/wait.h>
  #include <linux/acpi.h>
@@ -1331,10 +1321,8 @@ Index: linux-5.15.159/drivers/char/tpm/tpm_tis_core.c
  }
  EXPORT_SYMBOL_GPL(tpm_tis_resume);
  #endif
-Index: linux-5.15.159/drivers/char/tpm/tpm_tis_core.h
-===================================================================
---- linux-5.15.159.orig/drivers/char/tpm/tpm_tis_core.h
-+++ linux-5.15.159/drivers/char/tpm/tpm_tis_core.h
+--- a/drivers/char/tpm/tpm_tis_core.h
++++ b/drivers/char/tpm/tpm_tis_core.h
 @@ -34,6 +34,7 @@ enum tis_status {
  	TPM_STS_GO = 0x20,
  	TPM_STS_DATA_AVAIL = 0x10,
@@ -1481,10 +1469,8 @@ Index: linux-5.15.159/drivers/char/tpm/tpm_tis_core.h
  }
  
  static inline bool is_bsw(void)
-Index: linux-5.15.159/drivers/char/tpm/tpm_tis_spi.h
-===================================================================
---- linux-5.15.159.orig/drivers/char/tpm/tpm_tis_spi.h
-+++ linux-5.15.159/drivers/char/tpm/tpm_tis_spi.h
+--- a/drivers/char/tpm/tpm_tis_spi.h
++++ b/drivers/char/tpm/tpm_tis_spi.h
 @@ -31,10 +31,6 @@ extern int tpm_tis_spi_init(struct spi_d
  extern int tpm_tis_spi_transfer(struct tpm_tis_data *data, u32 addr, u16 len,
  				u8 *in, const u8 *out);
@@ -1496,10 +1482,8 @@ Index: linux-5.15.159/drivers/char/tpm/tpm_tis_spi.h
  #ifdef CONFIG_TCG_TIS_SPI_CR50
  extern int cr50_spi_probe(struct spi_device *spi);
  #else
-Index: linux-5.15.159/drivers/char/tpm/tpm_tis_spi_cr50.c
-===================================================================
---- linux-5.15.159.orig/drivers/char/tpm/tpm_tis_spi_cr50.c
-+++ linux-5.15.159/drivers/char/tpm/tpm_tis_spi_cr50.c
+--- a/drivers/char/tpm/tpm_tis_spi_cr50.c
++++ b/drivers/char/tpm/tpm_tis_spi_cr50.c
 @@ -206,13 +206,13 @@ static int tpm_tis_spi_cr50_transfer(str
  }
  
@@ -1526,10 +1510,8 @@ Index: linux-5.15.159/drivers/char/tpm/tpm_tis_spi_cr50.c
  };
  
  static void cr50_print_fw_version(struct tpm_tis_data *data)
-Index: linux-5.15.159/drivers/char/tpm/tpm_tis_spi_main.c
-===================================================================
---- linux-5.15.159.orig/drivers/char/tpm/tpm_tis_spi_main.c
-+++ linux-5.15.159/drivers/char/tpm/tpm_tis_spi_main.c
+--- a/drivers/char/tpm/tpm_tis_spi_main.c
++++ b/drivers/char/tpm/tpm_tis_spi_main.c
 @@ -152,44 +152,6 @@ static int tpm_tis_spi_write_bytes(struc
  	return tpm_tis_spi_transfer(data, addr, len, NULL, value);
  }
@@ -1585,10 +1567,8 @@ Index: linux-5.15.159/drivers/char/tpm/tpm_tis_spi_main.c
  };
  
  static int tpm_tis_spi_probe(struct spi_device *dev)
-Index: linux-5.15.159/drivers/char/tpm/tpm_tis_synquacer.c
-===================================================================
---- linux-5.15.159.orig/drivers/char/tpm/tpm_tis_synquacer.c
-+++ linux-5.15.159/drivers/char/tpm/tpm_tis_synquacer.c
+--- a/drivers/char/tpm/tpm_tis_synquacer.c
++++ b/drivers/char/tpm/tpm_tis_synquacer.c
 @@ -9,7 +9,6 @@
  #include <linux/module.h>
  #include <linux/slab.h>
@@ -1768,10 +1748,8 @@ Index: linux-5.15.159/drivers/char/tpm/tpm_tis_synquacer.c
 -module_exit(tpm_tis_synquacer_module_exit);
  MODULE_DESCRIPTION("TPM MMIO Driver for Socionext SynQuacer platform");
  MODULE_LICENSE("GPL");
-Index: linux-5.15.159/drivers/char/tpm/tpm-chip.c
-===================================================================
---- linux-5.15.159.orig/drivers/char/tpm/tpm-chip.c
-+++ linux-5.15.159/drivers/char/tpm/tpm-chip.c
+--- a/drivers/char/tpm/tpm-chip.c
++++ b/drivers/char/tpm/tpm-chip.c
 @@ -28,8 +28,13 @@
  DEFINE_IDR(dev_nums_idr);
  static DEFINE_MUTEX(idr_lock);
@@ -1995,10 +1973,8 @@ Index: linux-5.15.159/drivers/char/tpm/tpm-chip.c
  		tpm_devs_remove(chip);
  	tpm_del_char_device(chip);
  }
-Index: linux-5.15.159/drivers/char/tpm/tpm.h
-===================================================================
---- linux-5.15.159.orig/drivers/char/tpm/tpm.h
-+++ linux-5.15.159/drivers/char/tpm/tpm.h
+--- a/drivers/char/tpm/tpm.h
++++ b/drivers/char/tpm/tpm.h
 @@ -55,6 +55,7 @@ enum tpm_addr {
  #define TPM_WARN_DOING_SELFTEST 0x802
  #define TPM_ERR_DEACTIVATED     0x6
@@ -2114,10 +2090,8 @@ Index: linux-5.15.159/drivers/char/tpm/tpm.h
  int tpm_chip_start(struct tpm_chip *chip);
  void tpm_chip_stop(struct tpm_chip *chip);
  struct tpm_chip *tpm_find_get_ops(struct tpm_chip *chip);
-Index: linux-5.15.159/drivers/char/tpm/tpm-dev-common.c
-===================================================================
---- linux-5.15.159.orig/drivers/char/tpm/tpm-dev-common.c
-+++ linux-5.15.159/drivers/char/tpm/tpm-dev-common.c
+--- a/drivers/char/tpm/tpm-dev-common.c
++++ b/drivers/char/tpm/tpm-dev-common.c
 @@ -155,7 +155,7 @@ ssize_t tpm_common_read(struct file *fil
  out:
  	if (!priv->response_length) {
@@ -2136,10 +2110,8 @@ Index: linux-5.15.159/drivers/char/tpm/tpm-dev-common.c
  	flush_work(&priv->timeout_work);
  	file->private_data = NULL;
  	priv->response_length = 0;
-Index: linux-5.15.159/drivers/char/tpm/tpm-interface.c
-===================================================================
---- linux-5.15.159.orig/drivers/char/tpm/tpm-interface.c
-+++ linux-5.15.159/drivers/char/tpm/tpm-interface.c
+--- a/drivers/char/tpm/tpm-interface.c
++++ b/drivers/char/tpm/tpm-interface.c
 @@ -412,7 +412,11 @@ int tpm_pm_suspend(struct device *dev)
  	}
  
@@ -2213,10 +2185,8 @@ Index: linux-5.15.159/drivers/char/tpm/tpm-interface.c
  	unregister_chrdev_region(tpm_devt, 2*TPM_NUM_DEVICES);
  	tpm_dev_common_exit();
  }
-Index: linux-5.15.159/drivers/char/tpm/tpm-sysfs.c
-===================================================================
---- linux-5.15.159.orig/drivers/char/tpm/tpm-sysfs.c
-+++ linux-5.15.159/drivers/char/tpm/tpm-sysfs.c
+--- a/drivers/char/tpm/tpm-sysfs.c
++++ b/drivers/char/tpm/tpm-sysfs.c
 @@ -480,6 +480,9 @@ void tpm_sysfs_add_device(struct tpm_chi
  
  	WARN_ON(chip->groups_cnt != 0);
@@ -2227,10 +2197,8 @@ Index: linux-5.15.159/drivers/char/tpm/tpm-sysfs.c
  	if (chip->flags & TPM_CHIP_FLAG_TPM2)
  		chip->groups[chip->groups_cnt++] = &tpm2_dev_group;
  	else
-Index: linux-5.15.159/drivers/char/tpm/tpm2-space.c
-===================================================================
---- linux-5.15.159.orig/drivers/char/tpm/tpm2-space.c
-+++ linux-5.15.159/drivers/char/tpm/tpm2-space.c
+--- a/drivers/char/tpm/tpm2-space.c
++++ b/drivers/char/tpm/tpm2-space.c
 @@ -606,7 +606,7 @@ int tpm_devs_add(struct tpm_chip *chip)
  
  	device_initialize(&chip->devs);
@@ -2240,10 +2208,8 @@ Index: linux-5.15.159/drivers/char/tpm/tpm2-space.c
  
  	/*
  	 * Get extra reference on main device to hold on behalf of devs.
-Index: linux-5.15.159/include/linux/tpm.h
-===================================================================
---- linux-5.15.159.orig/include/linux/tpm.h
-+++ linux-5.15.159/include/linux/tpm.h
+--- a/include/linux/tpm.h
++++ b/include/linux/tpm.h
 @@ -207,6 +207,7 @@ enum tpm2_return_codes {
  	TPM2_RC_INITIALIZE	= 0x0100, /* RC_VER1 */
  	TPM2_RC_FAILURE		= 0x0101,

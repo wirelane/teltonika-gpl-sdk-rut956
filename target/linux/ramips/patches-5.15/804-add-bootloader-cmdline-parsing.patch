@@ -1,7 +1,5 @@
-Index: linux-5.15.159/init/main.c
-===================================================================
---- linux-5.15.159.orig/init/main.c
-+++ linux-5.15.159/init/main.c
+--- a/init/main.c
++++ b/init/main.c
 @@ -135,19 +135,24 @@ EXPORT_SYMBOL(system_state);
   */
  #define MAX_INIT_ARGS CONFIG_INIT_ENV_ARG_LIMIT

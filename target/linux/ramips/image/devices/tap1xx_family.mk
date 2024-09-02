@@ -4,7 +4,7 @@ define Device/tlt-desc-tap100
 	HARDWARE/Ethernet/Port :=1 $(HW_ETH_RJ45_PORT)
 	HARDWARE/Ethernet/Speed := $(HW_ETH_SPEED_100)
 	HARDWARE/Ethernet/Standard := $(HW_ETH_LAN_2_STANDARD)
-	HARDWARE/Wireless/Wireless_mode := IEEE 802.11b/g/n (Wi-Fi 4), 2x2 MIMO
+	HARDWARE/Wireless/Wireless_mode := $(HW_WIFI_4), 2x2 MIMO
 	HARDWARE/Power/Connector := $(HW_POWER_CONNECTOR_RJ45)
 	HARDWARE/Power/Input_voltage_range := $(HW_POWER_VOLTAGE_POE_2)
 	HARDWARE/Power/PoE_Standards := $(HW_POE_STD_80203AF)
@@ -12,16 +12,16 @@ define Device/tlt-desc-tap100
 	HARDWARE/Physical_Interfaces/Power :=
 	HARDWARE/Physical_Interfaces/IO :=
 	HARDWARE/Physical_Interfaces/Ethernet := 1 $(HW_ETH_RJ45_PORT), $(HW_ETH_SPEED_100)
-	HARDWARE/Physical_Interfaces/Status_leds := $(HW_INTERFACE_LED_POWER), 1 x ETH status LED
-	HARDWARE/Physical_Interfaces/Atennas := 2 x Internal for 2.4 GHz Wi-Fi
+	HARDWARE/Physical_Interfaces/Status_leds := 1 x Power LED, 1 x ETH status LED
+	HARDWARE/Physical_Interfaces/Antennas := 2 x Internal for 2.4 GHz Wi-Fi
 	HARDWARE/Physical_Interfaces/Antennas_specifications := 2 x 2400 - 2500 MHz, 50 Ω, VSWR <2.7, gain < 4.9 dBi, omnidirectional
-	HARDWARE/Physical_Specification/Casing_material := UV stabilized plastic
+	HARDWARE/Physical_Specification/Casing_material := $(HW_PHYSICAL_HOUSING_UV_PLASTIC)
   	HARDWARE/Physical_Specification/Dimensions := 158 mm x 30 mm
   	HARDWARE/Physical_Specification/Weight := 190 g
   	HARDWARE/Physical_Specification/Mounting_options := AP Mounting Bracket (for ceiling mount)
-	HARDWARE/Operating_Enviroment/Operating_Temperature := -40 °C to 75 °C
-  	HARDWARE/Operating_Enviroment/Operating_Humidity := 10% to 90% non-condensing
-  	HARDWARE/Operating_Enviroment/Ingress_Protenction_Rating := IP30
+	HARDWARE/Operating_Environment/Operating_Temperature := $(HW_OPERATING_TEMP)
+  	HARDWARE/Operating_Environment/Operating_Humidity := $(HW_OPERATING_HUMIDITY)
+  	HARDWARE/Operating_Environment/Ingress_Protection_Rating := $(HW_OPERATING_PROTECTION_IP30)
 	HARDWARE/Regulatory_&_Type_Approvals/Regulatory :=  CE, UKCA, CB, FCC, IC, WEEE
 	HARDWARE/EMC_Emissions_&_Immunity/Standards := EN 55032:2015+A11:2020; \
 	EN 55035:2017+A11:2020; EN 61000-3-3:2013+A1:2019+A2:2021;\

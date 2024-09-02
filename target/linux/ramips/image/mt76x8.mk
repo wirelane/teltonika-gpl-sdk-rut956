@@ -1,6 +1,7 @@
 #
 # MT76x8 Profiles
 #
+
 include common-teltonika.mk
 include devices/common_mt76x8.mk
 include devices/otd1xx_family.mk
@@ -61,7 +62,7 @@ define Device/teltonika_trb2m
 	DEVICE_MODEL := TRB2M
 	DEVICE_BOOT_NAME := tlt-trb2m
 	DEVICE_FEATURES += gateway pppmobile gps serial serial-reset-quirk \
-			modbus io single-port dualsim bacnet ntrip mobile
+			modbus io single-port dualsim bacnet ntrip mobile ncm
 	DEVICE_MTD_LOG_PARTNAME := mtdblock6
 	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.5
 	GPL_PREFIX := GPL
@@ -104,7 +105,7 @@ define Device/teltonika_otd140
 			finalize-tlt-master-stendui
 	DEVICE_MODEL := OTD140
 	DEVICE_BOOT_NAME := tlt-otd140
-	DEVICE_FEATURES += ncm rndis poe mobile dualsim
+	DEVICE_FEATURES += ncm rndis poe mobile dualsim portlink
 	DEVICE_MTD_LOG_PARTNAME := mtdblock6
 	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.4.4
 	GPL_PREFIX := GPL
@@ -119,7 +120,7 @@ define Device/teltonika_rut14x
 	$(Device/tlt-mt7628-common)
 	DEVICE_MODEL := RUT14X
 	DEVICE_BOOT_NAME := tlt-rut14x
-	DEVICE_FEATURES := small_flash serial modbus ntrip wifi ledman-lite sw-offload
+	DEVICE_FEATURES := small_flash serial modbus ntrip wifi ledman-lite sw-offload portlink
 	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.6
 	GPL_PREFIX := GPL
 	# Default common packages for RUT14X series
@@ -135,7 +136,7 @@ define Device/teltonika_rut2m
 	$(Device/tlt-mt7628-common)
 	DEVICE_MODEL := RUT2M
 	DEVICE_BOOT_NAME := tlt-rut2m
-	DEVICE_FEATURES += io wifi rndis mobile dualsim broken-sim-idle-protection
+	DEVICE_FEATURES += io wifi rndis mobile portlink dualsim
 	GPL_PREFIX := GPL
 	# Default common packages for RUT241, RUT200 series
 	# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -156,7 +157,7 @@ define Device/teltonika_rut206
 	DEVICE_MODEL := RUT206
 	DEVICE_BOOT_NAME := tlt-rut206
 	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.8
-	DEVICE_FEATURES += wifi rndis mobile dualsim usb-port serial
+	DEVICE_FEATURES += wifi rndis mobile dualsim usb-port serial bacnet ntrip portlink
 	# Default common packages for RUT206 series
 	# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	# USB related:
@@ -181,7 +182,7 @@ define Device/teltonika_rut301
 			finalize-tlt-master-stendui
 	DEVICE_MODEL := RUT301
 	DEVICE_BOOT_NAME := tlt-rut301
-	DEVICE_FEATURES += usb-port serial io basic-router ledman-lite
+	DEVICE_FEATURES += usb-port serial io basic-router ledman-lite portlink
 	DEVICE_MTD_LOG_PARTNAME := mtdblock6
 	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.4.1
 	GPL_PREFIX := GPL
@@ -197,7 +198,7 @@ define Device/teltonika_rut361
 	$(Device/tlt-desc-rut361)
 	DEVICE_MODEL := RUT361
 	DEVICE_BOOT_NAME := tlt-rut361
-	DEVICE_FEATURES += io wifi rndis mobile
+	DEVICE_FEATURES += io wifi rndis mobile portlink
 	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.4.1
 	GPL_PREFIX := GPL
 	# Default common packages for RUT361
@@ -215,7 +216,8 @@ define Device/teltonika_rut9m
 	DEVICE_MODEL := RUT9M
 	DEVICE_BOOT_NAME := tlt-rut9m
 	DEVICE_FEATURES += gps usb-port serial modbus io wifi dualsim \
-			rndis ncm bacnet ntrip mobile
+			rndis ncm bacnet ntrip mobile portlink rs232 rs485
+	DEVICE_DTS := mt7628an_teltonika_rut9m
 	GPL_PREFIX := GPL
 	# Default common packages for RUT9M series
 	# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -231,5 +233,13 @@ define Device/teltonika_rut9m
 	# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	HW_MODS := mod1%2c7c_6005 mod2%TLA2021 mod3%CH343
+
+	INCLUDED_DEVICES := \
+		TEMPLATE_teltonika_rut901 \
+		TEMPLATE_teltonika_rut906 \
+		TEMPLATE_teltonika_rut951 \
+		TEMPLATE_teltonika_rut956 \
+		TEMPLATE_teltonika_rut971 \
+		TEMPLATE_teltonika_rut976
 endef
 TARGET_DEVICES += teltonika_rut9m

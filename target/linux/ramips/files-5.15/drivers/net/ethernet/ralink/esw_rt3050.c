@@ -174,6 +174,8 @@
 #define RT305X_ESW_PORTS_ALL						\
 		(RT305X_ESW_PORTS_NOCPU | RT305X_ESW_PORTS_CPU)
 
+#define RT305X_ESW_PORT_BIT_STATE_UP(port_index) (1 << (port_index))
+
 #define RT305X_ESW_NUM_VLANS		16
 #define RT305X_ESW_NUM_VIDS		4096
 #define RT305X_ESW_NUM_PORTS		7
@@ -279,7 +281,6 @@ struct rt305x_esw {
 	int			led_frequency;
 	struct esw_vlan vlans[RT305X_ESW_NUM_VLANS];
 	struct esw_port ports[RT305X_ESW_NUM_PORTS];
-	u32 last_wan_link;
 	char buf[2048];
 	char buf2[16];
 };
@@ -820,54 +821,75 @@ static void esw_hw_init(struct rt305x_esw *esw)
 	esw_w32(esw, ~RT305X_ESW_PORT_ST_CHG, RT305X_ESW_REG_IMR);
 }
 
-static void esw_handle_port_state(struct net_device *vlan_dev, u32 link,
-			u32 last_link)
+static void esw_handle_dev_state(struct net_device *vlan_dev, bool all_ports_down)
 {
-	if (vlan_dev && (link != last_link)) {
-		if (!last_link && link) {
-				netif_carrier_on(vlan_dev);
-				netdev_state_change(vlan_dev);
-		} else if (last_link && !link) {
-				netif_carrier_off(vlan_dev);
-				netdev_state_change(vlan_dev);
-		}
+	bool carrier_up = netif_carrier_ok(vlan_dev);
+	if (all_ports_down && carrier_up) {
+		netif_carrier_off(vlan_dev);
+		netdev_state_change(vlan_dev);
+	} else if (!all_ports_down && !carrier_up) {
+		netif_carrier_on(vlan_dev);
+		netdev_state_change(vlan_dev);
 	}
 }
 
-static struct net_device *esw_get_vlan_dev(
-				struct fe_priv *priv, u32 port_map)
+static struct net_device *esw_get_vlan_dev(struct fe_priv *priv, u32 port)
 {
 	struct rt305x_esw *esw = (struct rt305x_esw *)priv->soc->swpriv;
-	int port;
-	u32 pvid;
-
-	port = ffs(port_map)-1;
-
-	pvid = esw_get_pvid(esw, (u32)port);
-
+	u32 pvid = esw_get_pvid(esw, port);
 	return vlan_find_dev(priv->netdev, htons(ETH_P_8021Q), pvid);
 }
 
+static u16 esw_get_vlan_dev_vid(struct net_device *vlan_dev)
+{
+	const struct vlan_dev_priv *vlan = vlan_dev_priv(vlan_dev);
+	return vlan->vlan_id;
+}
+
+static void esw_handle_dev(struct fe_priv *priv, struct rt305x_esw *esw, u32 curr_link, u32 *curr_pvids)
+{
+	struct net_device *vlan_dev;
+	bool all_ports_down;
+	int port, port_index;
+	u16 vlan_dev_vid;
+
+	for (port = 0; port < RT305X_ESW_NUM_PORTS; port++) {
+		if (curr_pvids[port] == 0)
+			continue;
+		vlan_dev = esw_get_vlan_dev(priv, port);
+		if (!vlan_dev)
+			continue;
+		vlan_dev_vid = esw_get_vlan_dev_vid(vlan_dev);
+		all_ports_down = true;
+		for (port_index = 0; port_index < RT305X_ESW_NUM_PORTS; port_index++) {
+			if (curr_pvids[port_index] == vlan_dev_vid &&
+				(curr_link & RT305X_ESW_PORT_BIT_STATE_UP(port_index))) {
+				all_ports_down = false;
+				break;
+			}
+		}
+		esw_handle_dev_state(vlan_dev, all_ports_down);
+	}
+}
 
 void esw_work_handle(struct fe_priv *priv)
 {
 	struct rt305x_esw *esw = (struct rt305x_esw *)priv->soc->swpriv;
-	struct net_device *vlan_dev;
-	u32 link;
-	u32 wan_link;
+	u32 curr_pvids[RT305X_ESW_NUM_PORTS];
+	u32 curr_link;
+	int port;
 
 	rtnl_lock();
+	curr_link = esw_get_link_status(esw);
 
-	link = esw_get_link_status(esw);
-	wan_link = link & (~esw->port_map & RT305X_ESW_PMAP_MASK);
+	for (port = 0; port < RT305X_ESW_NUM_PORTS; port++) {
+		curr_pvids[port] = esw_get_pvid(esw, port);
+	}
 
-	vlan_dev = esw_get_vlan_dev(priv, ~esw->port_map);
-	esw_handle_port_state(vlan_dev, wan_link, esw->last_wan_link);
-
+	esw_handle_dev(priv, esw, curr_link, curr_pvids);
 	rtnl_unlock();
 
-	esw->last_wan_link = wan_link;
-	dev_info(esw->dev, "link changed 0x%02X\n", link);
+	dev_info(esw->dev, "link changed 0x%02X\n", curr_link);
 }
 
 static irqreturn_t esw_interrupt(int irq, void *_priv)
@@ -2003,8 +2025,6 @@ static int esw_probe(struct platform_device *pdev)
 	reg_init = of_get_property(np, "mediatek,led_polarity", NULL);
 	if (reg_init)
 		esw->reg_led_polarity = be32_to_cpu(*reg_init);
-
-	esw->last_wan_link = 0;
 
 	swdev = &esw->swdev;
 	swdev->of_node = pdev->dev.of_node;

@@ -47,7 +47,7 @@
  
  static const struct device_type mtd_devtype = {
  	.name		= "mtd",
-@@ -1037,7 +1066,6 @@ int mtd_device_parse_register(struct mtd
+@@ -1039,7 +1068,6 @@ int mtd_device_parse_register(struct mtd
  			      int nr_parts)
  {
  	int ret;

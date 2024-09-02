@@ -242,7 +242,7 @@ endef
 
 define KernelPackage/mt7981-firmware
   $(KernelPackage/mt76-default_515)
-  DEPENDS:=@TARGET_mediatek_mt7981_DEVICE_teltonika_rutc
+  DEPENDS:=@MT7981_WIFI
   TITLE:=MediaTek MT7981 firmware
 endef
 

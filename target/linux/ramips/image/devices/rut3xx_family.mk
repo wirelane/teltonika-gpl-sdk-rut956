@@ -1,6 +1,6 @@
 define Device/tlt-desc-rut301
 	$(Device/tlt-mt7628-hw-common)
-	HARDWARE/System_Characteristics/Flash_Storage := $(HW_FLASH_SIZE_16M) $(HW_FLASH_TYPE_SERIAL)
+	HARDWARE/System_Characteristics/Flash_Storage := $(HW_FLASH_SIZE_16M) $(HW_FLASH_TYPE_NOR_SERIAL)
 	HARDWARE/Wireless/Wireless_mode :=
 	HARDWARE/Wireless/WIFI_users :=
 	HARDWARE/WAN/Port := 1 $(HW_ETH_WAN_PORT)
@@ -14,14 +14,14 @@ define Device/tlt-desc-rut301
 	HARDWARE/Physical_Interfaces/Ethernet := 5 $(HW_ETH_RJ45_PORTS), $(HW_ETH_SPEED_100)
 	HARDWARE/Physical_Interfaces/IO := $(HW_INTERFACE_IO_4PIN_IOS)
 	HARDWARE/Physical_Interfaces/Status_leds := 1 x WAN type LED, 4 x LAN status LEDs, 1 x Power LED
-	HARDWARE/Physical_Interfaces/USB := 1 $(HW_INTERFACR_USB)
+	HARDWARE/Physical_Interfaces/USB := 1 $(HW_INTERFACE_USB)
 	HARDWARE/USB/Data_rate := $(HW_USB_2_DATA_RATE)
 	HARDWARE/USB/Applications := $(HW_USB_APPLICATIONS)
 	HARDWARE/USB/External_devices := $(HW_USB_EXTERNAL_DEV)
 	HARDWARE/USB/Storage_formats := $(HW_USB_STORAGE_FORMATS)
-	HARDWARE/Input_Output/Input := 2 x Digital Input, 0 - 6 V detected as logic low, 8 - 30 V detected as logic high
-	HARDWARE/Input_Output/Output := 2 x Digital Output, Open collector output, max output 40 V, 400 mA
-	HARDWARE/Physical_Specification/Casing_material := $(HW_PHYSICAL_HOSUING_AL)
+	HARDWARE/Input_Output/Input := 2 $(HW_INPUT_DI_30V)
+	HARDWARE/Input_Output/Output := 2 $(HW_OUTPUT_DO_40V)
+	HARDWARE/Physical_Specification/Casing_material := $(HW_PHYSICAL_HOUSING_AL)
 	HARDWARE/Physical_Specification/Dimensions := 100 x 30 x 85 mm
 	HARDWARE/Physical_Specification/Weight := 233 g
 	HARDWARE/Physical_Specification/Mounting_options := $(HW_PHYSICAL_MOUNTING)
@@ -31,13 +31,13 @@ endef
 
 define Device/tlt-desc-rut361
 	$(Device/tlt-mt7628-hw-common)
-	HARDWARE/System_Characteristics/Flash_Storage := $(HW_FLASH_SIZE_16M) $(HW_FLASH_TYPE_SERIAL)
+	HARDWARE/System_Characteristics/Flash_Storage := $(HW_FLASH_SIZE_16M) $(HW_FLASH_TYPE_NOR_SERIAL)
 	HARDWARE/Wireless/Wireless_mode := 802.11 b/g/n, 2x2 MIMO, Access Point (AP), Station (STA)
-	HARDWARE/Wireless/WIFI_users := Up to 50 simultaneous connections
+	HARDWARE/Wireless/WIFI_users := $(HW_WIFI_50_USERS)
 	HARDWARE/WAN/Port := 1 $(HW_ETH_WAN_PORT)
 	HARDWARE/WAN/Speed := $(HW_ETH_SPEED_100)
 	HARDWARE/WAN/Standard := $(HW_ETH_WAN_STANDARD)
-	HARDWARE/LAN/Port := 1 $(HW_ETH_LAN_PORTS)
+	HARDWARE/LAN/Port := 1 $(HW_ETH_LAN_PORT)
 	HARDWARE/LAN/Speed := $(HW_ETH_SPEED_100)
 	HARDWARE/LAN/Standard := $(HW_ETH_LAN_2_STANDARD)
 	HARDWARE/Power/PoE_Standards := $(HW_POWER_POE_INSTALL)
@@ -45,10 +45,10 @@ define Device/tlt-desc-rut361
 	HARDWARE/Physical_Interfaces/IO := $(HW_INTERFACE_IO_4PIN_IOS)
 	HARDWARE/Physical_Interfaces/Status_leds := 2 x Mobile connection type, 3 x Mobile connection strength, 2 x Eth status, 1 x Power
 	HARDWARE/Physical_Interfaces/SIM := 1 $(HW_INTERFACE_SIM_HOLDER)
-	HARDWARE/Physical_Interfaces/Atennas := 2 x SMA for LTE, 2 x RP-SMA for Wi-Fi
-	HARDWARE/Input_Output/Input := 2 x Digital Input, 0 - 6 V detected as logic low, 8 - 30 V detected as logic high
-	HARDWARE/Input_Output/Output := 2 x Digital Output, Open collector output, max output 30 V, 300 mA
-	HARDWARE/Physical_Specification/Casing_material := $(HW_PHYSICAL_HOSUING_AL)
+	HARDWARE/Physical_Interfaces/Antennas := 2 x SMA for LTE, 2 x RP-SMA for Wi-Fi
+	HARDWARE/Input_Output/Input := 2 $(HW_INPUT_DI_30V)
+	HARDWARE/Input_Output/Output := 2 $(HW_OUTPUT_DO_30V)
+	HARDWARE/Physical_Specification/Casing_material := $(HW_PHYSICAL_HOUSING_AL)
 	HARDWARE/Physical_Specification/Dimensions := 100 x 30 x 85 mm
 	HARDWARE/Physical_Specification/Weight := 243 g
 	HARDWARE/Physical_Specification/Mounting_options := $(HW_PHYSICAL_MOUNTING)

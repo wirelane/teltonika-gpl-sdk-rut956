@@ -1,20 +1,20 @@
 define Device/teltonika_rut2m_common
 	$(Device/tlt-mt7628-hw-common)
 	HARDWARE/Wireless/WIFI_users := $(HW_WIFI_50_USERS)
-	HARDWARE/Wireless/Wireless_mode := IEEE 802.11b/g/n (Wi-Fi 4), Access Point (AP), Station (STA)
+	HARDWARE/Wireless/Wireless_mode := $(HW_WIFI_4), Access Point (AP), Station (STA)
 	HARDWARE/WAN/Port := 1 $(HW_ETH_WAN_PORT)
 	HARDWARE/WAN/Speed := $(HW_ETH_SPEED_100)
 	HARDWARE/WAN/Standard := $(HW_ETH_WAN_STANDARD)
-	HARDWARE/LAN/Port := 1 $(HW_ETH_LAN_PORTS)
+	HARDWARE/LAN/Port := 1 $(HW_ETH_LAN_PORT)
 	HARDWARE/LAN/Speed := $(HW_ETH_SPEED_100)
 	HARDWARE/LAN/Standard := $(HW_ETH_LAN_STANDARD)
 	HARDWARE/Power/Power_consumption := < 6.5 W Max
 	HARDWARE/Physical_Interfaces/Status_leds := 3 x Connection type status LEDs, 5 x Connection strength LEDs, 2 x LAN status LEDs, 1 x Power LED
 	HARDWARE/Physical_Interfaces/SIM := 1 $(HW_INTERFACE_SIM_HOLDER)
-	HARDWARE/Physical_Interfaces/Atennas := 2 x SMA for LTE, 1 x RP-SMA for Wi-Fi antenna connectors
-	HARDWARE/Input_Output/Input := 1 x Digital Input, 0 - 6 V detected as logic low, 8 - 30 V detected as logic high
-	HARDWARE/Input_Output/Output := 1 x Digital Output, Open collector output, max output 30 V, 300 mA
-	HARDWARE/Physical_Specification/Casing_material := $(HW_PHYSICAL_HOSUING_AL_PL)
+	HARDWARE/Physical_Interfaces/Antennas := 2 x SMA for LTE, 1 x RP-SMA for Wi-Fi antenna connectors
+	HARDWARE/Input_Output/Input := 1 $(HW_INPUT_DI_30V)
+	HARDWARE/Input_Output/Output := 1 $(HW_OUTPUT_DO_30V)
+	HARDWARE/Physical_Specification/Casing_material := $(HW_PHYSICAL_HOUSING_AL_PL)
 	HARDWARE/Physical_Specification/Dimensions := 83 x 25 x 74 mm
 	HARDWARE/Physical_Specification/Weight := 125 g
 	HARDWARE/Physical_Specification/Mounting_options := Bottom and sideways DIN rail mounting slots
@@ -43,6 +43,7 @@ TARGET_DEVICES += TEMPLATE_teltonika_rut200
 define Device/TEMPLATE_teltonika_rut241
 	$(Device/teltonika_rut2m_common)
 	DEVICE_MODEL := RUT241
+	DEVICE_FEATURES := io small_flash mobile wifi
 	HARDWARE/Regulatory_&_Type_Approvals/Regulatory := CE, UKCA, ANRT, Kenya, ICASA, FCC, IC, PTCRB, NOM, RCM, KC, Giteki, \
 	IMDA, E-mark, CB, UL/CSA Safety, RoHS, REACH, R118
 	HARDWARE/Regulatory_&_Type_Approvals/Operator := AT&T, Verizon, T-Mobile, Uscellula

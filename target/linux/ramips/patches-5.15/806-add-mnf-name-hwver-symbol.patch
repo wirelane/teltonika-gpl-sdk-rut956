@@ -1,7 +1,5 @@
-Index: linux-5.15.159/drivers/of/base.c
-===================================================================
---- linux-5.15.159.orig/drivers/of/base.c
-+++ linux-5.15.159/drivers/of/base.c
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
 @@ -28,6 +28,7 @@
  #include <linux/slab.h>
  #include <linux/string.h>
@@ -120,10 +118,8 @@ Index: linux-5.15.159/drivers/of/base.c
  	status = __of_get_property(device, "status", &statlen);
  	if (status == NULL)
  		return true;
-Index: linux-5.15.159/include/linux/of.h
-===================================================================
---- linux-5.15.159.orig/include/linux/of.h
-+++ linux-5.15.159/include/linux/of.h
+--- a/include/linux/of.h
++++ b/include/linux/of.h
 @@ -412,6 +412,8 @@ extern int of_update_property(struct dev
  extern int of_attach_node(struct device_node *);
  extern int of_detach_node(struct device_node *);
