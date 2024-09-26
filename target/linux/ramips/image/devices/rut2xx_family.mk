@@ -38,7 +38,6 @@ define Device/TEMPLATE_teltonika_rut200
 	HARDWARE/Safety/Standards := CE:$(HW_SAFETY_EN_IEC_62368-1), $(HW_SAFETY_EN_IEC_62311), $(HW_SAFETY_EN_5066); RCM:$(HW_SAFETY_AS/NZS_62368); \
 	CB: $(HW_SAFETY_IEC_62368-1);
 endef
-TARGET_DEVICES += TEMPLATE_teltonika_rut200
 
 define Device/TEMPLATE_teltonika_rut241
 	$(Device/teltonika_rut2m_common)
@@ -61,7 +60,6 @@ define Device/TEMPLATE_teltonika_rut241
 	HARDWARE/Safety/Standards := CE:$(HW_SAFETY_EN_IEC_62368-1), $(HW_SAFETY_EN_IEC_62311), EN 50665:201; RCM:$(HW_SAFETY_AS/NZS_62368); \
 	CB: $(HW_SAFETY_IEC_62368-1); UL/CSA Safety:UL 62368-1, Ed. 3 dated December 13, 20, CAN/CSA C22.2 No. 62368-1:19
 endef
-TARGET_DEVICES += TEMPLATE_teltonika_rut241
 
 define Device/TEMPLATE_teltonika_rut260
 	$(Device/teltonika_rut2m_common)
@@ -73,7 +71,6 @@ define Device/TEMPLATE_teltonika_rut260
 	HARDWARE/Physical_Specification/Mounting_options:= $(HW_PHYSICAL_MOUNTING)
 	HARDWARE/Regulatory_&_Type_Approvals/Regulatory := CE/RED, UKCA, UCRF, RCM, EAC, WEEE, RCM, R118
 endef
-TARGET_DEVICES += TEMPLATE_teltonika_rut260
 
 define Device/tlt-desc-rut206
 	$(Device/teltonika_rut2m_common)
@@ -96,7 +93,6 @@ define Device/tlt-desc-rut206
 	HARDWARE/SD_card/Capacity := $(HW_SD_CAPACITY);
 	HARDWARE/SD_card/Storage_formats := $(HW_SD_STORAGE_FORMATS)
 endef
-TARGET_DEVICES += TEMPLATE_teltonika_rut206
 
 define Device/TEMPLATE_teltonika_rut271
 	$(Device/teltonika_rut2m_common)
@@ -121,4 +117,3 @@ define Device/TEMPLATE_teltonika_rut271
 	HARDWARE/Safety/Standards := CE:$(HW_SAFETY_EN_IEC_62368-1), $(HW_SAFETY_EN_IEC_62311), EN 50665:201; RCM:$(HW_SAFETY_AS/NZS_62368); \
 	CB: $(HW_SAFETY_IEC_62368-1); UL/CSA Safety:UL 62368-1, Ed. 3 dated December 13, 20, CAN/CSA C22.2 No. 62368-1:19
 endef
-TARGET_DEVICES += TEMPLATE_teltonika_rut271

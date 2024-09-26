@@ -33,7 +33,6 @@ define Device/TEMPLATE_teltonika_trb246
 	HARDWARE/Power/Power_consumption := Idle:< 1.5 W, Max:< 3.5 W
 	HARDWARE/Regulatory_&_Type_Approvals/Regulatory := CE, UKCA, RCM, CB, EAC, UCRF, WEEE
 endef
-TARGET_DEVICES += TEMPLATE_teltonika_trb246
 
 define Device/TEMPLATE_teltonika_trb256
 	$(Device/teltonika_trb2m_common)
@@ -51,4 +50,3 @@ define Device/TEMPLATE_teltonika_trb256
 	HARDWARE/RF/Standards := $(HW_RF_EN_301_908-1_V15.2.1); $(HW_RF_EN_301_908-13_V13.2.1); EN 303 413 V1.2.1;
 	HARDWARE/Safety/Standards := CE:$(HW_SAFETY_EN_IEC_62368-1), $(HW_SAFETY_EN_IEC_62311); RCM:$(HW_SAFETY_AS/NZS_62368); CB:$(HW_SAFETY_IEC_62368-1);
 endef
-TARGET_DEVICES += TEMPLATE_teltonika_trb256

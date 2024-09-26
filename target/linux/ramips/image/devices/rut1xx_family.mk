@@ -25,7 +25,6 @@ define Device/TEMPLATE_teltonika_rut140
 	DEVICE_MODEL := RUT140
 	HARDWARE/Physical_Specification/Weight := 142.3 g
 endef
-TARGET_DEVICES += TEMPLATE_teltonika_rut140
 
 define Device/TEMPLATE_teltonika_rut142
 	$(Device/teltonika_rut14x_common)
@@ -35,4 +34,3 @@ define Device/TEMPLATE_teltonika_rut142
 	HARDWARE/Physical_Interfaces/RS232 := 1 $(HW_INTERFACE_RS232_DB9)
 	HARDWARE/Physical_Specification/Weight := 149.2 g
 endef
-TARGET_DEVICES += TEMPLATE_teltonika_rut142

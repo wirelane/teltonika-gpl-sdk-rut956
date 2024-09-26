@@ -34,7 +34,6 @@ define Device/TEMPLATE_teltonika_rutm08
 	HARDWARE/Physical_Specification/Dimensions := 115 x 32.2 x 95.2 mm
 
 endef
-TARGET_DEVICES += TEMPLATE_teltonika_rutm08
 
 define Device/TEMPLATE_teltonika_rutm09
 	$(Device/teltonika_rutm_common)
@@ -51,7 +50,6 @@ define Device/TEMPLATE_teltonika_rutm09
 	HARDWARE/Physical_Specification/Dimensions := 115 x 44.2 x 95.1 mm
 
 endef
-TARGET_DEVICES += TEMPLATE_teltonika_rutm09
 
 define Device/TEMPLATE_teltonika_rutm10
 	$(Device/teltonika_rutm_common)
@@ -68,7 +66,6 @@ define Device/TEMPLATE_teltonika_rutm10
 	HARDWARE/Physical_Specification/Dimensions := 115 x 32.2 x 95.2 mm
 
 endef
-TARGET_DEVICES += TEMPLATE_teltonika_rutm10
 
 define Device/TEMPLATE_teltonika_rutm11
 	$(Device/teltonika_rutm_common)
@@ -83,7 +80,6 @@ define Device/TEMPLATE_teltonika_rutm11
 	HARDWARE/Physical_Specification/Dimensions := 115 x 44.2 x 95.1 mm
 
 endef
-TARGET_DEVICES += TEMPLATE_teltonika_rutm11
 
 define Device/TEMPLATE_teltonika_rutm12
 	$(Device/teltonika_rutm_common)
@@ -103,7 +99,6 @@ define Device/TEMPLATE_teltonika_rutm12
 	HARDWARE/Physical_Specification/Dimensions := 115 x 44.2 x 95.1 mm
 
 endef
-TARGET_DEVICES += TEMPLATE_teltonika_rutm12
 
 define Device/TEMPLATE_teltonika_rutm50
 	$(Device/teltonika_rutm_common)
@@ -121,7 +116,6 @@ define Device/TEMPLATE_teltonika_rutm50
 	HARDWARE/Physical_Specification/Weight := 519 g
 
 endef
-TARGET_DEVICES += TEMPLATE_teltonika_rutm50
 
 
 define Device/TEMPLATE_teltonika_rutm51
@@ -140,7 +134,6 @@ define Device/TEMPLATE_teltonika_rutm51
 	HARDWARE/Physical_Specification/Weight := 519 g
 
 endef
-TARGET_DEVICES += TEMPLATE_teltonika_rutm51
 
 define Device/TEMPLATE_teltonika_rutm52
 	$(Device/teltonika_rutm_common)
@@ -163,4 +156,21 @@ define Device/TEMPLATE_teltonika_rutm52
 	HARDWARE/Physical_Specification/Weight := 519 g
 
 endef
-TARGET_DEVICES += TEMPLATE_teltonika_rutm52
+
+define Device/TEMPLATE_teltonika_rutm59
+	$(Device/teltonika_rutm_common)
+	$(Device/template_rutm)
+	DEVICE_MODEL := RUTM59
+	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.9.3
+
+	HARDWARE/Wireless/Wireless_mode :=
+	HARDWARE/Wireless/WIFI_users :=
+	HARDWARE/LAN/Port := 4 $(HW_ETH_LAN_PORTS)
+	HARDWARE/Physical_Interfaces/Status_leds := 3 x connection status LEDs, 3 x connection strength LEDs, 10 x Ethernet port status LEDs, 4 x WAN status LEDs, 1 x Power LED, 2 x 2.4G and 5G Wi-Fi LEDs
+	HARDWARE/Physical_Interfaces/Ethernet := 5 $(HW_ETH_RJ45_PORTS), $(HW_ETH_SPEED_1000)
+	HARDWARE/Power/Power_consumption := Idle <5 W, Max <18 W
+	HARDWARE/Physical_Interfaces/Antennas := 4 x SMA for Mobile, 1 x SMA for GNNS
+	HARDWARE/Physical_Specification/Dimensions := 132 x 44.2 x 95.1 mm
+	HARDWARE/Physical_Specification/Weight := 519 g
+
+endef
