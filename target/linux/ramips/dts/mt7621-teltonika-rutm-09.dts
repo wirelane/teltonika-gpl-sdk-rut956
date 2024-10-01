@@ -21,6 +21,7 @@
 			#gpio-cells = <2>;
 			registers-number = <2>;
 			spi-max-frequency = <10000000>;
+			enable-gpios = <&gpio 15 GPIO_ACTIVE_LOW>;
 		};
 	};
 
