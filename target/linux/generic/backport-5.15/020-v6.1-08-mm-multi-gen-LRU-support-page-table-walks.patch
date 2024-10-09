@@ -372,7 +372,7 @@ Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
  #ifdef __KERNEL__
 --- a/kernel/exit.c
 +++ b/kernel/exit.c
-@@ -469,6 +469,7 @@ assign_new_owner:
+@@ -471,6 +471,7 @@ assign_new_owner:
  		goto retry;
  	}
  	WRITE_ONCE(mm->owner, c);
@@ -414,7 +414,7 @@ Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
  	/* forking complete and child started to run, tell ptracer */
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -5014,6 +5014,7 @@ context_switch(struct rq *rq, struct tas
+@@ -5011,6 +5011,7 @@ context_switch(struct rq *rq, struct tas
  		 * finish_task_switch()'s mmdrop().
  		 */
  		switch_mm_irqs_off(prev->active_mm, next->mm, next);

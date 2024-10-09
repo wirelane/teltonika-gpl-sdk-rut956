@@ -21,6 +21,7 @@
 			#gpio-cells = <2>;
 			registers-number = <3>;
 			spi-max-frequency = <10000000>;
+			enable-gpios = <&gpio 16 GPIO_ACTIVE_LOW>;
 		};
 	};
 
@@ -40,7 +41,7 @@
 		inactive-delay-ms = <200>;
 		poweroff-gpios = <&gpio 8 GPIO_ACTIVE_HIGH>;
 		battery-gpios = <&gpio 12 0>;
-		ignition-gpios = <&gpio 16 0>;
+		ignition-gpios = <&gpio 13 0>;
 	};
 
 	gpio-export {
@@ -122,6 +123,7 @@
 			label = "power";
 			gpios = <&gpio 0 GPIO_ACTIVE_LOW>;
 			default-state = "on";
+			retain-state-shutdown;
 		};
 
 		led_gen_3 {
@@ -186,6 +188,12 @@
 			gpios = <&shift_io 15 GPIO_ACTIVE_HIGH>;
 			linux,default-trigger = "timer"; //only
 		};
+
+		led_watchdog_reset {
+			label = "watchdog_reset";
+			gpios = <&gpio 11 GPIO_ACTIVE_HIGH>;
+			linux,default-trigger = "timer"; // only
+		};
 	};
 
 	tlt_gpios { // Modify according to wiki page "DTS syntax with Libgpiod changes"
@@ -205,7 +213,7 @@
 			GPIO_12 {
 				line_name = "GPIO_IN_1";
 			};
-			GPIO_16 {
+			GPIO_13 {
 				line_name = "GPIO_IN_2";
 			};
 		};

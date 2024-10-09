@@ -61,7 +61,7 @@
  		case 0x40:
  			ipv6 = false;
  			break;
-@@ -467,8 +489,8 @@ static int qmimux_rx_fixup(struct usbnet
+@@ -468,8 +490,8 @@ static int qmimux_rx_fixup(struct usbnet
                  * Any less and we suffer from slow skb_copy_bits calls downstream */
  		hdr_len = ipv6 ? 72 : 52;
  
@@ -72,7 +72,7 @@
  
  		/* packet doesn't have mac header
                  * so reset its offset */
-@@ -479,6 +501,10 @@ static int qmimux_rx_fixup(struct usbnet
+@@ -480,6 +502,10 @@ static int qmimux_rx_fixup(struct usbnet
  		else
  			skbn->protocol = htons(ETH_P_IP);
  
@@ -83,7 +83,7 @@
  		if (usbnet_napi_rx(dev, skbn) != NET_RX_SUCCESS) {
  			net->stats.rx_errors++;
  			return 0;
-@@ -487,7 +513,7 @@ static int qmimux_rx_fixup(struct usbnet
+@@ -488,7 +514,7 @@ static int qmimux_rx_fixup(struct usbnet
  		}
  
  skip:

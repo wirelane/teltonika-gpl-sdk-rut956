@@ -37,6 +37,7 @@ define Device/template_rut9m
 	DEVICE_FEATURES := usb-port serial modbus wifi dualsim \
 			rndis ncm bacnet ntrip mobile dual_sim ethernet \
 			nat_offloading port_link portlink
+	DEVICE_DOT1X_SERVER_CAPABILITIES := false false vlan
 endef
 
 define Device/template_rut9m_io

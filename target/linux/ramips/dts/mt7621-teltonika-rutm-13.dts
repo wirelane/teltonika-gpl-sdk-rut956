@@ -121,6 +121,7 @@
 			label = "power";
 			gpios = <&gpio 47 GPIO_ACTIVE_LOW>;
 			default-state = "on";
+			retain-state-shutdown;
 		};
 
 		led_wan_sim1 {

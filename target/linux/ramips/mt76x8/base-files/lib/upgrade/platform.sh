@@ -54,6 +54,12 @@ platform_check_hw_support() {
 
 	{ ! prepare_metadata_hw_mods "$1"; } && return 1
 
+	[ "$(jsonfilter -i /etc/board.json -e '@.hwinfo.esim')" = "true" ] && \
+		{ ! find_hw_mod "esim"; } && {
+			echo "Device have ESIM hardware but this fw does not support it"
+			return 1
+		}
+
 	[ -d "/sys/bus/usb/devices/1-1.3/1-1.3:1.0/tty/ttyCH343USB0" ]  && \
 		{ ! find_hw_mod "CH343"; } && {
 			echo "Found new RS232 chip but this fw does not support it"

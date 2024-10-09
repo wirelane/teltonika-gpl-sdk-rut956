@@ -1,0 +1,42 @@
+#!/bin/sh
+. /lib/functions.sh
+CONFIG="bacnet_router"
+
+ORIGINAL_BIP_PORT="47808"
+IS_OLD_CONFIG=false
+
+migrate_rule() {
+	local section="$1"
+	config_get device_type "$1" "device_type" ""
+	if [ "$device_type" == "mstp" ]; then
+		uci -q rename "$CONFIG"."${1}"="2"
+	else
+		uci_set "$CONFIG" "$1" "name" "BACnet"
+		config_get ORIGINAL_BIP_PORT "$1" "port" "47808"
+		uci -q rename "$CONFIG"."${1}"="1"
+	fi
+}
+
+check_rule() {
+	echo "Checking $1"
+	if [[ "$1" =~ "cfg" ]]; then
+		echo "have cfg in name "
+		IS_OLD_CONFIG=true
+	fi
+}
+
+config_load "$CONFIG"
+config_foreach check_rule "port"
+
+[ "$IS_OLD_CONFIG" = false ] && exit 0
+
+config_foreach migrate_rule "port"
+if [ "$ORIGINAL_BIP_PORT" = "47809" ]; then
+	uci_set "$CONFIG" "general" "bbmd_port" "47808"
+else
+	uci_set "$CONFIG" "general" "bbmd_port" "47809"
+fi
+
+uci_commit "$CONFIG"
+
+exit 0

@@ -638,7 +638,7 @@
 +
 --- a/include/linux/leds.h
 +++ b/include/linux/leds.h
-@@ -484,6 +484,21 @@ static inline void *led_get_trigger_data
+@@ -482,6 +482,21 @@ led_trigger_get_brightness(const struct
  
  #endif /* CONFIG_LEDS_TRIGGERS */
  

@@ -50,7 +50,7 @@ Subject: [PATCH] net/usb/qmi_wwan: add MeigLink modem support
  	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EP06, 0xff, 0, 0) },
 --- a/drivers/net/usb/qmi_wwan.c
 +++ b/drivers/net/usb/qmi_wwan.c
-@@ -1518,8 +1518,12 @@ static const struct usb_device_id produc
+@@ -1519,8 +1519,12 @@ static const struct usb_device_id produc
  	{QMI_MATCH_FF_FF_FF(0x2c7c, 0x030b)},	/* Quectel EG060K */
  	{QMI_MATCH_FF_FF_FF(0x2c7c, 0x0512)},	/* Quectel EG12/EM12 */
  	{QMI_MATCH_FF_FF_FF(0x2c7c, 0x0620)},	/* Quectel EM160R-GL */

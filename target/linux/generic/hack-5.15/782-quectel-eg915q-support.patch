@@ -1,7 +1,5 @@
-Index: linux-5.15.162/drivers/usb/serial/option.c
-===================================================================
---- linux-5.15.162.orig/drivers/usb/serial/option.c
-+++ linux-5.15.162/drivers/usb/serial/option.c
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
 @@ -289,6 +289,7 @@ static void option_instat_callback(struc
  #define QUECTEL_PRODUCT_EG912Y			0x6001
  #define QUECTEL_PRODUCT_EC200S_CN		0x6002

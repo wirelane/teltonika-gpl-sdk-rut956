@@ -117,6 +117,7 @@
 			label = "power";
 			gpios = <&shift_io 0 GPIO_ACTIVE_LOW>;
 			default-state = "on";
+			retain-state-shutdown;
 		};
 
 	};

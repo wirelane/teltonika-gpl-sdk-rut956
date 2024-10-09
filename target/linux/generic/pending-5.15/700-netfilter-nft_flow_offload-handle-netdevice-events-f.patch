@@ -10,7 +10,7 @@ Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 
 --- a/net/netfilter/nf_flow_table_core.c
 +++ b/net/netfilter/nf_flow_table_core.c
-@@ -606,6 +606,23 @@ void nf_flow_table_free(struct nf_flowta
+@@ -609,6 +609,23 @@ void nf_flow_table_free(struct nf_flowta
  }
  EXPORT_SYMBOL_GPL(nf_flow_table_free);
  
@@ -34,7 +34,7 @@ Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
  static int nf_flow_table_init_net(struct net *net)
  {
  	net->ft.stat = alloc_percpu(struct nf_flow_table_stat);
-@@ -663,7 +680,11 @@ static int __init nf_flow_table_module_i
+@@ -666,7 +683,11 @@ static int __init nf_flow_table_module_i
  	if (ret)
  		goto out_offload;
  
@@ -47,7 +47,7 @@ Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
  
  out_offload:
  	unregister_pernet_subsys(&nf_flow_table_net_ops);
-@@ -672,6 +693,7 @@ out_offload:
+@@ -675,6 +696,7 @@ out_offload:
  
  static void __exit nf_flow_table_module_exit(void)
  {

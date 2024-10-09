@@ -13,10 +13,10 @@ ucidef_target_defaults() {
 		ucidef_set_interface_default_macaddr "wan" "$(macaddr_add "$(mtd_get_mac_binary config 0x0)" 1)"
 
 		# set up io
-		[ "${model:7:1}" = "6" ] || ucidef_set_hwinfo ios
+		[ "${model:7:1}" = "6" ] || ucidef_set_hwinfo ios soft_port_mirror
 
 		# set sd card
-		[ "${model:4:1}" = "6" ] && [ "$hw_ver" -gt 4 ] && ucidef_set_hwinfo sd_card
+		[ "${model:4:1}" = "6" ] && [ "$hw_ver" -gt 4 ] && ucidef_set_hwinfo sd_card soft_port_mirror
 
 		# set up modem
 		[ "${model:5:1}" = "1" ] && \

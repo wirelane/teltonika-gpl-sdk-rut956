@@ -56,6 +56,12 @@
 			gpios = <&shift_io 7 GPIO_ACTIVE_LOW>;
 		};
 
+		gpio_sim_select_2 {
+			gpio-export,name = "sim_sel2";
+			gpio-export,output = <0>;
+			gpios = <&gpio 6 GPIO_ACTIVE_HIGH>;
+		};
+
 		gpio_modem_status { // From v5
 			gpio-export,name = "modem_status";
 			gpio-export,input = <0>;
@@ -147,6 +153,7 @@
 			label = "power";
 			gpios = <&shift_io 15 GPIO_ACTIVE_LOW>;
 			default-state = "on";
+			retain-state-shutdown;
 		};
 	};
 
@@ -279,6 +286,9 @@
 				line_name = "GPIO_SIM_SELECT";
 				active_low;
 			};
+			GPIO_6 {
+				line_name = "GPIO_SIM_SELECT_2";
+			};
 			GPIO_44 {
 				line_name = "GPIO_SD_ENABLE"; // Duplicates as rts, fix in the future
 			};
@@ -394,16 +404,26 @@
 		default = "";
 	};
 
+	simpin3 {
+		tlt-mnf,hwver = <6 99>;
+		default = "";
+	};
+
 	sim_cfg {
 		default = "2111000_2112000";
 	};
 
 	sim_cfg@1 {
-		tlt-mnf,hwver = <5 99>;
+		tlt-mnf,hwver = <5 5>;
 		default = "2111010_2112010";
 	};
 
 	sim_cfg@2 {
+		tlt-mnf,hwver = <6 99>;
+		default = "2111110_2112010_2121210";
+	};
+
+	sim_cfg@3 {
 		tlt-mnf,device = "RUT901*1****";
 		default = "2121000_2112000";
 	};
@@ -513,6 +533,12 @@
 	hwmon@0x48 {
 		compatible = "ti,tla2021";
 		reg = <0x48>;
+	};
+
+	tpm@2e {
+		compatible = "infineon,slb9673";
+		reg = <0x2e>;
+		status = "okay";
 	};
 };
 

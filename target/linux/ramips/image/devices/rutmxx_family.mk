@@ -157,6 +157,23 @@ define Device/TEMPLATE_teltonika_rutm52
 
 endef
 
+define Device/TEMPLATE_teltonika_rutm55
+	$(Device/teltonika_rutm_common)
+	$(Device/template_rutm)
+	DEVICE_MODEL := RUTM55
+	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.10
+
+	HARDWARE/LAN/Port := 3 $(HW_ETH_LAN_PORTS)
+	HARDWARE/Physical_Interfaces/Status_leds := 3 x connection status LEDs, 3 x connection strength LEDs, 8 x Ethernet port status LEDs, 1 x Power LED
+	HARDWARE/Physical_Interfaces/Antennas := 4 x SMA for Mobile, 2 x RP-SMA for Wi-Fi, 1 x SMA for GNNS
+	HARDWARE/Physical_Interfaces/Ethernet := 4 $(HW_ETH_RJ45_PORTS), $(HW_ETH_SPEED_1000)
+	HARDWARE/Power/Power_consumption := Idle <5 W, Max <18 W
+	HARDWARE/Physical_Interfaces/Antennas := 4 x SMA for Mobile, 2 x RP-SMA for Wi-Fi, 1 x SMA for GNNS
+	HARDWARE/Physical_Specification/Dimensions := 132 x 44.2 x 95.1 mm (TODO)
+	HARDWARE/Physical_Specification/Weight := 519 g (TODO)
+
+endef
+
 define Device/TEMPLATE_teltonika_rutm59
 	$(Device/teltonika_rutm_common)
 	$(Device/template_rutm)

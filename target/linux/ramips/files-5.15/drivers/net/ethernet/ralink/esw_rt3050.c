@@ -43,6 +43,9 @@
 #define RT305X_ESW_REG_ATS0		0x28
 #define RT305X_ESW_REG_ATS1		0x2c
 #define RT305X_ESW_REG_ATS2		0x30
+#define RT305X_ESW_REG_WMAD0		0x34
+#define RT305X_ESW_REG_WMAD1		0x38
+#define RT305X_ESW_REG_WMAD2		0x3C
 #define RT305X_ESW_REG_PVIDC(_n)	(0x40 + 4 * (_n))
 #define RT305X_ESW_REG_VLANI(_n)	(0x50 + 4 * (_n))
 #define RT305X_ESW_REG_VMSC(_n)		(0x70 + 4 * (_n))
@@ -113,6 +116,24 @@
 #define RT305X_ESW_SOCPC_DISMC2CPU_S	8
 #define RT305X_ESW_SOCPC_DISBC2CPU_S	16
 #define RT305X_ESW_SOCPC_CRC_PADDING	BIT(25)
+
+#define RT305X_ESW_WMAD0_HASH_ADD_LU_S	22
+#define RT305X_ESW_WMAD0_HASH_ADD_LU_M	0x3FF
+#define RT305X_ESW_WMAD0_AT_CFG_IDLE_S	19
+#define RT305X_ESW_WMAD0_AT_CFG_IDLE_M	1
+#define RT305X_ESW_WMAD0_W_PORT_MAP_S	12
+#define RT305X_ESW_WMAD0_W_PORT_MAP_M	0x7f
+#define RT305X_ESW_WMAD0_W_INDEX_S	7
+#define RT305X_ESW_WMAD0_W_INDEX_M	0x0f
+#define RT305X_ESW_WMAD0_W_AGE_S	4
+#define RT305X_ESW_WMAD0_W_AGE_M	0x07
+#define RT305X_ESW_WMAD0_W_MAC_DONE_S	1
+#define RT305X_ESW_WMAD0_W_MAC_DONE_M	1
+#define RT305X_ESW_WMAD0_W_MAC_CMD_S	0
+#define RT305X_ESW_WMAD0_W_MAC_CMD_M	1
+
+#define RT305X_ESW_POC1_DIS_MAC_LEARN_S	8
+#define RT305X_ESW_POC1_DIS_MAC_LEARN_M	0x7f
 
 #define RT305X_ESW_POC0_EN_BP_S		0
 #define RT305X_ESW_POC0_EN_FC_S		8
@@ -225,10 +246,13 @@ enum {
 	RT305X_ESW_ATTR_BC_STATUS,
 	RT305X_ESW_ATTR_LED_FREQ,
 	RT305X_ESW_ATTR_SOFT_RESET,
+	RT305X_ESW_ATTR_CPU_PORT,
 	/* Port attributes. */
 	RT305X_ESW_ATTR_PORT_DISABLE,
 	RT305X_ESW_ATTR_PORT_DOUBLETAG,
 	RT305X_ESW_ATTR_PORT_UNTAG,
+	RT305X_ESW_ATTR_PORT_DISABLE_MAC_LEARN,
+	RT305X_ESW_ATTR_PORT_FLUSH_ARL,
 	RT305X_ESW_ATTR_PORT_LED,
 	RT305X_ESW_ATTR_PORT_LAN,
 	RT305X_ESW_ATTR_PORT_RECV_BAD,
@@ -245,6 +269,7 @@ struct esw_port {
 	bool	disable;
 	bool	doubletag;
 	bool	untag;
+	bool	disable_mac_learn;
 	u8	led;
 	u16	pvid;
 };
@@ -270,6 +295,7 @@ struct rt305x_esw {
 
 	unsigned char		port_map;
 	unsigned char		port_disable;
+	unsigned char		port_disable_mac_learn;
 	unsigned int		reg_initval_fct2;
 	unsigned int		reg_initval_fpa2;
 	unsigned int		reg_led_polarity;
@@ -913,6 +939,7 @@ static int esw_apply_config(struct switch_dev *dev)
 	struct rt305x_esw *esw = container_of(dev, struct rt305x_esw, swdev);
 	int i;
 	u8 disable = 0;
+	u8 disable_mac_learn = 0;
 	u8 doubletag = 0;
 	u8 en_vlan = 0;
 	u8 untag = 0;
@@ -933,6 +960,7 @@ static int esw_apply_config(struct switch_dev *dev)
 	for (i = 0; i < RT305X_ESW_NUM_PORTS; i++) {
 		u32 pvid;
 		disable |= esw->ports[i].disable << i;
+		disable_mac_learn |= esw->ports[i].disable_mac_learn << i;
 		if (esw->global_vlan_enable) {
 			doubletag |= esw->ports[i].doubletag << i;
 			en_vlan   |= 1                       << i;
@@ -963,6 +991,9 @@ static int esw_apply_config(struct switch_dev *dev)
 	esw_rmw(esw, RT305X_ESW_REG_POC2,
 		       RT305X_ESW_POC2_UNTAG_EN_M << RT305X_ESW_POC2_UNTAG_EN_S,
 		       untag << RT305X_ESW_POC2_UNTAG_EN_S);
+	esw_rmw(esw, RT305X_ESW_REG_POC1,
+		RT305X_ESW_POC1_DIS_MAC_LEARN_M << RT305X_ESW_POC1_DIS_MAC_LEARN_S,
+		disable_mac_learn << RT305X_ESW_POC1_DIS_MAC_LEARN_S);
 
 	if (!esw->global_vlan_enable) {
 		/*
@@ -1043,6 +1074,14 @@ rt3050_sw_delay_reset(struct switch_dev *dev, const struct switch_attr *attr,
 
 	esw_w32(esw, ~RT305X_ESW_PORT_ST_CHG, RT305X_ESW_REG_IMR);
 
+	return 0;
+}
+
+static int
+rt3050_sw_get_cpu_port(struct switch_dev *dev, const struct switch_attr *attr,
+					  struct switch_val *value)
+{
+	value->value.i = dev->cpu_port;
 	return 0;
 }
 
@@ -1286,6 +1325,78 @@ static int esw_set_port_link(struct switch_dev *dev, int port, struct switch_por
 	return 0;
 }
 
+static int esw_set_port_flush_arl_table(struct switch_dev *dev,
+			 const struct switch_attr *attr,
+			 struct switch_val *val)
+{
+	struct rt305x_esw *esw;
+	u32 regval, vid, wmad0, mac1, mac2;
+
+	int idx = val->port_vlan;
+	if (idx < 0 || idx >= RT305X_ESW_NUM_PORTS)
+		return -EINVAL;
+
+	esw = container_of(dev, struct rt305x_esw, swdev);
+
+	//Check idle bit
+	if (rt3050_wait_bit(esw, RT305X_ESW_REG_ATS, (1 << 2), (1 << 2))) {
+		return -ETIMEDOUT;
+	}
+
+	// start searching address table
+	esw_w32(esw, 1 << 0, RT305X_ESW_REG_ATS);
+
+	for(;;) {
+		//Check idle bit
+		if (rt3050_wait_bit(esw, RT305X_ESW_REG_ATS, (1 << 2), (1 << 2))) {
+			return -ETIMEDOUT;
+		}
+
+		//check "at the end of table" bit
+		regval = esw_r32(esw, RT305X_ESW_REG_ATS0);
+		if (regval & (1 << 1)) {
+			break;
+		}
+
+		//wait for data is ready bit
+		if (rt3050_wait_bit(esw, RT305X_ESW_REG_ATS0, (1 << 0), (1 << 0))) {
+			return -ETIMEDOUT;
+		}
+
+		regval = esw_r32(esw, RT305X_ESW_REG_ATS0);
+		vid = (regval & (0x0F << 7)) >> 7;
+		mac1 = esw_r32(esw, RT305X_ESW_REG_ATS1);
+		mac2 = esw_r32(esw, RT305X_ESW_REG_ATS2);
+
+		//search for next address
+		esw_w32(esw, 1 << 1, RT305X_ESW_REG_ATS);
+
+		// Is this MAC on port idx?
+		if (regval & ((1 << idx) << RT305X_ESW_WMAD0_W_PORT_MAP_S)) {
+			if (rt3050_wait_bit(esw, RT305X_ESW_REG_WMAD0,
+				(RT305X_ESW_WMAD0_AT_CFG_IDLE_M << RT305X_ESW_WMAD0_AT_CFG_IDLE_S),
+				(1 << RT305X_ESW_WMAD0_AT_CFG_IDLE_S))) {
+				return -ETIMEDOUT;
+			}
+			esw_rmw(esw, RT305X_ESW_REG_WMAD1, 0x0000FFFF, mac1);
+			esw_rmw(esw, RT305X_ESW_REG_WMAD2, 0xFFFFFFFF, mac2);
+			wmad0 = ((1 << idx) << RT305X_ESW_WMAD0_W_PORT_MAP_S) | 
+					(vid << RT305X_ESW_WMAD0_W_INDEX_S);
+			esw_rmw(esw, RT305X_ESW_REG_WMAD0, 0xFFFFFFFF, wmad0);
+			esw_rmw(esw, RT305X_ESW_REG_WMAD0,
+				RT305X_ESW_WMAD0_W_MAC_CMD_M << RT305X_ESW_WMAD0_W_MAC_CMD_S,
+				1 << RT305X_ESW_WMAD0_W_MAC_CMD_S);
+			if (rt3050_wait_bit(esw, RT305X_ESW_REG_WMAD0,
+				(RT305X_ESW_WMAD0_W_MAC_DONE_M << RT305X_ESW_WMAD0_W_MAC_DONE_S),
+				(1 << RT305X_ESW_WMAD0_W_MAC_DONE_S))) {
+				return -ETIMEDOUT;
+			}
+		}
+	}
+
+	return 0;
+}
+
 static int esw_get_port_bool(struct switch_dev *dev,
 			 const struct switch_attr *attr,
 			 struct switch_val *val)
@@ -1309,6 +1420,10 @@ static int esw_get_port_bool(struct switch_dev *dev,
 	case RT305X_ESW_ATTR_PORT_UNTAG:
 		reg = RT305X_ESW_REG_POC2;
 		shift = RT305X_ESW_POC2_UNTAG_EN_S;
+		break;
+	case RT305X_ESW_ATTR_PORT_DISABLE_MAC_LEARN:
+		reg = RT305X_ESW_REG_POC1;
+		shift = RT305X_ESW_POC1_DIS_MAC_LEARN_S;
 		break;
 	case RT305X_ESW_ATTR_PORT_LAN:
 		reg = RT305X_ESW_REG_SGC2;
@@ -1346,6 +1461,9 @@ static int esw_set_port_bool(struct switch_dev *dev,
 		break;
 	case RT305X_ESW_ATTR_PORT_UNTAG:
 		esw->ports[idx].untag = val->value.i;
+		break;
+	case RT305X_ESW_ATTR_PORT_DISABLE_MAC_LEARN:
+		esw->ports[idx].disable_mac_learn = val->value.i;
 		break;
 	default:
 		return -EINVAL;
@@ -1792,6 +1910,14 @@ static const struct switch_attr esw_global[] = {
 		.set = rt3050_sw_delay_reset
 	},
 	{
+		.type = SWITCH_TYPE_INT,
+		.name = "cpu_port",
+		.description = "Get CPU port number",
+		.max = RT305X_ESW_NUM_PORTS - 1,
+		.id = RT305X_ESW_ATTR_CPU_PORT,
+		.get = rt3050_sw_get_cpu_port
+	},
+	{
 		.type = SWITCH_TYPE_STRING,
 		.name = "dump_arl",
 		.description = "Dump ARL table with mac and port map",
@@ -1827,6 +1953,22 @@ static const struct switch_attr esw_port[] = {
 		.id = RT305X_ESW_ATTR_PORT_UNTAG,
 		.get = esw_get_port_bool,
 		.set = esw_set_port_bool,
+	},
+	{
+		.type = SWITCH_TYPE_INT,
+		.name = "disable_mac_learn",
+		.description = "Disable source MAC learning (1:disable)",
+		.max = 1,
+		.id = RT305X_ESW_ATTR_PORT_DISABLE_MAC_LEARN,
+		.get = esw_get_port_bool,
+		.set = esw_set_port_bool,
+	},
+	{
+		.type = SWITCH_TYPE_NOVAL,
+		.name = "flush_arl_table",
+		.description = "Flush port's ARL table entries",
+		.id = RT305X_ESW_ATTR_PORT_FLUSH_ARL,
+		.set = esw_set_port_flush_arl_table,
 	},
 	{
 		.type = SWITCH_TYPE_INT,

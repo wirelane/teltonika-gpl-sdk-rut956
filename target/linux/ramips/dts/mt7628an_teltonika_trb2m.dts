@@ -65,6 +65,7 @@
 			label = "power";
 			gpios = <&gpio 29 GPIO_ACTIVE_LOW>;
 			default-state = "on";
+			retain-state-shutdown;
 		};
 
 		led_gen_2 {
