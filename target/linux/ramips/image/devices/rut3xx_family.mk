@@ -14,7 +14,7 @@ define Device/TEMPLATE_teltonika_rut301
 	DEVICE_INTERFACE_CONF := \
 		lan default_ip 192.168.1.1
 
-	DEVICE_USB_JACK_PATH := /usb2/2-1/
+	DEVICE_USB_JACK_PATH := /usb1/1-1/
 
 	DEVICE_FEATURES := usb ethernet ios nat_offloading port_link xfrm-offload
 

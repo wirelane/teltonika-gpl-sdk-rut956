@@ -4,9 +4,8 @@
 
 ucidef_target_defaults() {
 	local model="$1"
-	local branch_path="/sys/mnf_info/branch"
-	local branch
-	[ -f "$branch_path" ] && branch="$(cut -c -2 $branch_path)"
+	local hw_ver="$2"
+	local branch="$3"
 
 	case "$model" in
 	RUT9*)
@@ -15,14 +14,14 @@ ucidef_target_defaults() {
 		ucidef_set_interface_default_macaddr "wan" "$(macaddr_add "$(mtd_get_mac_binary config 0x0)" 1)"
 
 		# set up io
-		[ "${model:7:1}" = "6" ] || ucidef_set_hwinfo ios soft_port_mirror
-
-		# set sd card
-		[ "${model:4:1}" = "6" ] && [ "$hw_ver" -gt 4 ] && ucidef_set_hwinfo sd_card soft_port_mirror
+		[ "${model:7:1}" = "6" ] || ucidef_set_hwinfo ios
 
 		# set up modem
 		[ "${model:5:1}" = "1" ] && \
 			ucidef_add_static_modem_info "$model" "1-1" "2" "primary"
+
+		# set sd card
+		[ "${model:5:1}" = "6" ] && [ "$hw_ver" -gt 4 ] && ucidef_set_hwinfo sd_card
 
 		[ "${model:5:1}" = "6" ] && \
 			ucidef_add_static_modem_info "$model" "1-1.4" "2" "primary" "gps_out"
