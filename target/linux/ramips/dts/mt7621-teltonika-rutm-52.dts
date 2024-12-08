@@ -83,7 +83,7 @@
 
 		yellow_eth_port_4 {
 			gpio-export,name = "yellow:eth_port_4";
-			gpio-export,output = <0>;
+			gpio-export,output = <1>;
 			gpios = <&shift_io 7 GPIO_ACTIVE_LOW>;
 		};
 
@@ -113,7 +113,7 @@
 
 		green_eth_port_4 {
 			gpio-export,name = "green:eth_port_4";
-			gpio-export,output = <0>;
+			gpio-export,output = <1>;
 			gpios = <&shift_io 3 GPIO_ACTIVE_LOW>;
 		};
 

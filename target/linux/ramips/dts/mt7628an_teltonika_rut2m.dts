@@ -31,6 +31,7 @@
 		};
 
 		gpio_sim_select {
+			tlt-mnf,device = "RUT241";
 			gpio-export,name = "sim_sel";
 			gpio-export,output = <0>;
 			gpios = <&gpio 6 GPIO_ACTIVE_HIGH>;
