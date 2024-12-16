@@ -45,7 +45,7 @@ where necessary.
  };
 --- a/net/netfilter/nf_flow_table_core.c
 +++ b/net/netfilter/nf_flow_table_core.c
-@@ -122,6 +122,16 @@ static int flow_offload_fill_route(struc
+@@ -135,6 +135,16 @@ static int flow_offload_fill_route(struc
  	}
  	flow_tuple->encap_num = route->in.num_encaps;
  
@@ -62,7 +62,7 @@ where necessary.
  	switch (route->xmit_type) {
  	case FLOW_OFFLOAD_XMIT_DIRECT:
  		memcpy(flow_tuple->out.h_dest, route->out.h_dest,
-@@ -141,6 +151,8 @@ static int flow_offload_fill_route(struc
+@@ -154,6 +164,8 @@ static int flow_offload_fill_route(struc
  		WARN_ON_ONCE(1);
  		break;
  	}
@@ -71,7 +71,7 @@ where necessary.
  	flow_tuple->xmit_type = route->xmit_type;
  
  	return 0;
-@@ -152,6 +164,8 @@ static void nft_flow_dst_release(struct
+@@ -165,6 +177,8 @@ static void nft_flow_dst_release(struct
  	if (flow->tuplehash[dir].tuple.xmit_type == FLOW_OFFLOAD_XMIT_NEIGH ||
  	    flow->tuplehash[dir].tuple.xmit_type == FLOW_OFFLOAD_XMIT_XFRM)
  		dst_release(flow->tuplehash[dir].tuple.dst_cache);

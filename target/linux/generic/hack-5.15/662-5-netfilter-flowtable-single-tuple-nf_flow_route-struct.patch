@@ -47,7 +47,7 @@ With changes to flow_offload_add, holding data for both directions is no longer 
  struct nf_conn_flow {
 --- a/net/netfilter/nf_flow_table_core.c
 +++ b/net/netfilter/nf_flow_table_core.c
-@@ -88,9 +88,9 @@ static u32 flow_offload_dst_cookie(struc
+@@ -101,9 +101,9 @@ static u32 flow_offload_dst_cookie(struc
  static struct dst_entry *nft_route_dst_fetch(struct nf_flow_route *route,
  					     enum flow_offload_tuple_dir dir)
  {
@@ -59,7 +59,7 @@ With changes to flow_offload_add, holding data for both directions is no longer 
  
  	return dst;
  }
-@@ -112,24 +112,24 @@ static int flow_offload_fill_route(struc
+@@ -125,24 +125,24 @@ static int flow_offload_fill_route(struc
  		break;
  	}
  
@@ -95,7 +95,7 @@ With changes to flow_offload_add, holding data for both directions is no longer 
  		dst_release(dst);
  		break;
  	case FLOW_OFFLOAD_XMIT_XFRM:
-@@ -141,7 +141,7 @@ static int flow_offload_fill_route(struc
+@@ -154,7 +154,7 @@ static int flow_offload_fill_route(struc
  		WARN_ON_ONCE(1);
  		break;
  	}

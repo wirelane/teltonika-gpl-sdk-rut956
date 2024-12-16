@@ -22,7 +22,7 @@ Use MTU provided by XFRM bundle when using XFRM output fastpath.
  					  enum flow_offload_tuple_dir dir,
 --- a/net/netfilter/nf_flow_table_core.c
 +++ b/net/netfilter/nf_flow_table_core.c
-@@ -101,15 +101,15 @@ static int flow_offload_fill_route(struc
+@@ -114,15 +114,15 @@ static int flow_offload_fill_route(struc
  				   enum flow_offload_tuple_dir dir)
  {
  	struct flow_offload_tuple *flow_tuple = &flow->tuplehash[dir].tuple;
@@ -41,7 +41,7 @@ Use MTU provided by XFRM bundle when using XFRM output fastpath.
  		break;
  	}
  
-@@ -144,11 +144,10 @@ static int flow_offload_fill_route(struc
+@@ -157,11 +157,10 @@ static int flow_offload_fill_route(struc
  		       ETH_ALEN);
  		flow_tuple->out.ifidx = route->out.ifindex;
  		flow_tuple->out.hw_ifidx = route->out.hw_ifindex;

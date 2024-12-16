@@ -41,7 +41,7 @@ free'd immediately after setting the reference count to zero.
  
 --- a/net/netfilter/nf_flow_table_core.c
 +++ b/net/netfilter/nf_flow_table_core.c
-@@ -232,7 +232,7 @@ void flow_offload_free(struct flow_offlo
+@@ -245,7 +245,7 @@ void flow_offload_free(struct flow_offlo
  		break;
  	}
  	nf_ct_put(flow->ct);
@@ -50,7 +50,7 @@ free'd immediately after setting the reference count to zero.
  }
  EXPORT_SYMBOL_GPL(flow_offload_free);
  
-@@ -414,6 +414,19 @@ static inline bool nf_flow_has_expired(c
+@@ -427,6 +427,19 @@ static inline bool nf_flow_has_expired(c
  	return nf_flow_timeout_delta(READ_ONCE(flow->timeout)) <= 0;
  }
  
@@ -70,7 +70,7 @@ free'd immediately after setting the reference count to zero.
  static void flow_offload_del(struct nf_flowtable *flow_table,
  			     struct flow_offload *flow)
  {
-@@ -430,7 +443,7 @@ static void flow_offload_del(struct nf_f
+@@ -443,7 +456,7 @@ static void flow_offload_del(struct nf_f
  	}
  
  	nf_flow_offload_deregister(flow_table, flow);

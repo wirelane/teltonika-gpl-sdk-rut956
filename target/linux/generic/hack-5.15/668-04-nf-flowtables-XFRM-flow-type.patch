@@ -63,7 +63,7 @@ Includes cleanup and GC check implementations.
  #endif /* _NF_FLOW_TABLE_XFRM_H */
 --- a/net/netfilter/nf_flow_table_core.c
 +++ b/net/netfilter/nf_flow_table_core.c
-@@ -228,12 +228,28 @@ static void flow_offload_route_release(s
+@@ -241,12 +241,28 @@ static void flow_offload_route_release(s
  	nf_ct_put(flow->ct);
  }
  
@@ -92,7 +92,7 @@ Includes cleanup and GC check implementations.
  	default:
  		break;
  	}
-@@ -533,13 +549,29 @@ void nf_flow_table_iterate(struct nf_flo
+@@ -546,13 +562,29 @@ void nf_flow_table_iterate(struct nf_flo
  	rcu_read_unlock();
  }
  

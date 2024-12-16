@@ -44,7 +44,7 @@ after SA's are destroyed.
  					  enum flow_offload_tuple_dir dir,
 --- a/net/netfilter/nf_flow_table_core.c
 +++ b/net/netfilter/nf_flow_table_core.c
-@@ -498,7 +498,8 @@ static void nf_flow_offload_gc_step(stru
+@@ -511,7 +511,8 @@ static void nf_flow_offload_gc_step(stru
  				    struct flow_offload *flow, void *data)
  {
  	if (nf_flow_has_expired(flow) ||

@@ -6,7 +6,7 @@ guaranteed to be non-null for route type flows.
 
 --- a/net/netfilter/nf_flow_table_core.c
 +++ b/net/netfilter/nf_flow_table_core.c
-@@ -225,6 +225,7 @@ static void flow_offload_route_release(s
+@@ -238,6 +238,7 @@ static void flow_offload_route_release(s
  {
  	flow_offload_route_tuple_release(&flow->tuplehash[FLOW_OFFLOAD_DIR_ORIGINAL].tuple);
  	flow_offload_route_tuple_release(&flow->tuplehash[FLOW_OFFLOAD_DIR_REPLY].tuple);
@@ -14,7 +14,7 @@ guaranteed to be non-null for route type flows.
  }
  
  void flow_offload_free(struct flow_offload *flow)
-@@ -236,7 +237,6 @@ void flow_offload_free(struct flow_offlo
+@@ -249,7 +250,6 @@ void flow_offload_free(struct flow_offlo
  	default:
  		break;
  	}
@@ -22,7 +22,7 @@ guaranteed to be non-null for route type flows.
  	kfree(flow);
  }
  EXPORT_SYMBOL_GPL(flow_offload_free);
-@@ -279,7 +279,14 @@ unsigned long flow_offload_get_timeout(s
+@@ -292,7 +292,14 @@ unsigned long flow_offload_get_timeout(s
  {
  	unsigned long timeout = NF_FLOW_TIMEOUT;
  	struct net *net = flow_offload_net(flow);
@@ -38,7 +38,7 @@ guaranteed to be non-null for route type flows.
  
  	if (l4num == IPPROTO_TCP) {
  		struct nf_tcp_net *tn = nf_tcp_pernet(net);
-@@ -451,10 +458,18 @@ static void flow_offload_del(struct nf_f
+@@ -464,10 +471,18 @@ static void flow_offload_del(struct nf_f
  	call_rcu(&flow->rcu_head, flow_offload_free_rcu);
  }
  
@@ -58,7 +58,7 @@ guaranteed to be non-null for route type flows.
  	flow_offload_lock(flow);
  
  	if (test_and_set_bit(NF_FLOW_TEARDOWN, &flow->flags)) {
-@@ -462,12 +477,18 @@ void flow_offload_teardown(struct flow_o
+@@ -475,12 +490,18 @@ void flow_offload_teardown(struct flow_o
  		return;
  	}
  
@@ -82,7 +82,7 @@ guaranteed to be non-null for route type flows.
  
  	flow_offload_unlock(flow);
  }
-@@ -491,7 +512,7 @@ flow_offload_lookup(struct nf_flowtable
+@@ -504,7 +525,7 @@ flow_offload_lookup(struct nf_flowtable
  	if (test_bit(NF_FLOW_TEARDOWN, &flow->flags))
  		return NULL;
  
@@ -91,7 +91,7 @@ guaranteed to be non-null for route type flows.
  		return NULL;
  
  	return tuplehash;
-@@ -516,7 +537,7 @@ static void nf_flow_offload_gc_step(stru
+@@ -529,7 +550,7 @@ static void nf_flow_offload_gc_step(stru
  				    struct flow_offload *flow, void *data)
  {
  	if (nf_flow_has_expired(flow) ||
