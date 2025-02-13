@@ -1,4 +1,4 @@
-define Device/teltonika_rut9m_common
+define Device/teltonika_rut9x_common
 	$(Device/tlt-mt7628-hw-common)
 	HARDWARE/Mobile/Module := 4G LTE Cat 4 up to 150 DL/50 UL Mbps; 3G up to 21 DL/5.76 UL Mbps; 2G up to 236.8 DL/236.8 UL kbps
 	HARDWARE/WAN/Port := 1 $(HW_ETH_WAN_PORT)
@@ -17,8 +17,7 @@ define Device/teltonika_rut9m_common
 	HARDWARE/Physical_Specification/Mounting_options := DIN rail (can be mounted on two sides), flat surface placement
 endef
 
-define Device/template_rut9m
-	$(Device/teltonika_rut9m)
+define Device/template_rut9x
 
 	DEVICE_SWITCH_CONF := switch0 0:lan:1 1:lan:2 2:lan:3 4:wan 6@eth0
 
@@ -41,8 +40,7 @@ define Device/template_rut9m
 		wifi ethernet xfrm-offload soft_port_mirror
 endef
 
-define Device/template_rut9m_io
-	$(Device/template_rut9m)
+define Device/template_rut9x_io
 
 	DEVICE_USB_JACK_PATH := /usb1/1-1/1-1.1/
 	DEVICE_FEATURES += usb gps rs232 rs485
@@ -66,8 +64,9 @@ define Device/template_rut9m_io
 endef
 
 define Device/TEMPLATE_teltonika_rut901
-	$(Device/teltonika_rut9m_common)
-	$(Device/template_rut9m)
+	$(Device/teltonika_rut9m)
+	$(Device/teltonika_rut9x_common)
+	$(Device/template_rut9x)
 	DEVICE_MODEL := RUT901
 	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.3.1
 
@@ -94,8 +93,10 @@ endef
 TARGET_DEVICES += TEMPLATE_teltonika_rut901
 
 define Device/TEMPLATE_teltonika_rut906
-	$(Device/teltonika_rut9m_common)
-	$(Device/template_rut9m_io)
+	$(Device/teltonika_rut9m)
+	$(Device/teltonika_rut9x_common)
+	$(Device/template_rut9x)
+	$(Device/template_rut9x_io)
 	DEVICE_MODEL := RUT906
 	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.4.2
 
@@ -136,8 +137,9 @@ endef
 TARGET_DEVICES += TEMPLATE_teltonika_rut906
 
 define Device/TEMPLATE_teltonika_rut951
-	$(Device/teltonika_rut9m_common)
-	$(Device/template_rut9m)
+	$(Device/teltonika_rut9m)
+	$(Device/teltonika_rut9x_common)
+	$(Device/template_rut9x)
 	DEVICE_MODEL := RUT951
 
 	HARDWARE/Mobile/3GPP_Release := Release 10/11 depending on the hardware version
@@ -169,8 +171,10 @@ endef
 TARGET_DEVICES += TEMPLATE_teltonika_rut951
 
 define Device/TEMPLATE_teltonika_rut956
-	$(Device/teltonika_rut9m_common)
-	$(Device/template_rut9m_io)
+	$(Device/teltonika_rut9m)
+	$(Device/teltonika_rut9x_common)
+	$(Device/template_rut9x)
+	$(Device/template_rut9x_io)
 	DEVICE_MODEL := RUT956
 
 	HARDWARE/Mobile/3GPP_Release := Release 11
@@ -214,8 +218,9 @@ endef
 TARGET_DEVICES += TEMPLATE_teltonika_rut956
 
 define Device/TEMPLATE_teltonika_rut971
-	$(Device/teltonika_rut9m_common)
-	$(Device/template_rut9m)
+	$(Device/teltonika_rut9m)
+	$(Device/teltonika_rut9x_common)
+	$(Device/template_rut9x)
 	DEVICE_MODEL := RUT971
 	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.10.2
 
@@ -243,10 +248,12 @@ endef
 TARGET_DEVICES += TEMPLATE_teltonika_rut971
 
 define Device/TEMPLATE_teltonika_rut976
-	$(Device/teltonika_rut9m_common)
-	$(Device/template_rut9m_io)
+	$(Device/teltonika_rute)
+	$(Device/teltonika_rut9x_common)
+	$(Device/template_rut9x)
+	$(Device/template_rut9x_io)
 	DEVICE_MODEL := RUT976
-	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.10.2
+	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.12.1
 
 	HARDWARE/Mobile/Module := 5G up to 223 DL/ 123 UL Mbps; 4G LTE up to 195 DL/ 105 UL Mbps
 	HARDWARE/Mobile/3GPP_Release := Release 17

@@ -11,7 +11,7 @@
 	model = "Teltonika RUT2M";
 
 	chosen {
-		bootargs = "console=ttyS0,115200";
+		bootargs = "console=ttyS0,115200 root=/dev/mtdblock5";
 	};
 
 	gpio-export {
@@ -31,7 +31,7 @@
 		};
 
 		gpio_sim_select {
-			tlt-mnf,device = "RUT241";
+			tlt-mnf,device = "RUT241", "RUT200";
 			gpio-export,name = "sim_sel";
 			gpio-export,output = <0>;
 			gpios = <&gpio 6 GPIO_ACTIVE_HIGH>;
@@ -133,10 +133,6 @@
 				compatible_model_2 = "RUT200";
 				compatible_versions_2 = <0 4>;
 				line_name_2 = "GPIO_IN_1";
-
-				compatible_model_3 = "RUT271";
-				compatible_versions_3 = <0 4>;
-				line_name_3 = "GPIO_IN_1";
 			};
 			GPIO_0 {
 				compatible_model_0 = "RUT260";
@@ -150,10 +146,6 @@
 				compatible_model_2 = "RUT200";
 				compatible_versions_2 = <5 99>;
 				line_name_2 = "GPIO_IN_1";
-
-				compatible_model_3 = "RUT271";
-				compatible_versions_3 = <5 99>;
-				line_name_3 = "GPIO_IN_1";
 			};
 			GPIO_5 {
 				compatible_model_0 = "RUT260";
@@ -167,10 +159,6 @@
 				compatible_model_2 = "RUT200";
 				compatible_versions_2 = <0 4>;
 				line_name_2 = "GPIO_OUT_1";
-
-				compatible_model_3 = "RUT271";
-				compatible_versions_3 = <0 4>;
-				line_name_3 = "GPIO_OUT_1";
 			};
 			GPIO_6 {
 				compatible_model = "RUT260";
@@ -185,10 +173,6 @@
 				compatible_model_1 = "RUT200";
 				compatible_versions_1 = <5 99>;
 				line_name_1 = "GPIO_OUT_1";
-
-				compatible_model_2 = "RUT271";
-				compatible_versions_2 = <5 99>;
-				line_name_2 = "GPIO_OUT_1";
 			};
 		};
 
@@ -278,7 +262,7 @@
 
 	sim_cfg@1 {
 		tlt-mnf,device = "RUT241";
-		tlt-mnf,hwver = <4 4>;
+		tlt-mnf,hwver = <400 499>;
 		default = "2111010";
 	};
 
@@ -383,7 +367,7 @@
 	status = "okay";
 	clock-frequency = <100000>;
 	tlt-mnf,device = "RUT241";
-	tlt-mnf,hwver = <5 99>;
+	tlt-mnf,hwver = <500 9999>;
 
 	tpm: tpm@2e {
 		compatible = "infineon,slb9673";

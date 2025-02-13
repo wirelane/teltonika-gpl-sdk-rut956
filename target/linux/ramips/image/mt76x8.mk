@@ -1,7 +1,6 @@
 #
 # MT76x8 Profiles
 #
-
 include common-teltonika.mk
 include devices/common_mt76x8.mk
 include devices/otd1xx_family.mk
@@ -32,6 +31,8 @@ define Device/tlt-mt7628-common
 	NO_ART := 0
 	IMAGE_SIZE := 15424k
 	MASTER_IMAGE_SIZE := 16384k
+	CONFIG_END = $$(shell expr $$(UBOOT_SIZE) + $$(CONFIG_SIZE))
+	ART_END = $$(shell expr $$(CONFIG_END) + $$(ART_SIZE))
 
 	IMAGE/sysupgrade.bin = \
 			append-kernel | pad-to $$$$(BLOCKSIZE) | \
@@ -40,8 +41,8 @@ define Device/tlt-mt7628-common
 
 	IMAGE/master_fw.bin = \
 			append-tlt-uboot | pad-to $$$$(UBOOT_SIZE) | \
-			append-tlt-config | pad-to $$$$(CONFIG_SIZE) | \
-			append-tlt-art | pad-to $$$$(ART_SIZE) | \
+			append-tlt-config | pad-to $$$$(CONFIG_END) | \
+			append-tlt-art | pad-to $$$$(ART_END) | \
 			append-kernel | pad-to $$$$(BLOCKSIZE) | \
 			append-rootfs | pad-rootfs | \
 			append-version | \
@@ -78,12 +79,12 @@ define Device/teltonika_trb2m
 			kmod-usb-serial-pl2303 kmod-cypress-serial
 	# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+	DEVICE_MODEM_VENDORS := Quectel
+
 	INCLUDED_DEVICES := \
 		TEMPLATE_teltonika_trb246 \
 		TEMPLATE_teltonika_trb256 \
 		TEMPLATE_teltonika_trb247
-
-	DEVICE_MODEM_VENDORS := Quectel
 endef
 
 define Device/teltonika_tap100
@@ -126,9 +127,9 @@ define Device/teltonika_otd140
 	DEVICE_PACKAGES += kmod-usb2 kmod-usb-ohci kmod-i2c-mt7628
 	# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	INCLUDED_DEVICES := TEMPLATE_teltonika_otd140
-
 	DEVICE_MODEM_VENDORS := Quectel
+
+	INCLUDED_DEVICES := TEMPLATE_teltonika_otd140
 endef
 
 define Device/teltonika_rut14x
@@ -190,38 +191,14 @@ define Device/teltonika_rut2m
 	DEVICE_PACKAGES += kmod-mt76_515 kmod-mt7603_515
 	# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	HW_MODS := mod1%260v3 mod2%241v5 mod3%200v5
+	DEVICE_MODEM_VENDORS := Quectel Meiglink
+
+	HW_MODS := mod1%260v3 mod2%241v5 mod3%200v5 mod4%ala440
 
 	INCLUDED_DEVICES := \
 		TEMPLATE_teltonika_rut200 \
 		TEMPLATE_teltonika_rut241 \
-		TEMPLATE_teltonika_rut260 \
-		TEMPLATE_teltonika_rut271
-
-	DEVICE_MODEM_VENDORS := Quectel Meiglink
-endef
-
-define Device/teltonika_rut206
-	$(Device/tlt-mt7628-common)
-	DEVICE_MODEL := RUT206
-	DEVICE_BOOT_NAME := tlt-rut206
-	DEVICE_DTS := mt7628an_teltonika_rut206
-	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.8
-	DEVICE_FEATURES += wifi rndis mobile dualsim usb-port serial bacnet ntrip portlink dot1x-server \
-	                   xfrm-offload
-	# Default common packages for RUT206 series
-	# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	# USB related:
-	DEVICE_PACKAGES += kmod-spi-gpio kmod-gpio-nxp-74hc164 kmod-usb2 \
-	kmod-usb-ohci kmod-usb-ledtrig-usbport kmod-cypress-serial kmod-usb-serial-pl2303
-
-	# Wireless related:
-	DEVICE_PACKAGES += kmod-mt76_515 kmod-mt7603_515
-	# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-	INCLUDED_DEVICES := TEMPLATE_teltonika_rut206
-
-	DEVICE_MODEM_VENDORS := Quectel
+		TEMPLATE_teltonika_rut260
 endef
 
 define Device/teltonika_rut301
@@ -268,9 +245,9 @@ define Device/teltonika_rut361
 	DEVICE_PACKAGES += kmod-mt76_515 kmod-mt7603_515
 	# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	INCLUDED_DEVICES := TEMPLATE_teltonika_rut361
-
 	DEVICE_MODEM_VENDORS := Quectel
+
+	INCLUDED_DEVICES := TEMPLATE_teltonika_rut361
 endef
 
 define Device/teltonika_rut9m
@@ -295,7 +272,9 @@ define Device/teltonika_rut9m
 	DEVICE_PACKAGES += kmod-mt76_515 kmod-mt7603_515
 	# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	HW_MODS := mod1%2c7c_6005 mod2%TLA2021 mod3%CH343 mod4%esim
+	DEVICE_MODEM_VENDORS := Quectel Meiglink
+
+	HW_MODS := mod1%2c7c_6005 mod2%TLA2021 mod3%CH343 mod4%esim mod5%ala440
 
 	INCLUDED_DEVICES := \
 		TEMPLATE_teltonika_rut901 \
@@ -304,8 +283,55 @@ define Device/teltonika_rut9m
 		TEMPLATE_teltonika_rut956 \
 		TEMPLATE_teltonika_rut971 \
 		TEMPLATE_teltonika_rut976
-
-	DEVICE_MODEM_VENDORS := Quectel Meiglink
 endef
 TARGET_DEVICES += teltonika_rut9m
 
+define Device/teltonika_rute
+	$(Device/tlt-mt7628-common)
+
+	DEVICE_DTS := mt7628an-teltonika-rut976 mt7628an-teltonika-rut206 mt7628an-teltonika-rut271
+	KERNEL := kernel-bin | zstd | fit zstd "$$(KDIR)/{$$(subst $$(space),$$(comma),$$(addprefix image-,$$(addsuffix .dtb,$$(DEVICE_DTS))))}"
+	KERNEL_INITRAMFS := $$(KERNEL)
+
+	UBOOT_SIZE := 262144
+	IMAGE_SIZE := 30848k
+	ART_SIZE := 196608
+	MASTER_IMAGE_SIZE := 32768k
+
+	DEVICE_MODEL := RUTE
+	DEVICE_BOOT_NAME := tlt-mt7628
+	DEVICE_FEATURES := large_flash sw-offload gps usb-port serial modbus io wifi dualsim tpm \
+			rndis ncm bacnet ntrip mobile portlink rs232 rs485 dot1x-server port-mirror \
+	                xfrm-offload usb-port
+	FILESYSTEMS := squashfs
+	GPL_PREFIX := GPL
+
+	IMAGE/master_fw_rut9e.bin = master_fw_custom RUT9M
+	IMAGE/master_fw_rut2e.bin = master_fw_custom RUT2M
+	IMAGES += $(if $(CONFIG_BUILD_FACTORY_IMAGE),master_fw_rut9e.bin master_fw_rut2e.bin)
+
+	# Default common packages for RUT9E series
+	# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	# Essential must-have:
+	DEVICE_PACKAGES := kmod-spi-gpio kmod-gpio-nxp-74hc164 kmod-hwmon-mcp3021 \
+			kmod-hwmon-tla2021 kmod-cypress-serial kmod-i2c-mt7628
+
+	# USB related:
+	DEVICE_PACKAGES += kmod-usb2 kmod-usb-ohci kmod-usb-ledtrig-usbport \
+							kmod-usb-serial-pl2303
+
+	# Wireless related:
+	DEVICE_PACKAGES += kmod-mt76_515 kmod-mt7603_515
+	# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	DEVICE_MODEM_VENDORS := Quectel Meiglink
+
+	HW_MODS :=
+
+	INCLUDED_DEVICES := \
+		TEMPLATE_teltonika_rut206 \
+		TEMPLATE_teltonika_rut271 \
+		TEMPLATE_teltonika_rut976
+
+	SUPPORTED_DEVICES := teltonika,rute teltonika,rut976 teltonika,rut206 teltonika,rut271
+endef

@@ -361,11 +361,11 @@ define Device/TEMPLATE_teltonika_rutm56
 	$(Device/teltonika_rutm_common)
 	$(Device/template_rutm_common)
 	DEVICE_MODEL := RUTM56
-	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.11
+	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.12.1
 	DEVICE_FEATURES := gps ethernet ios mobile wifi dual_band_ssid \
 		at_sim dsa hw_nat nat_offloading multi_tag soft_port_mirror \
 		port_link gigabit_port dual_modem custom_usbcfg xfrm-offload \
-		tpm
+		dual_sim tpm
 	DEVICE_LAN_OPTION := "lan1 lan2 lan3 lan4"
 	DEVICE_WAN_OPTION := wan
 	DEVICE_USB_JACK_PATH :=
@@ -382,6 +382,7 @@ define Device/TEMPLATE_teltonika_rutm56
 	HARDWARE/LAN/Port := 4 $(HW_ETH_LAN_PORTS)
 	HARDWARE/Physical_Interfaces/Status_leds := 4 x connection status LEDs, 6 x connection strength LEDs, 10 x Ethernet port status LEDs, 4 x WAN status LEDs, 1 x Power LED, 2 x 2.4G and 5G Wi-Fi LEDs
 	HARDWARE/Physical_Interfaces/Ethernet := 5 $(HW_ETH_RJ45_PORTS), $(HW_ETH_SPEED_1000)
+	HARDWARE/Physical_Interfaces/SIM := 4 $(HW_INTERFACE_SIM_HOLDERS), 2 $(HW_INTERFACE_SIM_ESIM)
 	HARDWARE/Power/Power_consumption := Idle <5 W, Max <18 W
 	HARDWARE/Physical_Interfaces/Antennas := 6 x SMA for Mobile, 2 x RP-SMA for Wi-Fi, 1 x SMA for GNNS
 	HARDWARE/Physical_Specification/Dimensions := 132 x 44.2 x 95.1 mm

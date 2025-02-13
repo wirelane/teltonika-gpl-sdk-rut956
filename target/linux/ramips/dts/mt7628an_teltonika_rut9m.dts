@@ -11,7 +11,7 @@
 	model = "Teltonika RUT9M";
 
 	chosen {
-		bootargs = "console=ttyS0,115200";
+		bootargs = "console=ttyS0,115200 root=/dev/mtdblock5";
 	};
 
 	ext_io {
@@ -185,9 +185,6 @@
 				compatible_model_1 = "RUT906";
 				line_name_1 = "GPIO_ISOLATED_INPUT";
 
-				compatible_model_2 = "RUT976";
-				line_name_2 = "GPIO_ISOLATED_INPUT";
-
 				active_low;
 			};
 			GPIO_37 {
@@ -197,9 +194,6 @@
 				compatible_model_1 = "RUT906";
 				line_name_1 = "GPIO_IN_2";
 
-				compatible_model_2 = "RUT976";
-				line_name_2 = "GPIO_IN_2";
-
 				active_low;
 			};
 			GPIO_104 {
@@ -208,9 +202,6 @@
 
 				compatible_model_1 = "RUT906";
 				line_name_1 = "GPIO_OUT_2";
-
-				compatible_model_2 = "RUT976";
-				line_name_2 = "GPIO_OUT_2";
 			};
 			GPIO_105 {
 				compatible_model_0 = "RUT956";
@@ -218,9 +209,6 @@
 
 				compatible_model_1 = "RUT906";
 				line_name_1 = "GPIO_RELAY_CLOSE_1";
-
-				compatible_model_2 = "RUT976";
-				line_name_2 = "GPIO_RELAY_CLOSE_1";
 			};
 		};
 
@@ -321,7 +309,7 @@
 			};
 		};
 		layout@1 {
-			compatible = "RUT956,RUT906,RUT976";
+			compatible = "RUT956,RUT906";
 
 			io@0 { // 4pin #3
 				label = "din1";
@@ -405,7 +393,7 @@
 	};
 
 	simpin3 {
-		tlt-mnf,hwver = <6 99>;
+		tlt-mnf,hwver = <600 9999>;
 		default = "";
 	};
 
@@ -414,12 +402,12 @@
 	};
 
 	sim_cfg@1 {
-		tlt-mnf,hwver = <5 5>;
+		tlt-mnf,hwver = <500 599>;
 		default = "2111010_2112010";
 	};
 
 	sim_cfg@2 {
-		tlt-mnf,hwver = <6 99>;
+		tlt-mnf,hwver = <600 9999>;
 		default = "2111110_2112010_2121210";
 	};
 

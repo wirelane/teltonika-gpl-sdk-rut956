@@ -309,6 +309,11 @@ tlt-rut206:
 		DEVICE_VENDOR=teltonika \
 		DEVICE_MODEL=RUT206)
 
+tlt-rut2e:
+	@$(call build,256,0,\
+		DEVICE_VENDOR=teltonika \
+		DEVICE_MODEL=RUT2E)
+
 tlt-tap100:
 	@$(call build,128,0,\
 		DEVICE_VENDOR=teltonika \
@@ -367,6 +372,11 @@ tlt-rut9m:
 	@$(call build,128,0,\
 		DEVICE_VENDOR=teltonika \
 		DEVICE_MODEL=RUT9M)
+
+tlt-rut9e:
+	@$(call build,256,0,\
+		DEVICE_VENDOR=teltonika \
+		DEVICE_MODEL=RUT9E)
 
 tlt-tcr1xx:
 	@$(call build,123,1,\

@@ -11,7 +11,7 @@
 	model = "Teltonika RUT361";
 
 	chosen {
-		bootargs = "console=ttyS0,115200";
+		bootargs = "console=ttyS0,115200 root=/dev/mtdblock5";
 	};
 
 	gpio-export {

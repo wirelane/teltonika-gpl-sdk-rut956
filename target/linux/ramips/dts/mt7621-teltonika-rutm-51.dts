@@ -234,7 +234,6 @@
 			};
 			GPIO_99 {
 				line_name = "LED_ETH_GREEN_4";
-				active_low;
 			};
 			GPIO_100 {
 				line_name = "LED_ETH_GREEN_5";
@@ -250,7 +249,6 @@
 			};
 			GPIO_104 {
 				line_name = "LED_ETH_YELLOW_4";
-				active_low;
 			};
 			GPIO_105 {
 				line_name = "LED_ETH_YELLOW_5";

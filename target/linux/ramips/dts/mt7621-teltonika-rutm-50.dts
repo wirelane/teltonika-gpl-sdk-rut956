@@ -58,6 +58,14 @@
 			gpios = <&shift_io 9 GPIO_ACTIVE_HIGH>;
 		};
 
+		yellow_eth_port_3@2 {
+			tlt-mnf,hwver = <202 9999>;
+			tlt-mnf,branch = "A";
+			gpio-export,name = "yellow:eth_port_3";
+			gpio-export,output = <1>;
+			gpios = <&shift_io 8 GPIO_ACTIVE_LOW>;
+		};
+
 		yellow_eth_port_3@1 {
 			tlt-mnf,branch = "A";
 			gpio-export,name = "yellow:eth_port_3";
@@ -93,6 +101,14 @@
 			gpio-export,name = "green:eth_port_4";
 			gpio-export,output = <0>;
 			gpios = <&shift_io 4 GPIO_ACTIVE_HIGH>;
+		};
+
+		green_eth_port_3@2 {
+			tlt-mnf,hwver = <202 9999>;
+			tlt-mnf,branch = "A";
+			gpio-export,name = "green:eth_port_3";
+			gpio-export,output = <1>;
+			gpios = <&shift_io 3 GPIO_ACTIVE_LOW>;
 		};
 
 		green_eth_port_3@1 {

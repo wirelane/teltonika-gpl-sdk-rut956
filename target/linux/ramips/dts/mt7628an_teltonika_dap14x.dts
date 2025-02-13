@@ -11,9 +11,8 @@
 	model = "Teltonika DAP14X";
 
 	chosen {
-		bootargs = "console=ttyS0,115200";
+		bootargs = "console=ttyS0,115200 root=/dev/mtdblock5";
 	};
-
 
 	keys {
 		compatible = "gpio-keys";

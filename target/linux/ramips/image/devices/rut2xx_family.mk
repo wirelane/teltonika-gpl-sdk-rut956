@@ -1,6 +1,5 @@
-define Device/teltonika_rut2m_common
+define Device/teltonika_rut2x_common
 	$(Device/tlt-mt7628-hw-common)
-	$(Device/teltonika_rut2m)
 	HARDWARE/Wireless/WIFI_users := $(HW_WIFI_50_USERS)
 	HARDWARE/Wireless/Wireless_mode := $(HW_WIFI_4)
 	HARDWARE/WAN/Port := 1 $(HW_ETH_WAN_PORT)
@@ -21,7 +20,7 @@ define Device/teltonika_rut2m_common
 	HARDWARE/Physical_Specification/Mounting_options := Bottom and sideways DIN rail mounting slots
 endef
 
-define Device/template_rut2m
+define Device/template_rut2x
 	DEVICE_SWITCH_CONF := switch0 1:lan 0:wan:2 6@eth0
 
 	DEVICE_WLAN_BSSID_LIMIT := wlan0 4
@@ -43,8 +42,8 @@ define Device/template_rut2m
 endef
 
 define Device/template_rut206_io
-	$(Device/teltonika_rut206)
-	$(Device/template_rut2m)
+	$(Device/teltonika_rute)
+	$(Device/template_rut2x)
 
 	DEVICE_SERIAL_CAPABILITIES := \
 		"rs232"                                                                                          \
@@ -66,8 +65,9 @@ define Device/template_rut206_io
 endef
 
 define Device/TEMPLATE_teltonika_rut200
-	$(Device/teltonika_rut2m_common)
-	$(Device/template_rut2m)
+	$(Device/teltonika_rut2m)
+	$(Device/teltonika_rut2x_common)
+	$(Device/template_rut2x)
 	DEVICE_MODEL := RUT200
 	DEVICE_INITIAL_FIRMWARE_SUPPORT :=
 
@@ -90,8 +90,9 @@ define Device/TEMPLATE_teltonika_rut200
 endef
 
 define Device/TEMPLATE_teltonika_rut241
-	$(Device/teltonika_rut2m_common)
-	$(Device/template_rut2m)
+	$(Device/teltonika_rut2m)
+	$(Device/teltonika_rut2x_common)
+	$(Device/template_rut2x)
 	DEVICE_MODEL := RUT241
 	DEVICE_INITIAL_FIRMWARE_SUPPORT :=
 	DEVICE_FEATURES += esim-p
@@ -118,8 +119,9 @@ define Device/TEMPLATE_teltonika_rut241
 endef
 
 define Device/TEMPLATE_teltonika_rut260
-	$(Device/teltonika_rut2m_common)
-	$(Device/template_rut2m)
+	$(Device/teltonika_rut2m)
+	$(Device/teltonika_rut2x_common)
+	$(Device/template_rut2x)
 	DEVICE_MODEL := RUT260
 	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.4.1
 
@@ -134,13 +136,15 @@ define Device/TEMPLATE_teltonika_rut260
 endef
 
 define Device/TEMPLATE_teltonika_rut271
-	$(Device/teltonika_rut2m_common)
-	$(Device/template_rut2m)
+	$(Device/teltonika_rute)
+	$(Device/teltonika_rut2x_common)
+	$(Device/template_rut2x)
 	DEVICE_MODEL := RUT271
-	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.10.2
+	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.12.1
 
 	HARDWARE/Mobile/Module := 5G up to 223 DL/ 123 UL Mbps; 4G LTE up to 195 DL/ 105 UL Mbps
 	HARDWARE/Mobile/3GPP_Release := Release 17
+	HARDWARE/System_Characteristics/Flash_Storage := $(HW_FLASH_SIZE_32M), $(HW_FLASH_TYPE_NOR)
 	HARDWARE/Regulatory_&_Type_Approvals/Regulatory := CE, UKCA, ANRT, Kenya, ICASA, FCC, IC, PTCRB, NOM, RCM, KC, Giteki, \
 	IMDA, E-mark, CB, UL/CSA Safety, RoHS, REACH, R118
 	HARDWARE/Regulatory_&_Type_Approvals/Operator := AT&T, Verizon, T-Mobile, Uscellula
@@ -185,4 +189,5 @@ define Device/TEMPLATE_teltonika_rut206
 	HARDWARE/SD_card/Applications := $(HW_SD_APLICATIONS)
 	HARDWARE/SD_card/Capacity := $(HW_SD_CAPACITY);
 	HARDWARE/SD_card/Storage_formats := $(HW_SD_STORAGE_FORMATS)
+	HARDWARE/System_Characteristics/Flash_Storage := $(HW_FLASH_SIZE_32M), $(HW_FLASH_TYPE_NOR)
 endef

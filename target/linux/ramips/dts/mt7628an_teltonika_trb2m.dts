@@ -11,7 +11,7 @@
 	model = "Teltonika TRB2M";
 
 	chosen {
-		bootargs = "console=ttyS0,115200";
+		bootargs = "console=ttyS0,115200 root=/dev/mtdblock4";
 	};
 
 	gpio-export {
