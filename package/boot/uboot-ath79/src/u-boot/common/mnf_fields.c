@@ -90,6 +90,7 @@ mnf_field_t mnf_fields[] = {
 	MNF_FIELD( 'P', "profiles",  "eSIM profiles",      0x130, 128, clear          , 0 ),
 	MNF_FIELD( 'W', "wifi_pass", "WiFi password",       0x90,  16, clear          , 0 ),
 	MNF_FIELD( 'x', "passwd",    "Linux password",      0xA0, 106, clear          , 0 ),
+	MNF_FIELD( 'c', "mob_cfg",   "Mob config",         0x536,   4, clear          , 0 ),
 	{ '\0' }
 };
 

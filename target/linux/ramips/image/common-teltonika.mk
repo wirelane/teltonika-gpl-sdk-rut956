@@ -46,5 +46,5 @@ define Build/master_fw_custom
 	$(call Build/pad-rootfs)
 	$(call Build/append-version)
 	$(call Build/check-size,$(MASTER_IMAGE_SIZE))
-	$(call Build/finalize-tlt-master-stendui-ex,$(1))
+	$(call Build/finalize-tlt-master-stendui,,$(1))
 endef

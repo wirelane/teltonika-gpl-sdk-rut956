@@ -33,6 +33,8 @@ define Device/tlt-mt7628-common
 	MASTER_IMAGE_SIZE := 16384k
 	CONFIG_END = $$(shell expr $$(UBOOT_SIZE) + $$(CONFIG_SIZE))
 	ART_END = $$(shell expr $$(CONFIG_END) + $$(ART_SIZE))
+	HW_MODS := blv1
+
 
 	IMAGE/sysupgrade.bin = \
 			append-kernel | pad-to $$$$(BLOCKSIZE) | \
@@ -192,9 +194,9 @@ define Device/teltonika_rut2m
 	DEVICE_PACKAGES += kmod-mt76_515 kmod-mt7603_515
 	# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	DEVICE_MODEM_VENDORS := Quectel Meiglink
+	DEVICE_MODEM_VENDORS := Quectel Meiglink Teltonika
 
-	HW_MODS := mod1%260v3 mod2%241v5 mod3%200v5 mod4%ala440
+	HW_MODS += 260v3 241v5 200v5 ala440
 
 	INCLUDED_DEVICES := \
 		TEMPLATE_teltonika_rut200 \
@@ -274,9 +276,9 @@ define Device/teltonika_rut9m
 	DEVICE_PACKAGES += kmod-mt76_515 kmod-mt7603_515
 	# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	DEVICE_MODEM_VENDORS := Quectel Meiglink
+	DEVICE_MODEM_VENDORS := Quectel Meiglink Teltonika
 
-	HW_MODS := mod1%2c7c_6005 mod2%TLA2021 mod3%CH343 mod4%esim mod5%ala440
+	HW_MODS += 2c7c_6005 TLA2021 CH343 esim ala440
 
 	INCLUDED_DEVICES := \
 		TEMPLATE_teltonika_rut901 \
@@ -325,8 +327,6 @@ define Device/teltonika_rute
 	# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	DEVICE_MODEM_VENDORS := Quectel Meiglink
-
-	HW_MODS :=
 
 	INCLUDED_DEVICES := \
 		TEMPLATE_teltonika_rut206 \

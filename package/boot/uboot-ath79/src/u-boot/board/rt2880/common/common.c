@@ -160,9 +160,6 @@ void print_board_info(void)
 		if (flash_info[bank].model_name != NULL)
 			printf(" %s", flash_info[bank].model_name);
 
-		if (flash_info[bank].addr4b)
-			printf(" (4B addr) ");
-
 		puts("\n");
 	}
 

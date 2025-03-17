@@ -138,6 +138,12 @@
 			default =  "2";
 			log;
 		};
+
+		mob_cfg {
+			reg = <&config 0x66 0x4>;
+			type = "digit";
+			default = "0000";
+		};
 	};
 
 	cpuintc: cpuintc {

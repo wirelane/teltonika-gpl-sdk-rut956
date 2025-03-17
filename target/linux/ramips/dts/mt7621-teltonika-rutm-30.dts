@@ -30,6 +30,18 @@
 			gpios = <&gpio 15 GPIO_ACTIVE_HIGH>;
 		};
 
+		gpio_sim_select {
+			gpio-export,name = "sim_sel";
+			gpio-export,output = <0>;
+			gpios = <&gpio 16 GPIO_ACTIVE_LOW>;
+		};
+
+		gpio_tpm_reset {
+			gpio-export,name = "tpm_reset";
+			gpio-export,output = <1>;
+			gpios = <&gpio 6 GPIO_ACTIVE_HIGH>;
+		};
+
 		yellow_eth_port_1 {
 			gpio-export,name = "yellow:eth_port_1";
 			gpio-export,output = <0>;
@@ -53,7 +65,6 @@
 			gpio-export,output = <0>;
 			gpios = <&gpio 43 GPIO_ACTIVE_HIGH>;
 		};
-
 	};
 
 	leds {
@@ -179,6 +190,12 @@
 			GPIO_15 {
 				line_name = "GPIO_MODEM_POWER_1";
 			};
+			GPIO_16 {
+				line_name = "GPIO_SIM_SELECT";
+			};
+			GPIO_6 {
+				line_name = "GPIO_TPM_RESET";
+			};
 		};
 	};
 
@@ -224,7 +241,7 @@
 
 &mnfinfo {
 	sim_cfg {
-		default = "1111020_1112020";
+		default = "1111120_1112020_1121220";
 	};
 };
 

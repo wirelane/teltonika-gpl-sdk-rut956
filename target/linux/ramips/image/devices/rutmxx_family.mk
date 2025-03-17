@@ -188,7 +188,7 @@ define Device/TEMPLATE_teltonika_rutm30
 	$(Device/teltonika_rutm_common)
 	$(Device/template_rutm_common)
 	DEVICE_MODEL := RUTM30
-	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.12
+	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.13.1
 	DEVICE_FEATURES := wifi ethernet ios mobile dual_band_ssid dual_sim \
 		at_sim dsa hw_nat nat_offloading multi_tag port_link \
 		gigabit_port tpm
@@ -206,6 +206,7 @@ define Device/TEMPLATE_teltonika_rutm30
 	HARDWARE/LAN/Port := 1 $(HW_ETH_LAN_PORTS)
 	HARDWARE/Physical_Interfaces/Status_leds := 3 x connection status LEDs, 3 x connection strength LEDs, 2 x Ethernet port status LEDs, 2 x WAN status LEDs and 1 x Power LED
 	HARDWARE/Physical_Interfaces/Ethernet := 2 $(HW_ETH_RJ45_PORTS), $(HW_ETH_SPEED_1000)
+	HARDWARE/Physical_Interfaces/SIM := 2 $(HW_INTERFACE_SIM_HOLDERS), $(HW_INTERFACE_SIM_ESIM)
 	HARDWARE/Power/Power_consumption := Idle <5 W, Max <18 W
 	HARDWARE/Physical_Interfaces/Antennas := 4 x SMA for Mobile, 2 x RP-SMA for Wi-Fi
 	HARDWARE/Physical_Specification/Dimensions := 132 x 44.2 x 95.1 mm
