@@ -1,31 +1,6 @@
---- a/drivers/pinctrl/pinmux.c
-+++ b/drivers/pinctrl/pinmux.c
-@@ -431,12 +431,21 @@ int pinmux_enable_setting(const struct p
- 
- 	/* Try to allocate all pins in this group, one by one */
- 	for (i = 0; i < num_pins; i++) {
-+
-+		desc = pin_desc_get(pctldev, pins[i]);
-+		if (desc->mux_usecount && strcmp(desc->mux_owner, setting->dev_name))
-+			ret = -EINVAL;
-+
-+		if(ret && strncmp(setting->dev_name + strlen(setting->dev_name) - 3, "i2c", 3) == 0) {
-+			pin_free(pctldev, pins[i], NULL);
-+			pr_info("Releasing pin %s and requesting access for %s \n", desc->name,setting->dev_name);
-+		}
- 		ret = pin_request(pctldev, pins[i], setting->dev_name, NULL);
-+
- 		if (ret) {
- 			const char *gname;
- 			const char *pname;
- 
--			desc = pin_desc_get(pctldev, pins[i]);
- 			pname = desc ? desc->name : "non-existing";
- 			gname = pctlops->get_group_name(pctldev,
- 						setting->data.mux.group);
 --- a/drivers/tty/serial/8250/8250_port.c
 +++ b/drivers/tty/serial/8250/8250_port.c
-@@ -2219,6 +2221,18 @@ int serial8250_do_startup(struct uart_po
+@@ -2219,6 +2219,18 @@ int serial8250_do_startup(struct uart_po
  	unsigned long flags;
  	unsigned char lsr, iir;
  	int retval;

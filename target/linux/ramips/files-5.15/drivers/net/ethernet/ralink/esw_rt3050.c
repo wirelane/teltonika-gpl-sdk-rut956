@@ -310,7 +310,7 @@ struct rt305x_esw {
 	int			led_frequency;
 	struct esw_vlan vlans[RT305X_ESW_NUM_VLANS];
 	struct esw_port ports[RT305X_ESW_NUM_PORTS];
-	char buf[2048];
+	char buf[16384];
 	char buf2[16];
 	u32 prev_link;
 };

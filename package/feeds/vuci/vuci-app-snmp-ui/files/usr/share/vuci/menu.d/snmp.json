@@ -30,6 +30,7 @@
             "acls": [ "services/snmp/traps" ],
             "view": "services/Trap",
             "index": 4,
-            "files": ["/etc/config/snmpd", "/usr/lib/opkg/info/snmptrap.control"]
+            "files": ["/etc/config/snmpd"],
+            "orfiles": ["/usr/lib/opkg/info/snmptrap.control", "/usr/local/usr/lib/opkg/info/snmptrap.control"]
         }
 }

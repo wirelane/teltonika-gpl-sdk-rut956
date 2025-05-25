@@ -22,7 +22,7 @@ endef
 define Device/template_rutm_common
 	$(Device/teltonika_rutm)
 
-	DEVICE_WLAN_BSSID_LIMIT := wlan0 16, wlan1 16
+	DEVICE_WLAN_BSSID_LIMIT := wlan0 8, wlan1 8
 
 	DEVICE_USB_JACK_PATH := /usb1/1-1/
 
@@ -43,7 +43,7 @@ define Device/TEMPLATE_teltonika_rutm08
 	DEVICE_MODEL := RUTM08
 	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.6.1
 	DEVICE_FEATURES := usb ethernet ios dsa hw_nat nat_offloading multi_tag port_link \
-		soft_port_mirror gigabit_port xfrm-offload
+		soft_port_mirror gigabit_port xfrm-offload reset_button
 	DEVICE_LAN_OPTION := "lan1 lan2 lan3"
 	DEVICE_WAN_OPTION := wan
 	DEVICE_WLAN_BSSID_LIMIT :=
@@ -66,7 +66,7 @@ define Device/TEMPLATE_teltonika_rutm09
 	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.6.1
 	DEVICE_FEATURES := usb ethernet ios gps mobile dual_sim dsa \
 		hw_nat nat_offloading multi_tag port_link soft_port_mirror \
-		gigabit_port xfrm-offload
+		gigabit_port xfrm-offload reset_button
 	DEVICE_INTERFACE_CONF := \
 		lan default_ip 192.168.1.1
 	DEVICE_LAN_OPTION := "lan1 lan2 lan3"
@@ -92,7 +92,7 @@ define Device/TEMPLATE_teltonika_rutm10
 	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.6.1
 	DEVICE_FEATURES := usb ethernet ios wifi dual_band_ssid dsa \
 		hw_nat nat_offloading multi_tag port_link soft_port_mirror \
-		gigabit_port xfrm-offload
+		gigabit_port xfrm-offload reset_button
 	DEVICE_LAN_OPTION := "lan1 lan2 lan3"
 	DEVICE_WAN_OPTION := wan
 	DEVICE_DOT1X_SERVER_CAPABILITIES := false false dsa_isolate
@@ -113,7 +113,7 @@ define Device/TEMPLATE_teltonika_rutm11
 	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.6.1
 	DEVICE_FEATURES := usb ethernet ios gps mobile wifi \
 		dual_band_ssid dual_sim dsa hw_nat nat_offloading multi_tag \
-		port_link soft_port_mirror gigabit_port xfrm-offload
+		port_link soft_port_mirror gigabit_port xfrm-offload reset_button
 	DEVICE_LAN_OPTION := "lan1 lan2 lan3"
 	DEVICE_WAN_OPTION := wan
 	DEVICE_DOT1X_SERVER_CAPABILITIES := false false dsa_isolate
@@ -134,7 +134,7 @@ define Device/TEMPLATE_teltonika_rutm12
 	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.9
 	DEVICE_FEATURES := ethernet ios gps mobile wifi \
 		dual_band_ssid dual_modem dsa hw_nat nat_offloading multi_tag \
-		port_link soft_port_mirror gigabit_port custom_usbcfg xfrm-offload
+		port_link soft_port_mirror gigabit_port custom_usbcfg xfrm-offload reset_button
 	DEVICE_LAN_OPTION := "lan1 lan2 lan3 lan4"
 	DEVICE_WAN_OPTION := wan
 	DEVICE_USB_JACK_PATH :=
@@ -163,7 +163,7 @@ define Device/TEMPLATE_teltonika_rutm20
 	DEVICE_POE_CHIP := 0X2F 4:_lan
 	DEVICE_FEATURES := wifi ethernet mobile dual_band_ssid dual_sim \
 		at_sim dsa hw_nat nat_offloading multi_tag port_link \
-		gigabit_port m2_modem poe tpm
+		gigabit_port m2_modem poe tpm reset_button
 	DEVICE_LAN_OPTION := "lan "
 	DEVICE_WAN_OPTION := wan
 	DEVICE_DOT1X_SERVER_CAPABILITIES := false false dsa_isolate
@@ -191,7 +191,7 @@ define Device/TEMPLATE_teltonika_rutm30
 	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.13.1
 	DEVICE_FEATURES := wifi ethernet ios mobile dual_band_ssid dual_sim \
 		at_sim dsa hw_nat nat_offloading multi_tag port_link \
-		gigabit_port tpm
+		gigabit_port tpm reset_button
 	DEVICE_LAN_OPTION := "lan "
 	DEVICE_WAN_OPTION := wan
 	DEVICE_DOT1X_SERVER_CAPABILITIES := false false dsa_isolate
@@ -220,7 +220,7 @@ define Device/TEMPLATE_teltonika_rutm31
 	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.13.4
 	DEVICE_FEATURES := wifi ethernet ios mobile dual_band_ssid dual_sim \
 		at_sim dsa hw_nat nat_offloading multi_tag port_link \
-		gigabit_port tpm
+		gigabit_port tpm reset_button
 	DEVICE_LAN_OPTION := "lan "
 	DEVICE_WAN_OPTION := wan
 	DEVICE_DOT1X_SERVER_CAPABILITIES := false false dsa_isolate
@@ -249,7 +249,7 @@ define Device/TEMPLATE_teltonika_rutm50
 	DEVICE_INITIAL_FIRMWARE_SUPPORT :=
 	DEVICE_FEATURES := usb ethernet ios mobile wifi dual_band_ssid \
 		dual_sim at_sim dsa hw_nat nat_offloading multi_tag \
-		port_link soft_port_mirror gigabit_port xfrm-offload
+		port_link soft_port_mirror gigabit_port xfrm-offload reset_button
 	DEVICE_LAN_OPTION := "lan1 lan2 lan3 lan4"
 	DEVICE_WAN_OPTION := wan
 	DEVICE_USB_JACK_PATH := /usb1/1-2/
@@ -274,7 +274,7 @@ define Device/TEMPLATE_teltonika_rutm51
 	DEVICE_USB_JACK_PATH := /usb1/1-2/
 	DEVICE_FEATURES := usb ethernet ios mobile wifi dual_band_ssid \
 		dual_sim at_sim dsa hw_nat nat_offloading multi_tag \
-		soft_port_mirror port_link gigabit_port xfrm-offload
+		soft_port_mirror port_link gigabit_port xfrm-offload reset_button
 	DEVICE_LAN_OPTION := "lan1 lan2 lan3 lan4"
 	DEVICE_WAN_OPTION := wan
 	DEVICE_DOT1X_SERVER_CAPABILITIES := false false dsa_isolate
@@ -297,7 +297,7 @@ define Device/TEMPLATE_teltonika_rutm52
 	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.10
 	DEVICE_FEATURES := gps ethernet ios mobile wifi dual_band_ssid dual_sim \
 		at_sim dsa hw_nat nat_offloading multi_tag soft_port_mirror port_link \
-		gigabit_port dual_modem custom_usbcfg sd_card xfrm-offload tpm
+		gigabit_port dual_modem custom_usbcfg sd_card xfrm-offload tpm reset_button
 	DEVICE_LAN_OPTION := "lan1 lan2 lan3 lan4"
 	DEVICE_WAN_OPTION := wan
 	DEVICE_USB_JACK_PATH :=
@@ -326,7 +326,7 @@ define Device/TEMPLATE_teltonika_rutm54
 	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.11
 	DEVICE_FEATURES := gps usb ethernet ios mobile wifi dual_band_ssid \
 		dual_sim at_sim dsa hw_nat nat_offloading multi_tag soft_port_mirror \
-		port_link gigabit_port m2_modem xfrm-offload tpm
+		port_link gigabit_port m2_modem xfrm-offload tpm reset_button
 	DEVICE_LAN_OPTION := "lan1 lan2 lan3 lan4"
 	DEVICE_WAN_OPTION := wan
 	DEVICE_USB_JACK_PATH := /usb1/1-2/
@@ -348,12 +348,12 @@ define Device/TEMPLATE_teltonika_rutm55
 	$(Device/teltonika_rutm_common)
 	$(Device/template_rutm_common)
 	DEVICE_MODEL := RUTM55
-	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.13
+	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.14
 	DEVICE_USB_JACK_PATH := /usb1/1-2/1-2.1/
 	DEVICE_FEATURES := gps ethernet ios mobile wifi dual_band_ssid \
 		at_sim dsa hw_nat nat_offloading multi_tag port_link \
 		soft_port_mirror gigabit_port rs232 rs485 usb xfrm-offload \
-		tpm
+		dual_sim tpm reset_button
 	DEVICE_LAN_OPTION := "lan1 lan2 lan3"
 	DEVICE_WAN_OPTION := wan
 	DEVICE_DOT1X_SERVER_CAPABILITIES := false false dsa_isolate
@@ -395,7 +395,7 @@ define Device/TEMPLATE_teltonika_rutm56
 	DEVICE_FEATURES := gps ethernet ios mobile wifi dual_band_ssid \
 		at_sim dsa hw_nat nat_offloading multi_tag soft_port_mirror \
 		port_link gigabit_port dual_modem custom_usbcfg xfrm-offload \
-		dual_sim tpm
+		dual_sim tpm reset_button
 	DEVICE_LAN_OPTION := "lan1 lan2 lan3 lan4"
 	DEVICE_WAN_OPTION := wan
 	DEVICE_USB_JACK_PATH :=
@@ -426,7 +426,7 @@ define Device/TEMPLATE_teltonika_rutm59
 	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.9.3
 	DEVICE_FEATURES := usb ethernet ios mobile dual_sim \
 		at_sim dsa hw_nat nat_offloading multi_tag port_link \
-		soft_port_mirror gigabit_port gps xfrm-offload
+		soft_port_mirror gigabit_port gps xfrm-offload reset_button
 	DEVICE_LAN_OPTION := "lan1 lan2 lan3 lan4"
 	DEVICE_WAN_OPTION := wan
 	DEVICE_USB_JACK_PATH := /usb1/1-2/

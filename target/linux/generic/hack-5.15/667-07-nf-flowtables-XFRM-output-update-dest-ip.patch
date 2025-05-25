@@ -37,7 +37,7 @@ nexthop lookups.
  		WARN_ON_ONCE(1);
 --- a/net/netfilter/nf_flow_table_ip.c
 +++ b/net/netfilter/nf_flow_table_ip.c
-@@ -347,7 +347,7 @@ unsigned int nf_flow_offload_ip_hook_tai
+@@ -344,7 +344,7 @@ unsigned int nf_flow_offload_ip_hook_tai
  		outdev = rt->dst.dev;
  		skb->dev = outdev;
  		nexthop = rt_nexthop(
@@ -46,7 +46,7 @@ nexthop lookups.
  		skb_dst_set_noref(skb, &rt->dst);
  		neigh_xmit(NEIGH_ARP_TABLE, outdev, &nexthop, skb);
  		ret = NF_STOLEN;
-@@ -607,7 +607,7 @@ unsigned int nf_flow_offload_ipv6_hook_t
+@@ -604,7 +604,7 @@ unsigned int nf_flow_offload_ipv6_hook_t
  		outdev = rt->dst.dev;
  		skb->dev = outdev;
  		nexthop = rt6_nexthop(
@@ -111,7 +111,7 @@ nexthop lookups.
  	int ret;
  #endif
  
-@@ -557,8 +559,7 @@ xt_flowoffload_route(struct sk_buff *skb
+@@ -561,8 +563,7 @@ xt_flowoffload_route(struct sk_buff *skb
  
  	nf_route(xt_net(par), &other_dst, &fl, false, xt_family(par));
  
@@ -121,7 +121,7 @@ nexthop lookups.
  
  	if (info->flags & XT_FLOWOFFLOAD_XFRM)
  		nf_dev_forward_xfrm(route);
-@@ -568,7 +569,7 @@ xt_flowoffload_route(struct sk_buff *skb
+@@ -572,7 +573,7 @@ xt_flowoffload_route(struct sk_buff *skb
  		return 0;
  
  	if (route->xmit_type == FLOW_OFFLOAD_XMIT_NEIGH) {

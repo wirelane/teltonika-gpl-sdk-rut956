@@ -14,7 +14,7 @@ ucidef_target_defaults() {
 		ucidef_set_interface_default_macaddr "wan" "$(macaddr_add "$(mtd_get_mac_binary config 0x0)" 1)"
 
 		# set up io
-		[ "${model:7:1}" = "6" ] || ucidef_set_hwinfo ios
+		[ "${model:7:1}" = "6" ] || [ "$branch" = "A" ] || ucidef_set_hwinfo ios
 
 		# set up modem
 		[ "${model:5:1}" = "1" ] && \
@@ -28,6 +28,13 @@ ucidef_target_defaults() {
 
 		# set up eSIM (special device code, before SIM config)
 		[ "${model:7:1}" = "1" ] && [ "${model::6}" = "RUT901" ] && ucidef_set_esim
+
+		# set up PoE
+		if [ "$branch" = "A" ]; then
+			ucidef_set_hwinfo poe
+			ucidef_set_poe 1 3 "_lan1" "4" 30000 "_lan2" "4" 30000 "_wan4" "4" 30000
+			ucidef_set_poe_chip "0X2F" "1:_wan4" "3:_lan2" "4:_lan1"
+		fi
 		;;
 	DAP14*)
 		# set up MAC addresses

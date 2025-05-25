@@ -38,7 +38,7 @@ define Device/template_rut2x
 	DEVICE_INTERFACE_CONF := \
 		lan default_ip 192.168.1.1
 
-	DEVICE_FEATURES := mobile wifi ethernet nat_offloading port_link xfrm-offload
+	DEVICE_FEATURES := mobile wifi ethernet nat_offloading port_link xfrm-offload reset_button
 endef
 
 define Device/template_rut2x6_io
@@ -70,6 +70,7 @@ define Device/TEMPLATE_teltonika_rut200
 	$(Device/template_rut2x)
 	DEVICE_MODEL := RUT200
 	DEVICE_INITIAL_FIRMWARE_SUPPORT :=
+	DEVICE_FEATURES += small_flash
 
 	HARDWARE/Mobile/Module := 4G LTE Cat 4 up to 150 DL/50 UL Mbps; 3G up to 21 DL/5.76 UL Mbps; 2G up to 236.8 DL/236.8 UL kbps
 	HARDWARE/Mobile/3GPP_Release := Release 9
@@ -95,7 +96,7 @@ define Device/TEMPLATE_teltonika_rut241
 	$(Device/template_rut2x)
 	DEVICE_MODEL := RUT241
 	DEVICE_INITIAL_FIRMWARE_SUPPORT :=
-	DEVICE_FEATURES += esim-p
+	DEVICE_FEATURES += esim-p small_flash
 
 	HARDWARE/Mobile/Module := 4G LTE Cat 4 up to 150 DL/50 UL Mbps; 3G up to 21 DL/5.76 UL Mbps; 2G up to 236.8 DL/236.8 UL kbps
 	HARDWARE/Mobile/3GPP_Release := Release 10/11 depending on the hardware version
@@ -124,6 +125,7 @@ define Device/TEMPLATE_teltonika_rut260
 	$(Device/template_rut2x)
 	DEVICE_MODEL := RUT260
 	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.4.1
+	DEVICE_FEATURES += small_flash
 
 	HARDWARE/Mobile/Module := 4G LTE Cat 6 up to 300 DL/ 50 UL Mbps; 3G up to 42 DL/ 5.76 UL Mbps
 	HARDWARE/Mobile/3GPP_Release := Release 12

@@ -2,7 +2,7 @@ define Device/TEMPLATE_teltonika_atrm50
 	$(Device/tlt-mt7621-hw-common)
 	$(Device/teltonika_atrm50)
 
-	DEVICE_WLAN_BSSID_LIMIT := wlan0 16, wlan1 16
+	DEVICE_WLAN_BSSID_LIMIT := wlan0 8, wlan1 8
 
 	DEVICE_USB_JACK_PATH := /usb1/1-2/
 
@@ -20,7 +20,7 @@ define Device/TEMPLATE_teltonika_atrm50
 
 	DEVICE_FEATURES := usb ethernet power_ios gps mobile wifi dual_band_ssid \
 		dual_sim at_sim dsa hw_nat nat_offloading multi_tag \
-		port_link soft_port_mirror gigabit_port sd_card xfrm-offload tpm
+		port_link soft_port_mirror gigabit_port sd_card xfrm-offload tpm reset_button
 
 	DEVICE_WAN_OPTION := wan
 

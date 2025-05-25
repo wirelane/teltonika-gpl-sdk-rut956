@@ -60,16 +60,17 @@ MAKE_VARS += EXT_LIBSI="$(LIBGCC_S)"
 
 MAKE_FLAGS += \
 	CFLAGS="$(TARGET_CFLAGS)" \
-	LIBDIR="/usr/lib/ebtables"
+	LIBDIR="/usr/local/usr/lib/ebtables"
 
 define Package/ebtables/install
+	$(eval DEST_DIR:=$$(1)$(if $(findstring m,$(CONFIG_PACKAGE_ebtables)),,/usr/local))
 	$(INSTALL_DIR) $(1)/etc
 	$(INSTALL_DATA) $(PKG_BUILD_DIR)/ethertypes $(1)/etc/
-	$(INSTALL_DIR) $(1)/usr/lib/ebtables
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/lib*.so $(1)/usr/lib/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/extensions/*.so $(1)/usr/lib/ebtables/
-	$(INSTALL_DIR) $(1)/usr/sbin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/ebtables $(1)/usr/sbin/
+	$(INSTALL_DIR) $(DEST_DIR)/usr/lib/ebtables
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/lib*.so $(DEST_DIR)/usr/lib/
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/extensions/*.so $(DEST_DIR)/usr/lib/ebtables/
+	$(INSTALL_DIR) $(DEST_DIR)/sbin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/ebtables $(DEST_DIR)/sbin/
 endef
 
 define Package/ebtables-utils/install

@@ -40,8 +40,8 @@ define Device/template_trb2m
 	DEVICE_INTERFACE_CONF := \
 		lan device eth0 default_ip 192.168.1.1
 
-	DEVICE_FEATURES := dual_sim mobile gps ethernet ios rs232 rs485 \
-		sw_rst_on_init xfrm-offload nat_offloading single_port
+	DEVICE_FEATURES := gateway dual_sim mobile gps ethernet ios rs232 rs485 \
+		sw_rst_on_init xfrm-offload nat_offloading small_flash reset_button
 
 	DEVICE_DOT1X_SERVER_CAPABILITIES := false false single_port
 

@@ -8,7 +8,7 @@ ARCH:=mipsel
 BOARD:=ramips
 BOARDNAME:=MediaTek Ralink MIPS
 SUBTARGETS:=mt76x8
-FEATURES:=squashfs gpio
+FEATURES:=squashfs gpio reset_button
 
 KERNEL_PATCHVER:=5.15
 KERNEL_TESTING_PATCHVER:=5.15

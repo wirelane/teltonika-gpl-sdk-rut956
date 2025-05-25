@@ -185,6 +185,10 @@
 				compatible_model_1 = "RUT906";
 				line_name_1 = "GPIO_ISOLATED_INPUT";
 
+				compatible_model_2 = "RUT951";
+				compatible_branch_2 = "A";
+				line_name_2 = "GPIO_T2P_SIGNAL";
+
 				active_low;
 			};
 			GPIO_37 {
@@ -193,6 +197,10 @@
 
 				compatible_model_1 = "RUT906";
 				line_name_1 = "GPIO_IN_2";
+
+				compatible_model_2 = "RUT951";
+				compatible_branch_2 = "A";
+				line_name_2 = "GPIO_4PIN_SIGNAL";
 
 				active_low;
 			};
@@ -260,8 +268,27 @@
 
 		misc {
 			GPIO_0 {
-				compatible_versions = <5 99>;
-				line_name = "GPIO_MODEM_STATUS";
+				compatible_model_0 = "RUT901";
+				compatible_versions_0 = <5 99>;
+				line_name_0 = "GPIO_MODEM_STATUS";
+
+				compatible_model_1 = "RUT906";
+				compatible_versions_1 = <5 99>;
+				line_name_1 = "GPIO_MODEM_STATUS";
+
+				compatible_model_2 = "RUT956";
+				compatible_versions_2 = <5 99>;
+				line_name_2 = "GPIO_MODEM_STATUS";
+
+				compatible_model_3 = "RUT951";
+				compatible_versions_3 = <5 99>;
+				line_name_3 = "GPIO_MODEM_STATUS";
+
+				compatible_model_4 = "RUT951";
+				compatible_versions_4 = <0 99>;
+				compatible_branch_4 = "A";
+				line_name_4 = "GPIO_MODEM_STATUS";
+
 				active_low;
 			};
 			GPIO_106 {
@@ -278,10 +305,27 @@
 				line_name = "GPIO_SIM_SELECT_2";
 			};
 			GPIO_44 {
-				line_name = "GPIO_SD_ENABLE"; // Duplicates as rts, fix in the future
+				compatible_model_0 = "RUT906";
+				line_name_0 = "GPIO_RS485_D_EN";
+
+				compatible_model_1 = "RUT956";
+				line_name_1 = "GPIO_RS485_D_EN";
+
+				compatible_model_2 = "RUT951";
+				compatible_branch_2 = "A";
+				line_name_2 = "TPM_RESET";
+			};
+			GPIO_46 {
+				compatible_model = "RUT951";
+				compatible_branch = "A";
+				line_name = "PSE_RESET";
 			};
 			GPIO_109 {
-				line_name = "GPIO_RS485_RX_EN";
+				compatible_model_0 = "RUT906";
+				line_name_0 = "GPIO_RS485_RX_EN";
+
+				compatible_model_1 = "RUT956";
+				line_name_1 = "GPIO_RS485_RX_EN";
 			};
 			GPIO_110 {
 				line_name = "GPIO_DCD";
@@ -379,6 +423,38 @@
 					divider = "153792.502179599"; //147.0 / 1147.0 * 1000.0 * 1200.0
 				};
 			};
+		};
+	};
+
+	poeman {
+		tlt-mnf,branch = "A";
+		bus = "/dev/i2c-0";
+		pse_en = "PSE_RESET";
+		adc {
+			modem_port = <0>;
+			divider = "61.79";
+		};
+		budget@0 {
+			GPIO_4PIN_SIGNAL = <0>;
+			GPIO_T2P_SIGNAL = <0>;
+			adc_max = <48>;
+			budget = <0>;
+		};
+		budget@1 {
+			GPIO_4PIN_SIGNAL = <0>;
+			GPIO_T2P_SIGNAL = <0>;
+			adc_min = <48>;
+			budget = <60000>;
+		};
+		budget@2 {
+			GPIO_4PIN_SIGNAL = <1>;
+			GPIO_T2P_SIGNAL = <0>;
+			budget = <0>;
+		};
+		budget@3 {
+			GPIO_4PIN_SIGNAL = <1>;
+			GPIO_T2P_SIGNAL = <1>;
+			budget = <15000>;
 		};
 	};
 };
@@ -544,6 +620,5 @@
 	linux,rs485-enabled-at-boot-time;
 	rs485-rts-delay = <0 0>;
 	rs485-rx-during-tx;
-	rts-gpios = <&gpio 44 GPIO_ACTIVE_HIGH>;
 	status = "okay";
 };

@@ -57,14 +57,18 @@ endef
 
 define Package/dsa-dot1x-server/install
 	$(INSTALL_DIR) $(1)/usr/sbin/ $(1)/usr/lib/ $(1)/etc/init.d/ $(1)/lib/config.d/ $(1)/etc/config/
-	$(if $(or $(CONFIG_HAS_SINGLE_ETH_PORT),$(CONFIG_TARGET_x86_64)),\
-		$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/dot1x_single_port.config $(1)/etc/config/dot1x
+	$(if $(CONFIG_TARGET_x86_64),\
+		$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/dot1x_x86_64.config $(1)/etc/config/dot1x
 		$(INSTALL_BIN) $(PKG_BUILD_DIR)/dot1xd/platform_scripts/dsa.sh $(1)/usr/sbin/dot1x_port_blocker,\
-		$(if $(CONFIG_TARGET_ramips_mt76x8),
-			$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/config.d/generate-dot1x-server-mt76x8 $(1)/lib/config.d/797-generate-dot1x-server
-			$(INSTALL_BIN) $(PKG_BUILD_DIR)/dot1xd/platform_scripts/mt76x8.lua $(1)/usr/sbin/dot1x_port_blocker,\
-			$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/config.d/generate-dot1x-server $(1)/lib/config.d/799-generate-dot1x-server
-			$(INSTALL_BIN) $(PKG_BUILD_DIR)/dot1xd/platform_scripts/dsa.sh $(1)/usr/sbin/dot1x_port_blocker
+		$(if $(CONFIG_HAS_SINGLE_ETH_PORT),
+			$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/dot1x_single_port.config $(1)/etc/config/dot1x
+			$(INSTALL_BIN) $(PKG_BUILD_DIR)/dot1xd/platform_scripts/dsa.sh $(1)/usr/sbin/dot1x_port_blocker,\
+			$(if $(CONFIG_TARGET_ramips_mt76x8),
+				$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/config.d/generate-dot1x-server-mt76x8 $(1)/lib/config.d/797-generate-dot1x-server
+				$(INSTALL_BIN) $(PKG_BUILD_DIR)/dot1xd/platform_scripts/mt76x8.lua $(1)/usr/sbin/dot1x_port_blocker,\
+				$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/config.d/generate-dot1x-server $(1)/lib/config.d/799-generate-dot1x-server
+				$(INSTALL_BIN) $(PKG_BUILD_DIR)/dot1xd/platform_scripts/dsa.sh $(1)/usr/sbin/dot1x_port_blocker
+			)
 		)
 	)
 

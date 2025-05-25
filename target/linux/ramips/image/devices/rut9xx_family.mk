@@ -37,7 +37,7 @@ define Device/template_rut9x
 	DEVICE_DOT1X_SERVER_CAPABILITIES := false false vlan
 
 	DEVICE_FEATURES := dual_sim mobile nat_offloading port_link \
-		wifi ethernet xfrm-offload soft_port_mirror
+		wifi ethernet xfrm-offload soft_port_mirror reset_button
 endef
 
 define Device/template_rut9x_io
@@ -69,6 +69,7 @@ define Device/TEMPLATE_teltonika_rut901
 	$(Device/template_rut9x)
 	DEVICE_MODEL := RUT901
 	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.3.1
+	DEVICE_FEATURES += small_flash
 
 	HARDWARE/Mobile/3GPP_Release := Release 9
 	HARDWARE/Physical_Interfaces/Antennas := 2 x SMA for LTE, 2 x RP-SMA for Wi-Fi antenna connectors
@@ -99,6 +100,7 @@ define Device/TEMPLATE_teltonika_rut906
 	$(Device/template_rut9x_io)
 	DEVICE_MODEL := RUT906
 	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.4.2
+	DEVICE_FEATURES += small_flash
 
 	HARDWARE/Mobile/3GPP_Release := Release 9
 	HARDWARE/Physical_Interfaces/IO := $(HW_INTERFACE_IO_10PIN)
@@ -120,6 +122,10 @@ define Device/TEMPLATE_teltonika_rut906
 	HARDWARE/USB/Applications := $(HW_USB_APPLICATIONS)
 	HARDWARE/USB/External_devices := $(HW_USB_EXTERNAL_DEV)
 	HARDWARE/USB/Storage_formats := $(HW_USB_STORAGE_FORMATS)
+	HARDWARE/SD_card/Physical_size := $(HW_SD_PHYSICAL_SIZE)
+	HARDWARE/SD_card/Applications := $(HW_SD_APLICATIONS)
+	HARDWARE/SD_card/Capacity := $(HW_SD_CAPACITY);
+	HARDWARE/SD_card/Storage_formats := $(HW_SD_STORAGE_FORMATS)
 	HARDWARE/Regulatory_&_Type_Approvals/Regulatory := CE, UKCA, RCM, CB, E-mark
 	HARDWARE/EMC_Emissions_&_Immunity/Standards := $(HW_EI_STANDARDS_EN_55032); $(HW_EI_STANDARDS_EN_55035); \
 	$(HW_EI_STANDARDS_EN_IEC_61000-3-2); $(HW_EI_STANDARDS_EN_61000-3-3); \
@@ -141,7 +147,14 @@ define Device/TEMPLATE_teltonika_rut951
 	$(Device/teltonika_rut9x_common)
 	$(Device/template_rut9x)
 	DEVICE_MODEL := RUT951
+	DEVICE_FEATURES += small_flash
 
+	HARDWARE/PoE** := PoE (Optional)
+	HARDWARE/PoE/PoE_In/PoE_ports := 1 x PoE In
+	HARDWARE/PoE/PoE_In/PoE_standards := 802.3af/at
+	HARDWARE/PoE/PoE_Out/PoE_ports := 1 x PoE Out
+	HARDWARE/PoE/PoE_Out/PoE_standards := 802.3af and 802.3at Alternative B
+	HARDWARE/PoE/PoE_Out/PoE_Max_Power_per_Port_(at_PSE) := 24 W Max (power supply unit dependent)
 	HARDWARE/Mobile/3GPP_Release := Release 10/11 depending on the hardware version
 	HARDWARE/Input_Output/Input := 1 $(HW_INPUT_DI_30V)
 	HARDWARE/Input_Output/Output := 1 $(HW_OUTPUT_DO_30V)
@@ -176,6 +189,7 @@ define Device/TEMPLATE_teltonika_rut956
 	$(Device/template_rut9x)
 	$(Device/template_rut9x_io)
 	DEVICE_MODEL := RUT956
+	DEVICE_FEATURES += small_flash
 
 	HARDWARE/Mobile/3GPP_Release := Release 11
 	HARDWARE/Physical_Interfaces/IO := $(HW_INTERFACE_IO_10PIN) (available from HW revision 1600)
@@ -195,6 +209,10 @@ define Device/TEMPLATE_teltonika_rut956
 	HARDWARE/USB/Applications := $(HW_USB_APPLICATIONS)
 	HARDWARE/USB/External_devices := $(HW_USB_EXTERNAL_DEV)
 	HARDWARE/USB/Storage_formats := $(HW_USB_STORAGE_FORMATS)
+	HARDWARE/SD_card/Physical_size := $(HW_SD_PHYSICAL_SIZE)
+	HARDWARE/SD_card/Applications := $(HW_SD_APLICATIONS)
+	HARDWARE/SD_card/Capacity := $(HW_SD_CAPACITY);
+	HARDWARE/SD_card/Storage_formats := $(HW_SD_STORAGE_FORMATS)
 	HARDWARE/Regulatory_&_Type_Approvals/Regulatory := CE, UKCA, ANRT, Kenya, CITC, ICASA, FCC, IC, PTCRB, Anatel, RCM, Giteki, IMDA, ECE R118, \
 	E-mark, UL/CSA Safety, CB, RoHS, REACH, NCC, C1D2
 	HARDWARE/Regulatory_&_Type_Approvals/Operator := AT&T, Verizon, T-Mobile
@@ -274,6 +292,10 @@ define Device/TEMPLATE_teltonika_rut976
 	HARDWARE/USB/Applications := $(HW_USB_APPLICATIONS)
 	HARDWARE/USB/External_devices := $(HW_USB_EXTERNAL_DEV)
 	HARDWARE/USB/Storage_formats := $(HW_USB_STORAGE_FORMATS)
+	HARDWARE/SD_card/Physical_size := $(HW_SD_PHYSICAL_SIZE)
+	HARDWARE/SD_card/Applications := $(HW_SD_APLICATIONS)
+	HARDWARE/SD_card/Capacity := $(HW_SD_CAPACITY);
+	HARDWARE/SD_card/Storage_formats := $(HW_SD_STORAGE_FORMATS)
 	HARDWARE/System_Characteristics/Flash_Storage := $(HW_FLASH_SIZE_32M), $(HW_FLASH_TYPE_NOR)
 	HARDWARE/Regulatory_&_Type_Approvals/Regulatory := CE, UKCA, ANRT, Kenya, CITC, ICASA, FCC, IC, PTCRB, Anatel, RCM, Giteki, IMDA, ECE R118, \
 	E-mark, UL/CSA Safety, CB, RoHS, REACH, NCC, C1D2

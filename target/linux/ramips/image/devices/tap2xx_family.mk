@@ -10,7 +10,7 @@ define Device/TEMPLATE_teltonika_tap200
 		no_metric     true,  \
 		max_mtu       2030
 
-	DEVICE_WLAN_BSSID_LIMIT := wlan0 16, wlan1 16
+	DEVICE_WLAN_BSSID_LIMIT := wlan0 8, wlan1 8
 
 	DEVICE_INTERFACE_CONF := \
 		lan default_ip 192.168.1.3 device eth1 ipv6 0 fallback 1 proto dhcp, \
@@ -18,7 +18,7 @@ define Device/TEMPLATE_teltonika_tap200
 
 	DEVICE_CHECK_PATH := pcie_check /sys/class/pci_bus/0000:00 reboot
 
-	DEVICE_FEATURES := wifi ethernet sw_rst_on_init dual_band_ssid single_port
+	DEVICE_FEATURES := access_point wifi ethernet sw_rst_on_init dual_band_ssid single_port small_flash reset_button
 
 	DEVICE_INITIAL_FIRMWARE_SUPPORT :=
 

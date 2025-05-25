@@ -221,18 +221,18 @@
 			GPIO_13 {
 				line_name = "GPIO_IN_2";
 			};
+			GPIO_6 {
+				line_name = "BAT_IGN_CLOCK";
+			};
+			GPIO_17 {
+				line_name = "BAT_IGN_MODE";
+			};
 		};
 
 		ledman {
 			GPIO_0 {
 				line_name = "LED_POWER";
 				active_low;
-			};
-			GPIO_6 {
-				line_name = "BAT_IGN_CLOCK";
-			};
-			GPIO_17 {
-				line_name = "BAT_IGN_MODE";
 			};
 			GPIO_102 {
 				line_name = "LED_ETH_GREEN_1";
@@ -297,6 +297,9 @@
 		};
 
 		misc {
+			GPIO_18 {
+				line_name = "TPM_RESET";
+			};
 			GPIO_117 {
 				line_name = "GPIO_MODEM_RESET_1";
 			};

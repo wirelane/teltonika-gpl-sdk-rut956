@@ -75,7 +75,7 @@ fields.
  	struct dst_entry *this_dst = skb_dst(skb);
  	struct dst_entry *other_dst = NULL;
  	struct flowi fl;
-@@ -552,6 +560,9 @@ xt_flowoffload_route(struct sk_buff *skb
+@@ -556,6 +564,9 @@ xt_flowoffload_route(struct sk_buff *skb
  	nf_default_forward_path(route, this_dst, dir, *indev);
  	route->dst_reverse = other_dst;
  
@@ -85,7 +85,7 @@ fields.
  #ifndef CONFIG_NETFILTER_XT_LEGACY_OFFLOAD_FORWARD_PATH
  	if (this_dst->lwtstate || (other_dst && other_dst->lwtstate))
  		return 0;
-@@ -559,12 +570,17 @@ xt_flowoffload_route(struct sk_buff *skb
+@@ -563,12 +574,17 @@ xt_flowoffload_route(struct sk_buff *skb
  	if (route->xmit_type == FLOW_OFFLOAD_XMIT_NEIGH) {
  		ret = nf_dev_forward_path(route, daddr);
  		if (ret)
@@ -105,7 +105,7 @@ fields.
  #endif
  	return 0;
  }
-@@ -659,14 +675,8 @@ flowoffload_tg(struct sk_buff *skb, cons
+@@ -663,14 +679,8 @@ flowoffload_tg(struct sk_buff *skb, cons
  
  	xt_flowoffload_check_device(table, indev);
  

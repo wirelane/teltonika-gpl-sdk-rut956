@@ -9,9 +9,9 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		gpio-sck = <&gpio 45 GPIO_ACTIVE_HIGH>;	// 74HC595 SRCLK (Serial Clock)
+		gpio-sck = <&gpio 9 GPIO_ACTIVE_HIGH>;	// 74HC595 SRCLK (Serial Clock)
 		gpio-mosi = <&gpio 13 GPIO_ACTIVE_HIGH>;	// 74HC595 SER (Serial)
-		cs-gpios = <&gpio 9 GPIO_ACTIVE_HIGH>;	// 74HC595 RCLK (Register Clock)
+		cs-gpios = <&gpio 45 GPIO_ACTIVE_HIGH>;	// 74HC595 RCLK (Register Clock)
 		num-chipselects = <1>;
 
 		shift_io: shift_io@0 {

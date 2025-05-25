@@ -6,12 +6,17 @@ STOP=10
 
 SERIAL="rs485"
 ENABLED=$(uci -q get bacnet_router.general.enabled)
+APP=/usr/sbin/bacnet-router
+
+if [ ! -x "$APP" ]; then
+	APP="/usr/local$APP"
+fi
 
 if [ "$ENABLED" = "1" ] && [ -e "/dev/$SERIAL" ]; then
 	start_service() {
 		procd_open_instance
 		procd_set_param file /etc/config/bacnet_router
-		procd_set_param command /usr/sbin/bacnet-router
+		procd_set_param command "$APP"
 		
 		procd_set_param respawn ${respawn_threshold:-0} ${respawn_timeout:-6} ${respawn_retry:-0}
 		procd_close_instance

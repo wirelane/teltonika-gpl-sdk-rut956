@@ -17,7 +17,7 @@ KERNEL_LOADADDR := 0x80000000
 define Device/tlt-mt7628-common
 	SOC := mt7628an
 
-	DEVICE_FEATURES := small_flash sw-offload dot1x-client 128mb_ram
+	DEVICE_FEATURES := small_flash sw-offload dot1x-client 128mb_ram reset_button
 	MTDPARTS :=
 	BLOCKSIZE := 64k
 	KERNEL := kernel-bin | append-dtb | lzma | uImage lzma
@@ -67,7 +67,7 @@ define Device/teltonika_trb2m
 	DEVICE_BOOT_NAME := tlt-trb2m
 	DEVICE_DTS := mt7628an_teltonika_trb2m
 	DEVICE_FEATURES += gateway pppmobile gps serial serial-reset-quirk \
-			modbus io single-port dualsim bacnet ntrip mobile ncm dot1x-server \
+			modbus io single_port dualsim bacnet ntrip mobile ncm dot1x-server \
 	                xfrm-offload no-wired-wan
 	DEVICE_MTD_LOG_PARTNAME := mtdblock6
 	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.5
@@ -82,12 +82,13 @@ define Device/teltonika_trb2m
 			kmod-usb-serial-pl2303 kmod-cypress-serial
 	# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	DEVICE_MODEM_VENDORS := Quectel
-
 	INCLUDED_DEVICES := \
 		TEMPLATE_teltonika_trb246 \
 		TEMPLATE_teltonika_trb256 \
 		TEMPLATE_teltonika_trb247
+
+	DEVICE_MODEM_VENDORS := Quectel
+	DEVICE_MODEM_LIST := EC25 EG915Q BG95
 endef
 
 define Device/teltonika_tap100
@@ -95,7 +96,7 @@ define Device/teltonika_tap100
 	DEVICE_MODEL := TAP100
 	DEVICE_BOOT_NAME := tlt-tap100
 	DEVICE_DTS := mt7628an_teltonika_tap100
-	DEVICE_FEATURES := small_flash access-point single-port wifi ledman-lite dot1x-client no-wired-wan
+	DEVICE_FEATURES := small_flash access_point single_port wifi ledman-lite dot1x-client no-wired-wan reset_button
 	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.4
 	GPL_PREFIX := GPL
 	# Default common packages for TAP100 series
@@ -120,7 +121,7 @@ define Device/teltonika_otd140
 	DEVICE_MODEL := OTD140
 	DEVICE_BOOT_NAME := tlt-otd140
 	DEVICE_DTS := mt7628an_teltonika_otd140
-	DEVICE_FEATURES += ncm rndis poe mobile dualsim portlink dot1x-server xfrm-offload networks-external no-wired-wan
+	DEVICE_FEATURES += ncm rndis poe mobile dualsim portlink dot1x-server xfrm-offload networks_external no-wired-wan
 	DEVICE_MTD_LOG_PARTNAME := mtdblock6
 	DEVICE_INITIAL_FIRMWARE_SUPPORT := 7.4.4
 	GPL_PREFIX := GPL
@@ -131,6 +132,7 @@ define Device/teltonika_otd140
 	# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	DEVICE_MODEM_VENDORS := Quectel
+	DEVICE_MODEM_LIST := EC200A EC25
 
 	INCLUDED_DEVICES := TEMPLATE_teltonika_otd140
 endef
@@ -163,7 +165,7 @@ define Device/teltonika_dap14x
 	DEVICE_BOOT_NAME := tlt-dap14x
 	DEVICE_DTS := mt7628an_teltonika_dap14x
 	DEVICE_FEATURES += small_flash serial modbus ntrip wifi ledman-lite sw-offload portlink \
-	                   xfrm-offload industrial-access-point no-wired-wan
+	                   xfrm-offload industrial_access_point no-wired-wan
 	# Default common packages for DAP14X series
 	# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	DEVICE_PACKAGES += kmod-usb-ohci kmod-usb-serial-pl2303
@@ -194,14 +196,15 @@ define Device/teltonika_rut2m
 	DEVICE_PACKAGES += kmod-mt76_515 kmod-mt7603_515
 	# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	DEVICE_MODEM_VENDORS := Quectel Meiglink Teltonika
-
 	HW_MODS += 260v3 241v5 200v5 ala440
 
 	INCLUDED_DEVICES := \
 		TEMPLATE_teltonika_rut200 \
 		TEMPLATE_teltonika_rut241 \
 		TEMPLATE_teltonika_rut260
+
+	DEVICE_MODEM_VENDORS := Quectel Meiglink Teltonika
+	DEVICE_MODEM_LIST := SLM750 EC200A EC25 EG25 SLM828 RG255C ALA440
 endef
 
 define Device/teltonika_rut301
@@ -249,6 +252,8 @@ define Device/teltonika_rut361
 	# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	DEVICE_MODEM_VENDORS := Quectel
+	DEVICE_MODEM_LIST := EG06 EG060K
+
 
 	INCLUDED_DEVICES := TEMPLATE_teltonika_rut361
 endef
@@ -259,7 +264,7 @@ define Device/teltonika_rut9m
 	DEVICE_BOOT_NAME := tlt-rut9m
 	DEVICE_FEATURES += gps usb-port serial modbus io wifi dualsim \
 			rndis ncm bacnet ntrip mobile portlink rs232 rs485 dot1x-server port-mirror \
-	                xfrm-offload
+	                xfrm-offload poe
 	DEVICE_DTS := mt7628an_teltonika_rut9m
 	IMAGE_SIZE := 12480k
 	GPL_PREFIX := GPL
@@ -276,8 +281,6 @@ define Device/teltonika_rut9m
 	DEVICE_PACKAGES += kmod-mt76_515 kmod-mt7603_515
 	# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	DEVICE_MODEM_VENDORS := Quectel Meiglink Teltonika
-
 	HW_MODS += 2c7c_6005 TLA2021 CH343 esim ala440
 
 	INCLUDED_DEVICES := \
@@ -285,6 +288,9 @@ define Device/teltonika_rut9m
 		TEMPLATE_teltonika_rut906 \
 		TEMPLATE_teltonika_rut951 \
 		TEMPLATE_teltonika_rut956
+
+	DEVICE_MODEM_VENDORS := Quectel Meiglink Teltonika
+	DEVICE_MODEM_LIST := EC200A SLM770 SLM750 EC25 EG25 RG255C ALA440
 endef
 TARGET_DEVICES += teltonika_rut9m
 
@@ -304,7 +310,7 @@ define Device/teltonika_rute
 	DEVICE_BOOT_NAME := tlt-mt7628
 	DEVICE_FEATURES := large_flash sw-offload gps usb-port serial modbus io wifi dualsim tpm \
 			rndis ncm bacnet ntrip mobile portlink rs232 rs485 dot1x-server port-mirror \
-	                xfrm-offload usb-sd-card usb-port dot1x-client 128mb_ram
+	                xfrm-offload usb-sd-card usb-port dot1x-client 128mb_ram reset_button
 	FILESYSTEMS := squashfs
 	GPL_PREFIX := GPL
 
@@ -326,8 +332,6 @@ define Device/teltonika_rute
 	DEVICE_PACKAGES += kmod-mt76_515 kmod-mt7603_515
 	# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	DEVICE_MODEM_VENDORS := Quectel Meiglink
-
 	INCLUDED_DEVICES := \
 		TEMPLATE_teltonika_rut206 \
 		TEMPLATE_teltonika_rut271 \
@@ -336,4 +340,7 @@ define Device/teltonika_rute
 		TEMPLATE_teltonika_rut976
 
 	SUPPORTED_DEVICES := teltonika,rute teltonika,rut976 teltonika,rut206 teltonika,rut271 teltonika,rut276 teltonika,rut971
+
+	DEVICE_MODEM_VENDORS := Quectel
+	DEVICE_MODEM_LIST := EC200A EC25 RG255C
 endef

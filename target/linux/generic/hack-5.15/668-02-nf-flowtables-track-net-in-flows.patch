@@ -116,7 +116,7 @@ unclear, at least with xtables FLOWOFFLOAD.
  		NF_FLOW_TABLE_STAT_INC(net, count_wq_add);
 --- a/net/netfilter/xt_FLOWOFFLOAD.c
 +++ b/net/netfilter/xt_FLOWOFFLOAD.c
-@@ -616,7 +616,6 @@ flowoffload_tg(struct sk_buff *skb, cons
+@@ -620,7 +620,6 @@ flowoffload_tg(struct sk_buff *skb, cons
  	struct nf_flow_route route = {};
  	struct net_device *indev;
  	struct nf_conn *ct;
@@ -124,7 +124,7 @@ unclear, at least with xtables FLOWOFFLOAD.
  
  	if (xt_flowoffload_skip(skb, par))
  		return XT_CONTINUE;
-@@ -666,10 +665,6 @@ flowoffload_tg(struct sk_buff *skb, cons
+@@ -670,10 +669,6 @@ flowoffload_tg(struct sk_buff *skb, cons
  
  	table = &flowtable[!!(info->flags & XT_FLOWOFFLOAD_HW)];
  
@@ -137,7 +137,7 @@ unclear, at least with xtables FLOWOFFLOAD.
  		goto err_route_free;
 --- a/net/netfilter/nf_tables_api.c
 +++ b/net/netfilter/nf_tables_api.c
-@@ -8035,7 +8035,6 @@ static int nf_tables_newflowtable(struct
+@@ -8039,7 +8039,6 @@ static int nf_tables_newflowtable(struct
  		}
  	}
  
