@@ -7,7 +7,7 @@
 };
 
 &gmac0 {
-	nvmem-cells = <&macaddr_config_0 0>;
+	nvmem-cells = <&macaddr_config_0 1>;
 	nvmem-cell-names = "mac-address";
 };
 
@@ -15,7 +15,7 @@
         status = "okay";
 	label = "lan1";
 	phy-handle = <&ethphy4>;
-	nvmem-cells = <&macaddr_config_0 1>;
+	nvmem-cells = <&macaddr_config_0 0>;
 	nvmem-cell-names = "mac-address";
 };
 
